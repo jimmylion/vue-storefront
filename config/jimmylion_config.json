@@ -476,7 +476,8 @@
       "claims": "LOCALSTORAGE",
       "syncTasks": "LOCALSTORAGE",
       "ordersHistory": "LOCALSTORAGE",
-      "checkoutFieldValues": "LOCALSTORAGE"
+      "checkoutFieldValues": "LOCALSTORAGE",
+      "adyen": "LOCALSTORAGE"
     }
   },
   "reviews": {
@@ -570,6 +571,10 @@
   },
   "facebookPixel": {
     "id": "2396882913914745"
+  },
+  "adyen": {
+    "originKey": "origin_key",
+    "paypalResultHandler": "https://your-backend/adyen-end-points/paypal"
   },
   "cms": {
     "endpoint": "https://api.dev.jimmylion.com/api/ext/cms-data/cms{{type}}/{{cmsId}}",
