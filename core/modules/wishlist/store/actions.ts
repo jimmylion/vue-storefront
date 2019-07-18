@@ -22,21 +22,23 @@ const actions: ActionTree<WishlistState, RootState> = {
       Logger.info('Wishlist state loaded from browser cache. ', 'cache', storedItems)()
     })
   },
-  addItem ({ commit }, product) {
-    commit(types.WISH_ADD_ITEM, { product })
+  addItem (context, product) {
+    context.commit(types.WISH_ADD_ITEM, { product })
     rootStore.dispatch('notification/spawnNotification', {
       type: 'success',
       message: i18n.t('Product {productName} has been added to wishlist!', { productName: htmlDecode(product.name) }),
       action1: { label: i18n.t('OK') }
     })
+    cacheStorage.setItem("current-wishlist", context.rootState.wishlist.items);
   },
-  removeItem ({ commit }, product) {
-    commit(types.WISH_DEL_ITEM, { product })
+  removeItem (context, product) {
+    context.commit(types.WISH_DEL_ITEM, { product })
     rootStore.dispatch('notification/spawnNotification', {
       type: 'success',
       message: i18n.t('Product {productName} has been removed from wishlit!', { productName: htmlDecode(product.name) }),
       action1: { label: i18n.t('OK') }
     })
+    cacheStorage.setItem("current-wishlist", context.rootState.wishlist.items)
   }
 }
 
