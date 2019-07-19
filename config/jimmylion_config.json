@@ -56,8 +56,8 @@
   },
   "elasticsearch": {
     "httpAuth": "",
-    "host": "/api/catalog",
-    "index": "vue_storefront_catalog",
+    "host": "https://api.jl.es.newfantastic.com/api/catalog",
+    "index": "vue_storefront_catalog_es",
     "min_score": 0.02,
     "csrTimeout": 5000,
     "ssrTimeout": 1000,
@@ -110,7 +110,7 @@
   "storeViews": {
     "multistore": true,
     "commonCache": true,
-    "mapStoreUrlsFor": ["es", "it", "fr", "de", "eu", "gb", "mx", "us"],
+    "mapStoreUrlsFor": ["us", "mx", "es", "eu", "uk", "it", "de", "fr"],
     "us": {
       "storeCode": "us",
       "disabled": false,
@@ -118,7 +118,7 @@
       "name": "United States Store",
       "url": "/us",
       "elasticsearch": {
-        "host": "https://api.jl.usa.newfantastic.com/api/catalog",
+        "host": "https://api.jl.us.newfantastic.com/api/catalog",
         "index": "vue_storefront_catalog_us"
       },
       "tax": {
@@ -199,8 +199,8 @@
       "name": "Europe Store",
       "url": "/eu",
       "elasticsearch": {
-        "host": "https://api.jl.uk-eur.newfantastic.com/api/catalog",
-        "index": "vue_storefront_catalog_es"
+        "host": "https://api.jl.eu.newfantastic.com/api/catalog",
+        "index": "vue_storefront_catalog_eu"
       },
       "tax": {
         "sourcePriceIncludesTax": true,
@@ -226,8 +226,8 @@
       "name": "Great Britain Store",
       "url": "/uk",
       "elasticsearch": {
-        "host": "https://api.jl.uk-eur.newfantastic.com/api/catalog",
-        "index": "vue_storefront_catalog_es"
+        "host": "https://api.jl.uk.newfantastic.com/api/catalog",
+        "index": "vue_storefront_catalog_uk"
       },
       "tax": {
         "sourcePriceIncludesTax": true,
@@ -254,7 +254,7 @@
       "url": "/it",
       "elasticsearch": {
         "host": "https://api.jl.it-fr.newfantastic.com/api/catalog",
-        "index": "vue_storefront_catalog_es"
+        "index": "vue_storefront_catalog_it"
       },
       "tax": {
         "sourcePriceIncludesTax": true,
@@ -280,8 +280,8 @@
       "name": "German Store",
       "url": "/de",
       "elasticsearch": {
-        "host": "https://api.jl.uk-eur.newfantastic.com/api/catalog",
-        "index": "vue_storefront_catalog_es"
+        "host": "https://api.jl.eu.newfantastic.com/api/catalog",
+        "index": "vue_storefront_catalog_de"
       },
       "tax": {
         "sourcePriceIncludesTax": true,
@@ -308,7 +308,7 @@
       "url": "/fr",
       "elasticsearch": {
         "host": "https://api.jl.it-fr.newfantastic.com/api/catalog",
-        "index": "vue_storefront_catalog_es"
+        "index": "vue_storefront_catalog_fr"
       },
       "tax": {
         "sourcePriceIncludesTax": true,
