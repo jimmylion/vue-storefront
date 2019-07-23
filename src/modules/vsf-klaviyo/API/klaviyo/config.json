@@ -1,0 +1,12 @@
+{
+  "extensions": {
+    "klaviyo": {
+      "apiKey": "pk_7b5e2de3a9ab202a7daea53b8860307377",
+      "apiUrl": "https://a.klaviyo.com/api",
+      "listId": "H9TukH"
+    }
+  },
+  "registeredExtensions": [
+    "klaviyo"
+  ]
+}
