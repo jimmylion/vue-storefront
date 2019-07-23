@@ -49,7 +49,7 @@ export function beforeRegistration({ Vue, config, store, isServer }) {
       }
 
       zE(() => {
-        zE.setLocale(widgetLang);
+        zE("webWidget", "setLocale", widgetLang);
       });
 
       // User identify;
