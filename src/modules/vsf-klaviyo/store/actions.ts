@@ -11,10 +11,32 @@ import {
   mapLineItem,
   mapOrderedProduct
 } from "../helpers/mappers";
+import { currentStoreView } from '@vue-storefront/core/lib/multistore';
 
 const encode = json => {
   return window.btoa(JSON.stringify(json));
 };
+
+const pickProperListId = () => {
+
+  if (config.storeViews.multistore === true) {
+
+    const { storeCode } = currentStoreView()
+    if(!('multistoreListIds' in config.klaviyo) || !(storeCode in config.klaviyo.multistoreListIds)) {
+
+      throw new Error("Klaviyo - Provide proper config for multistore!")
+
+    }
+
+    return config.klaviyo.multistoreListIds[storeCode]
+
+  } else {
+
+    return config.klaviyo.listId
+
+  }
+
+}
 
 // it's a good practice for all actions to return Promises with effect of their execution
 export const actions: ActionTree<KlaviyoState, any> = {
@@ -79,13 +101,27 @@ export const actions: ActionTree<KlaviyoState, any> = {
   subscribe({ commit, state }, email): Promise<Response> {
     if (!state.isSubscribed) {
       return new Promise((resolve, reject) => {
+
+        const body: any = {email}
+        if (config.storeViews.multistore === true) {
+
+          const { storeCode } = currentStoreView()
+          if(storeCode.length >= 2)
+            body.storeCode = storeCode
+
+        }
+
         fetch(config.klaviyo.endpoint.subscribe, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           mode: "cors",
-          body: JSON.stringify({ email })
+          body: JSON.stringify(body)
         })
           .then(res => {
+
+            if(res.status === 500) {
+              throw new Error("Couldn't register user")
+            }
             commit(types.NEWSLETTER_SUBSCRIBE);
 
             if (!state.customer) {
@@ -96,6 +132,7 @@ export const actions: ActionTree<KlaviyoState, any> = {
             resolve(res);
           })
           .catch(err => {
+
             reject(err);
           });
       });
@@ -104,12 +141,21 @@ export const actions: ActionTree<KlaviyoState, any> = {
 
   unsubscribe({ commit, state }, email): Promise<Response> {
     if (state.isSubscribed) {
+
+      const body: any = {email}
+      if (config.storeViews.multistore === true) {
+
+        const { storeCode } = currentStoreView()
+        body.storeCode = storeCode
+
+      }
+
       return new Promise((resolve, reject) => {
         fetch(config.klaviyo.endpoint.subscribe, {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
           mode: "cors",
-          body: JSON.stringify({ email })
+          body: JSON.stringify(body)
         })
           .then(res => {
             commit(types.NEWSLETTER_UNSUBSCRIBE);
@@ -139,7 +185,7 @@ export const actions: ActionTree<KlaviyoState, any> = {
 
       formData.append("a", config.klaviyo.public_key);
       formData.append("email", email);
-      formData.append("g", config.klaviyo.listId);
+      formData.append("g", pickProperListId());
       formData.append("variant", product.sku);
       formData.append(
         "product",
@@ -180,7 +226,7 @@ export const actions: ActionTree<KlaviyoState, any> = {
 
       formData.append("a", config.klaviyo.public_key);
       formData.append("email", email);
-      formData.append("g", config.klaviyo.listId);
+      formData.append("g", pickProperListId());
       formData.append("variant", product.sku);
       formData.append(
         "product",
