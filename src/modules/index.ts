@@ -27,6 +27,9 @@ import { FacebookPixel } from "./vsf-facebook-pixel";
 import { ZendChat } from "./vsf-zend-chat";
 import { Klaviyo } from "./vsf-klaviyo";
 
+import { DndPrismicCMS } from './dnd-prismic-cms'
+
+// Below part is responsible for custom URLs for products
 import { extendMappingFallback, Payload } from 'src/modules/vsf-mapping-fallback'
 import { forStoryblok, forCategory, tap } from 'src/modules/vsf-mapping-fallback/builtin'
 import { removeStoreCodeFromRoute, currentStoreView } from '@vue-storefront/core/lib/multistore'
@@ -68,27 +71,7 @@ const forProduct = async ({ dispatch }, { url, params }: Payload) => {
 extendMappingFallback(
   forProduct, forCategory, forStoryblok, tap
 )
-
-// import { Example } from './module-template'
-
-// This is how you can extend any of VS modues
-// const extendCartVuex = {
-//   actions: {
-//     load () {
-//       Logger.info('New load function')()
-//     }
-//   }
-//  }
-
-//  const cartExtend = {
-//   key: 'cart',
-//   afterRegistration: function(isServer, config) {
-//     Logger.info('New afterRegistration hook')()
-//   },
-//   store: { modules: [{ key: 'cart', module: extendCartVuex }] },
-//  }
-
-//  extendModule(cartExtend)
+// END
 
 /**
  * Some of the modules are registered lazily only when components from the module are appearing on current page.
@@ -122,6 +105,7 @@ export const registerModules: VueStorefrontModule[] = [
   Url,
   FacebookPixel,
   ZendChat,
-  Klaviyo
+  Klaviyo,
+  DndPrismicCMS
   // Example
 ];

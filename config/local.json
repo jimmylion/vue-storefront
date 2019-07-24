@@ -48,7 +48,7 @@
     "db": 0
   },
   "graphql": {
-    "host": "localhost",
+    "host": "api.jl.eu.newfantastic.com",
     "port": 8080
   },
   "elasticsearch": {
@@ -822,5 +822,8 @@
       "uk": "LUWCpC"
     },
     "platform": "magento_two"
+  },
+  "prismic": {
+    "defaultLocale": "es-es"
   }
 }
