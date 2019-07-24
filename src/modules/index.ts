@@ -25,6 +25,7 @@ import { Magento2CMS } from "./magento-2-cms";
 import { InstantCheckout } from "./instant-checkout";
 import { FacebookPixel } from "./vsf-facebook-pixel";
 import { ZendChat } from "./vsf-zend-chat";
+import { Klaviyo } from "./vsf-klaviyo";
 
 import { extendMappingFallback, Payload } from 'src/modules/vsf-mapping-fallback'
 import { forStoryblok, forCategory, tap } from 'src/modules/vsf-mapping-fallback/builtin'
@@ -120,6 +121,7 @@ export const registerModules: VueStorefrontModule[] = [
   InstantCheckout,
   Url,
   FacebookPixel,
-  ZendChat
+  ZendChat,
+  Klaviyo
   // Example
 ];
