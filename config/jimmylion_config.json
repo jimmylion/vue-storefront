@@ -797,10 +797,20 @@
     "public_key": "JFukKK",
     "endpoint": {
       "api": "https://a.klaviyo.com",
-      "subscribe": "http://localhost:8080/api/ext/klaviyo/subscribe",
+      "subscribe": "https://api.jl.eu.newfantastic.com/api/ext/klaviyo/subscribe",
       "backInStock": "https://a.klaviyo.com/onsite/components/back-in-stock/subscribe"
     },
     "listId": "H9TukH",
+    "multistoreListIds": {
+      "es": "MqQEvX",
+      "eu": "QvFDr8",
+      "it": "L93578",
+      "fr": "NWMLTp",
+      "us": "MPhcaA",
+      "mx": "QkbSGT",
+      "de": "Mjgq4M",
+      "uk": "LUWCpC"
+    },
     "platform": "magento_two"
   }
 }
