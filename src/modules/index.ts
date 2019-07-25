@@ -27,7 +27,7 @@ import { FacebookPixel } from "./vsf-facebook-pixel";
 import { ZendChat } from "./vsf-zend-chat";
 import { Klaviyo } from "./vsf-klaviyo";
 
-import { DndPrismicCMS } from './dnd-prismic-cms'
+import { VsfPrismicCMS } from './vsf-prismic'
 
 // Below part is responsible for custom URLs for products
 import { extendMappingFallback, Payload } from 'src/modules/vsf-mapping-fallback'
@@ -106,6 +106,6 @@ export const registerModules: VueStorefrontModule[] = [
   FacebookPixel,
   ZendChat,
   Klaviyo,
-  DndPrismicCMS
+  VsfPrismicCMS
   // Example
 ];
