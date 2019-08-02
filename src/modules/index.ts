@@ -28,20 +28,20 @@ import { ZendChat } from "./vsf-zend-chat";
 import { Klaviyo } from "./vsf-klaviyo";
 import { VsfYotpo } from "./vsf-yotpo";
 
-import {
-  extendMappingFallback,
-  Payload
-} from "src/modules/vsf-mapping-fallback";
-import {
-  forStoryblok,
-  forCategory,
-  tap
-} from "src/modules/vsf-mapping-fallback/builtin";
-import {
-  removeStoreCodeFromRoute,
-  currentStoreView
-} from "@vue-storefront/core/lib/multistore";
-import SearchQuery from "@vue-storefront/core/lib/search/searchQuery";
+// import {
+//   extendMappingFallback,
+//   Payload
+// } from "src/modules/vsf-mapping-fallback";
+// import {
+//   forStoryblok,
+//   forCategory,
+//   tap
+// } from "src/modules/vsf-mapping-fallback/builtin";
+// import {
+//   removeStoreCodeFromRoute,
+//   currentStoreView
+// } from "@vue-storefront/core/lib/multistore";
+// import SearchQuery from "@vue-storefront/core/lib/search/searchQuery";
 
 // const forProduct = async ({ dispatch }, { url, params }: Payload) => {
 //   url = removeStoreCodeFromRoute(url) as string;
@@ -76,6 +76,8 @@ import SearchQuery from "@vue-storefront/core/lib/search/searchQuery";
 //         childSku: params["childSku"] ? params["childSku"] : product.sku
 //       }
 //     };
+//   } else {
+//     console.log("FAIL");
 //   }
 // };
 
