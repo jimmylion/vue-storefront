@@ -1,4 +1,4 @@
-// import { extendModule } from '@vue-storefront/core/lib/module'
+import { extendModule } from '@vue-storefront/core/lib/module'
 import { VueStorefrontModule } from "@vue-storefront/core/lib/module";
 import { Catalog } from "@vue-storefront/core/modules/catalog";
 import { Cart } from "@vue-storefront/core/modules/cart";
@@ -16,7 +16,7 @@ import { Claims } from "./claims";
 import { PromotedOffers } from "./promoted-offers";
 import { Ui } from "./ui-store";
 // import { GoogleAnalytics } from './google-analytics';
-// import { Hotjar } from './hotjar';
+import { Hotjar } from './hotjar';
 import { AmpRenderer } from "./amp-renderer";
 import { PaymentBackendMethods } from "./payment-backend-methods";
 import { PaymentCashOnDelivery } from "./payment-cash-on-delivery";
@@ -26,6 +26,9 @@ import { InstantCheckout } from "./instant-checkout";
 import { FacebookPixel } from "./vsf-facebook-pixel";
 import { ZendChat } from "./vsf-zend-chat";
 import { Klaviyo } from "./vsf-klaviyo";
+
+import { layeredNavigationModule } from './vsf-layered-navigation'
+extendModule(layeredNavigationModule)
 
 import { extendMappingFallback, Payload } from 'src/modules/vsf-mapping-fallback'
 import { forStoryblok, forCategory, tap } from 'src/modules/vsf-mapping-fallback/builtin'

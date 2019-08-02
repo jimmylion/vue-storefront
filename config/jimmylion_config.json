@@ -381,6 +381,8 @@
     "productList": {
       "sort": "",
       "includeFields": [
+        "color",
+        "size",
         "type_id",
         "sku",
         "product_links",
@@ -424,6 +426,8 @@
     },
     "productListWithChildren": {
       "includeFields": [
+        "color",
+        "size",
         "type_id",
         "sku",
         "name",
@@ -786,6 +790,10 @@
         }
       }]
     }
+  },
+  "layeredNavigation": {
+    "enableProductsLeftCounter": true,
+    "pagePortionSize": 200
   },
   "facebookPixel": {
     "id": "2396882913914745"

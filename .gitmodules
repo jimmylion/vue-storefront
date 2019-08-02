@@ -1,0 +1,3 @@
+[submodule "src/modules/vsf-layered-navigation"]
+	path = src/modules/vsf-layered-navigation
+	url = https://github.com/GetNoticedNL/vsf-layered-navigation.git

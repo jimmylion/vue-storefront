@@ -381,6 +381,8 @@
     "productList": {
       "sort": "",
       "includeFields": [
+        "color",
+        "size",
         "type_id",
         "sku",
         "product_links",
@@ -424,6 +426,8 @@
     },
     "productListWithChildren": {
       "includeFields": [
+        "color",
+        "size",
         "type_id",
         "sku",
         "name",
@@ -688,17 +692,15 @@
     "calculateServerSide": true
   },
   "shipping": {
-    "methods": [
-      {
-        "method_title": "DPD Courier",
-        "method_code": "flatrate",
-        "carrier_code": "flatrate",
-        "amount": 4,
-        "price_incl_tax": 5,
-        "default": true,
-        "offline": true
-      }
-    ]
+    "methods": [{
+      "method_title": "DPD Courier",
+      "method_code": "flatrate",
+      "carrier_code": "flatrate",
+      "amount": 4,
+      "price_incl_tax": 5,
+      "default": true,
+      "offline": true
+    }]
   },
   "i18n": {
     "defaultCountry": "US",
@@ -757,45 +759,41 @@
   "useZeroPriceProduct": true,
   "query": {
     "inspirations": {
-      "filter": [
-        {
-          "key": "category.name",
-          "value": {
-            "eq": "Performance Fabrics"
-          }
+      "filter": [{
+        "key": "category.name",
+        "value": {
+          "eq": "Performance Fabrics"
         }
-      ]
+      }]
     },
     "newProducts": {
-      "filter": [
-        {
-          "key": "category.name",
-          "value": {
-            "eq": "Tees"
-          }
+      "filter": [{
+        "key": "category.name",
+        "value": {
+          "eq": "Tees"
         }
-      ]
+      }]
     },
     "coolBags": {
-      "filter": [
-        {
-          "key": "category.name",
-          "value": {
-            "eq": "Women"
-          }
+      "filter": [{
+        "key": "category.name",
+        "value": {
+          "eq": "Women"
         }
-      ]
+      }]
     },
     "bestSellers": {
-      "filter": [
-        {
-          "key": "category.name",
-          "value": {
-            "eq": "Tees"
-          }
+      "filter": [{
+        "key": "category.name",
+        "value": {
+          "eq": "Tees"
         }
-      ]
+      }]
     }
+  },
+  "layeredNavigation": {
+    "enableProductsLeftCounter": true,
+    "pagePortionSize": 200
   },
   "facebookPixel": {
     "id": "2396882913914745"
