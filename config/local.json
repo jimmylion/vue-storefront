@@ -822,5 +822,24 @@
       "uk": "LUWCpC"
     },
     "platform": "magento_two"
+  },
+  "yotpo": {
+    "langs": {
+      "eu": {
+        "account_id": "181425",
+        "app_key": "JyHQGub5sJcDChgo2UlvM49EijskjHkYMfLKzhjL"
+      },
+      "es": {
+        "account_id": "187469",
+        "app_key": "Vy1nmZtcM4iM3WnjQ9LPmiTJP6seUlmMg5zfU8tu"
+      },
+      "it": {
+        "account_id": "358745",
+        "app_key": "m0v03HKFDwWB9UI81DX1N5CbEBJ55W84DLyJDP8w"
+      }
+    }
+  },
+  "prismic": {
+    "endpoint": "https://jimmylion.prismic.io/api/v2"
   }
 }
