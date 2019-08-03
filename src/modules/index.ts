@@ -26,62 +26,48 @@ import { InstantCheckout } from "./instant-checkout";
 import { FacebookPixel } from "./vsf-facebook-pixel";
 import { ZendChat } from "./vsf-zend-chat";
 import { Klaviyo } from "./vsf-klaviyo";
-import { VsfYotpo } from "./vsf-yotpo";
 
-// import {
-//   extendMappingFallback,
-//   Payload
-// } from "src/modules/vsf-mapping-fallback";
-// import {
-//   forStoryblok,
-//   forCategory,
-//   tap
-// } from "src/modules/vsf-mapping-fallback/builtin";
-// import {
-//   removeStoreCodeFromRoute,
-//   currentStoreView
-// } from "@vue-storefront/core/lib/multistore";
-// import SearchQuery from "@vue-storefront/core/lib/search/searchQuery";
+import { extendMappingFallback, Payload } from 'src/modules/vsf-mapping-fallback'
+import { forStoryblok, forCategory, tap } from 'src/modules/vsf-mapping-fallback/builtin'
+import { removeStoreCodeFromRoute, currentStoreView } from '@vue-storefront/core/lib/multistore'
+import SearchQuery from '@vue-storefront/core/lib/search/searchQuery'
 
-// const forProduct = async ({ dispatch }, { url, params }: Payload) => {
-//   url = removeStoreCodeFromRoute(url) as string;
-//   const { productsPrefix } = <any>currentStoreView();
+const forProduct = async ({ dispatch }, { url, params }: Payload) => {
+  url = (removeStoreCodeFromRoute(url) as string)
+  const { productsPrefix } = (<any>currentStoreView())
 
-//   const productQuery = new SearchQuery();
-//   let productSlug = url.split("/").reverse()[0];
-//   if (productSlug.substr(-5) === ".html") {
-//     productSlug = productSlug.substr(0, productSlug.length - 5);
-//   } else if (productSlug.substr(-4) === ".htm") {
-//     productSlug = productSlug.substr(0, productSlug.length - 4);
-//   }
+  const productQuery = new SearchQuery()
+  let productSlug = url.split('/').reverse()[0]
+  if(productSlug.substr(-5) === '.html') {
+    productSlug = productSlug.substr(0, productSlug.length - 5)
+  } else if(productSlug.substr(-4) === '.htm') {
+    productSlug = productSlug.substr(0, productSlug.length - 4)
+  }
 
-//   productSlug.replace(productsPrefix + "/", "");
+  productSlug.replace(productsPrefix+'/', '')
 
-//   productQuery.applyFilter({ key: "url_key", value: { eq: productSlug } });
+  productQuery.applyFilter({key: 'url_key', value: {'eq': productSlug}})
 
-//   const products = await dispatch(
-//     "product/list",
-//     { query: productQuery },
-//     { root: true }
-//   );
+  const products = await dispatch('product/list', { query: productQuery }, { root: true })
 
-//   if (products && products.items && products.items.length) {
-//     const product = products.items[0];
+  if (products && products.items && products.items.length) {
+    const product = products.items[0]
 
-//     return {
-//       name: product.type_id + "-product",
-//       params: {
-//         slug: product.slug,
-//         parentSku: product.sku,
-//         childSku: params["childSku"] ? params["childSku"] : product.sku
-//       }
-//     };
-//   } else {
-//     console.log("FAIL");
-//   }
-// };
+    return {
+      name: product.type_id + '-product',
+      params: {
+        slug: product.slug,
+        parentSku: product.sku,
+        childSku: params['childSku'] ? params['childSku'] : product.sku
+      }
+    }
+  }
+}
 
-// extendMappingFallback(forProduct, forCategory, forStoryblok, tap);
+
+extendMappingFallback(
+  forProduct, forCategory, forStoryblok, tap
+)
 
 // import { Example } from './module-template'
 
@@ -136,7 +122,6 @@ export const registerModules: VueStorefrontModule[] = [
   Url,
   FacebookPixel,
   ZendChat,
-  Klaviyo,
-  VsfYotpo
+  Klaviyo
   // Example
 ];
