@@ -27,6 +27,7 @@ import { FacebookPixel } from "./vsf-facebook-pixel";
 import { ZendChat } from "./vsf-zend-chat";
 import { Klaviyo } from "./vsf-klaviyo";
 import { VsfYotpo } from "./vsf-yotpo";
+import { PrismicInjector } from "./prismic-injector";
 
 // import {
 //   extendMappingFallback,
