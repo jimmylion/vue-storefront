@@ -103,7 +103,7 @@
     "initialStateFilter": ["__DEMO_MODE__", "version", "storeView"],
     "useInitialStateFilter": true
   },
-  "defaultStoreCode": "eu",
+  "defaultStoreCode": "",
   "storeViews": {
     "multistore": true,
     "commonCache": true,
@@ -688,15 +688,17 @@
     "calculateServerSide": true
   },
   "shipping": {
-    "methods": [{
-      "method_title": "DPD Courier",
-      "method_code": "flatrate",
-      "carrier_code": "flatrate",
-      "amount": 4,
-      "price_incl_tax": 5,
-      "default": true,
-      "offline": true
-    }]
+    "methods": [
+      {
+        "method_title": "DPD Courier",
+        "method_code": "flatrate",
+        "carrier_code": "flatrate",
+        "amount": 4,
+        "price_incl_tax": 5,
+        "default": true,
+        "offline": true
+      }
+    ]
   },
   "i18n": {
     "defaultCountry": "US",
@@ -755,36 +757,44 @@
   "useZeroPriceProduct": true,
   "query": {
     "inspirations": {
-      "filter": [{
-        "key": "category.name",
-        "value": {
-          "eq": "Performance Fabrics"
+      "filter": [
+        {
+          "key": "category.name",
+          "value": {
+            "eq": "Performance Fabrics"
+          }
         }
-      }]
+      ]
     },
     "newProducts": {
-      "filter": [{
-        "key": "category.name",
-        "value": {
-          "eq": "Tees"
+      "filter": [
+        {
+          "key": "category.name",
+          "value": {
+            "eq": "Tees"
+          }
         }
-      }]
+      ]
     },
     "coolBags": {
-      "filter": [{
-        "key": "category.name",
-        "value": {
-          "eq": "Women"
+      "filter": [
+        {
+          "key": "category.name",
+          "value": {
+            "eq": "Women"
+          }
         }
-      }]
+      ]
     },
     "bestSellers": {
-      "filter": [{
-        "key": "category.name",
-        "value": {
-          "eq": "Tees"
+      "filter": [
+        {
+          "key": "category.name",
+          "value": {
+            "eq": "Tees"
+          }
         }
-      }]
+      ]
     }
   },
   "facebookPixel": {
@@ -797,10 +807,39 @@
     "public_key": "JFukKK",
     "endpoint": {
       "api": "https://a.klaviyo.com",
-      "subscribe": "http://localhost:8080/api/ext/klaviyo/subscribe",
+      "subscribe": "https://api.jl.eu.newfantastic.com/api/ext/klaviyo/subscribe",
       "backInStock": "https://a.klaviyo.com/onsite/components/back-in-stock/subscribe"
     },
     "listId": "H9TukH",
+    "multistoreListIds": {
+      "es": "MqQEvX",
+      "eu": "QvFDr8",
+      "it": "L93578",
+      "fr": "NWMLTp",
+      "us": "MPhcaA",
+      "mx": "QkbSGT",
+      "de": "Mjgq4M",
+      "uk": "LUWCpC"
+    },
     "platform": "magento_two"
+  },
+  "yotpo": {
+    "langs": {
+      "eu": {
+        "account_id": "181425",
+        "app_key": "JyHQGub5sJcDChgo2UlvM49EijskjHkYMfLKzhjL"
+      },
+      "es": {
+        "account_id": "187469",
+        "app_key": "Vy1nmZtcM4iM3WnjQ9LPmiTJP6seUlmMg5zfU8tu"
+      },
+      "it": {
+        "account_id": "358745",
+        "app_key": "m0v03HKFDwWB9UI81DX1N5CbEBJ55W84DLyJDP8w"
+      }
+    }
+  },
+  "prismic": {
+    "endpoint": "https://jimmylion.prismic.io/api/v2"
   }
 }
