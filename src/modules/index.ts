@@ -102,7 +102,7 @@ import { VsfYotpo } from "./vsf-yotpo";
 //   store: { modules: [{ key: 'cart', module: extendCartVuex }] },
 //  }
 
-//  extendModule(cartExtend)
+// END
 
 /**
  * Some of the modules are registered lazily only when components from the module are appearing on current page.
@@ -137,6 +137,7 @@ export const registerModules: VueStorefrontModule[] = [
   FacebookPixel,
   ZendChat,
   Klaviyo,
+  PrismicInjector,
   VsfYotpo
   // Example
 ];

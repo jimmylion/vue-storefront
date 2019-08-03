@@ -838,5 +838,8 @@
         "app_key": "m0v03HKFDwWB9UI81DX1N5CbEBJ55W84DLyJDP8w"
       }
     }
+  },
+  "prismic": {
+    "endpoint": "https://jimmylion.prismic.io/api/v2"
   }
 }
