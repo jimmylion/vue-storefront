@@ -1,3 +1,3 @@
-[submodule "src/modules/vsf-prismic"]
-	path = src/modules/vsf-prismic
-	url = git@github.com:new-fantastic/vsf-prismic.git
+[submodule "src/modules/vsf-yotpo"]
+	path = src/modules/vsf-yotpo
+	url = git@github.com-yotpo:new-fantastic/vsf-yotpo.git
