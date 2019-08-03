@@ -29,60 +29,85 @@ import { Klaviyo } from "./vsf-klaviyo";
 import { VsfYotpo } from "./vsf-yotpo";
 import { PrismicInjector } from "./prismic-injector";
 
-// import {
-//   extendMappingFallback,
-//   Payload
-// } from "src/modules/vsf-mapping-fallback";
-// import {
-//   forStoryblok,
-//   forCategory,
-//   tap
-// } from "src/modules/vsf-mapping-fallback/builtin";
-// import {
-//   removeStoreCodeFromRoute,
-//   currentStoreView
-// } from "@vue-storefront/core/lib/multistore";
-// import SearchQuery from "@vue-storefront/core/lib/search/searchQuery";
+import {
+  extendMappingFallback,
+  Payload
+} from "src/modules/vsf-mapping-fallback";
+import {
+  forCategory,
+  forStoryblok,
+  tap
+} from "src/modules/vsf-mapping-fallback/builtin";
+import {
+  removeStoreCodeFromRoute,
+  currentStoreView
+} from "@vue-storefront/core/lib/multistore";
+import SearchQuery from "@vue-storefront/core/lib/search/searchQuery";
+import config from "config";
 
-// const forProduct = async ({ dispatch }, { url, params }: Payload) => {
+const forProduct = async ({ dispatch }, { url, params }: Payload) => {
+  url = removeStoreCodeFromRoute(url) as string;
+  const { storeCode } = currentStoreView();
+  const prefix = config.storeViews[storeCode].productsPrefix;
+
+  const productQuery = new SearchQuery();
+  let productSlug = url
+    .split("/")
+    .reverse()[0]
+    .replace(prefix + "/", "")
+    .replace(".html", "")
+    .replace(".htm", "");
+
+  productQuery.applyFilter({ key: "url_key", value: { eq: productSlug } });
+
+  const products = await dispatch(
+    "product/list",
+    { query: productQuery },
+    { root: true }
+  );
+
+  if (products && products.items && products.items.length) {
+    const product = products.items[0];
+
+    return {
+      name: product.type_id + "-product",
+      params: {
+        slug: product.slug,
+        parentSku: product.sku,
+        childSku: params["childSku"] ? params["childSku"] : product.sku
+      }
+    };
+  } else {
+    console.log("FAIL");
+  }
+};
+
+// const forCategory = async ({ dispatch }, { url }: Payload) => {
 //   url = removeStoreCodeFromRoute(url) as string;
-//   const { productsPrefix } = <any>currentStoreView();
-
-//   const productQuery = new SearchQuery();
-//   let productSlug = url.split("/").reverse()[0];
-//   if (productSlug.substr(-5) === ".html") {
-//     productSlug = productSlug.substr(0, productSlug.length - 5);
-//   } else if (productSlug.substr(-4) === ".htm") {
-//     productSlug = productSlug.substr(0, productSlug.length - 4);
-//   }
-
-//   productSlug.replace(productsPrefix + "/", "");
-
-//   productQuery.applyFilter({ key: "url_key", value: { eq: productSlug } });
-
-//   const products = await dispatch(
-//     "product/list",
-//     { query: productQuery },
-//     { root: true }
-//   );
-
-//   if (products && products.items && products.items.length) {
-//     const product = products.items[0];
-
-//     return {
-//       name: product.type_id + "-product",
-//       params: {
-//         slug: product.slug,
-//         parentSku: product.sku,
-//         childSku: params["childSku"] ? params["childSku"] : product.sku
-//       }
-//     };
-//   } else {
-//     console.log("FAIL");
+//   // .split("/")
+//   // .slice(0, -1)
+//   // .join("/");
+//   try {
+//     const category = await dispatch(
+//       "category/single",
+//       { key: "url_path", value: url },
+//       { root: true }
+//     );
+//     if (category !== null) {
+//       return {
+//         name: "category",
+//         params: {
+//           slug: category.slug
+//         }
+//       };
+//     }
+//   } catch {
+//     console.log("Hi");
+//     return undefined;
 //   }
 // };
 
-// extendMappingFallback(forProduct, forCategory, forStoryblok, tap);
+extendMappingFallback(forProduct, forCategory, forStoryblok, tap);
 
 // import { Example } from './module-template'
 
