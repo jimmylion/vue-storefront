@@ -33,11 +33,7 @@ import {
   extendMappingFallback,
   Payload
 } from "src/modules/vsf-mapping-fallback";
-import {
-  forCategory,
-  forStoryblok,
-  tap
-} from "src/modules/vsf-mapping-fallback/builtin";
+import { forStoryblok, tap } from "src/modules/vsf-mapping-fallback/builtin";
 import {
   removeStoreCodeFromRoute,
   currentStoreView
@@ -82,30 +78,30 @@ const forProduct = async ({ dispatch }, { url, params }: Payload) => {
   }
 };
 
-// const forCategory = async ({ dispatch }, { url }: Payload) => {
-//   url = removeStoreCodeFromRoute(url) as string;
-//   // .split("/")
-//   // .slice(0, -1)
-//   // .join("/");
-//   try {
-//     const category = await dispatch(
-//       "category/single",
-//       { key: "url_path", value: url },
-//       { root: true }
-//     );
-//     if (category !== null) {
-//       return {
-//         name: "category",
-//         params: {
-//           slug: category.slug
-//         }
-//       };
-//     }
-//   } catch {
-//     console.log("Hi");
-//     return undefined;
-//   }
-// };
+const forCategory = async ({ dispatch }, { url }: Payload) => {
+  url = removeStoreCodeFromRoute(url) as string;
+  // .split("/")
+  // .slice(0, -1)
+  // .join("/");
+  try {
+    const category = await dispatch(
+      "category/single",
+      { key: "url_path", value: url },
+      { root: true }
+    );
+    if (category !== null) {
+      return {
+        name: "category",
+        params: {
+          slug: category.slug
+        }
+      };
+    }
+  } catch {
+    console.log("Hi");
+    return undefined;
+  }
+};
 
 extendMappingFallback(forProduct, forCategory, forStoryblok, tap);
 
