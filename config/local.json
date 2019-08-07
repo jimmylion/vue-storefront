@@ -33,7 +33,8 @@
       "query"
     ],
     "dynamicConfigInclude": [],
-    "elasticCacheQuota": 4096
+    "elasticCacheQuota": 4096,
+    "baseUrl": "https://vsf.dev.jimmylion.com"
   },
   "seo": {
     "useUrlDispatcher": true
