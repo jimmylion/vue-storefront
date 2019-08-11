@@ -3,7 +3,6 @@ import * as types from "./mutation-types";
 
 export const mutations: MutationTree<any> = {
   [types.SAVE_PAGES](state, payload) {
-    console.log("here!");
     if (Array.isArray(payload)) {
       state.pages.push(...payload);
     } else {

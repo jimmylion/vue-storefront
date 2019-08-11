@@ -40,6 +40,8 @@ import {
 } from "@vue-storefront/core/lib/multistore";
 import SearchQuery from "@vue-storefront/core/lib/search/searchQuery";
 import config from "config";
+import Prismic from 'prismic-javascript'
+import rootStore from '@vue-storefront/core/store'
 
 const forProduct = async ({ dispatch }, { url, params }: Payload) => {
   url = removeStoreCodeFromRoute(url) as string;
@@ -103,7 +105,48 @@ const forCategory = async ({ dispatch }, { url }: Payload) => {
   }
 };
 
-extendMappingFallback(forProduct, forCategory, forStoryblok, tap);
+const forCmsPage = async ({ dispatch }, { url }: Payload) => {
+  url = removeStoreCodeFromRoute(url) as string;
+  const slug = url.split("/").reverse()[0]
+
+    try {
+      const api = await Prismic.getApi(config.prismic.endpoint);
+
+      const storeView = currentStoreView()
+      let locale = storeView.i18n.defaultLocale.toLowerCase()
+      if (storeView.storeCode === 'eu') {
+        locale = 'en-gb'
+      } else if (storeView.storeCode == 'mx') {
+        locale = 'es-mx'
+      }
+      switch (storeView.storeCode) {
+        case 'eu':
+          locale = 'en-gb'
+          break;
+        case 'mx':
+          locale = 'es-mx'
+          break;
+      }
+  
+      const result = await api.getByUID("cms-page", slug, {
+        lang: locale
+      });
+      if(result) {
+        return {
+          name: 'static-page',
+          params: {
+            slug
+          }
+        }
+      }
+
+      
+    } catch (e) {
+      console.log(e);
+    }
+};
+
+extendMappingFallback(forProduct, forCategory, forCmsPage, tap);
 
 // import { Example } from './module-template'
 
