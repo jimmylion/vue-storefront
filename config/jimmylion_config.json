@@ -658,14 +658,14 @@
   },
   "users": {
     "autoRefreshTokens": true,
-    "endpoint": "https://api.jl.eu.newfantastic.com/api/user",
-    "history_endpoint": "https://api.jl.eu.newfantastic.com/api/user/order-history?token={{token}}",
-    "resetPassword_endpoint": "https://api.jl.eu.newfantastic.com/api/user/reset-password",
-    "changePassword_endpoint": "https://api.jl.eu.newfantastic.com/api/user/change-password?token={{token}}",
-    "login_endpoint": "https://api.jl.eu.newfantastic.com/api/user/login",
-    "create_endpoint": "https://api.jl.eu.newfantastic.com/api/user/create",
-    "me_endpoint": "https://api.jl.eu.newfantastic.com/api/user/me?token={{token}}",
-    "refresh_endpoint": "https://api.jl.eu.newfantastic.com/api/user/refresh"
+    "endpoint": "https://api.jl.es.newfantastic.com/api/user",
+    "history_endpoint": "https://api.jl.es.newfantastic.com/api/user/order-history?token={{token}}",
+    "resetPassword_endpoint": "https://api.jl.es.newfantastic.com/api/user/reset-password",
+    "changePassword_endpoint": "https://api.jl.es.newfantastic.com/api/user/change-password?token={{token}}",
+    "login_endpoint": "https://api.jl.es.newfantastic.com/api/user/login",
+    "create_endpoint": "https://api.jl.es.newfantastic.com/api/user/create",
+    "me_endpoint": "https://api.jl.es.newfantastic.com/api/user/me?token={{token}}",
+    "refresh_endpoint": "https://api.jl.es.newfantastic.com/api/user/refresh"
   },
   "stock": {
     "synchronize": true,
