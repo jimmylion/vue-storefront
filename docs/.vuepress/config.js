@@ -1,6 +1,11 @@
 module.exports = {
   base: '/',
   port: 8081,
+  markdown: {
+    toc: {
+      includeLevel: [2]
+    }
+  },
   head: [['link', { rel: 'icon', href: '/favicon.png' }]],
   themeConfig: {
     repo: 'DivanteLtd/vue-storefront',
@@ -35,10 +40,13 @@ module.exports = {
             'cookbook/elastic',
             'cookbook/setup',
             'cookbook/integration',
-            'cookbook/extend-module',
+            'cookbook/module',
             'cookbook/theme',
             'cookbook/common-pitfall',
             'cookbook/devops',
+            'cookbook/tdd',
+            'cookbook/internals',
+            'cookbook/vue'
           ],
         },
         {
@@ -116,6 +124,7 @@ module.exports = {
             'extensions/introduction',
             'extensions/extending-api',
             'extensions/extending-server-side-routes',
+            'extensions/extensions-to-modify-results'
           ],
         },
         {

@@ -1,3 +1,5 @@
+const config = require('config')
+
 module.exports = {
   rootDir: "../../",
   moduleFileExtensions: ["js", "ts", "json", "vue"],
@@ -18,6 +20,15 @@ module.exports = {
     "!src/**/types/*.{js,ts}",
     "!core/**/types/*.{js,ts}"
   ],
-  transformIgnorePatterns: ["<rootDir>/node_modules/(?!lodash)"],
-  setupFiles: ["<rootDir>/test/unit/setupTestEnvironment.js"]
-};
+  moduleNameMapper: {
+    '^src(.*)$': '<rootDir>/src$1',
+    '^theme(.*)$': `<rootDir>/node_modules/${config.theme}$1`,
+    '^.+\\.(css|less)$': '<rootDir>/test/unit/cssStub.js'
+  },
+  transformIgnorePatterns: [
+    '<rootDir>/node_modules/(?!lodash)'
+  ],
+  setupFiles: [
+    '<rootDir>/test/unit/setupTestEnvironment.js'
+  ]
+}

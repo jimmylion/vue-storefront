@@ -1,9 +1,7 @@
 # Chapter 1. Data Imports 
 
 In this chapter, we will cover : 
-- [Introduction](#_0-introduction)
-- [Data Mapping Migration for Elasticsearch](#_1-data-migration-for-elasticsearch)
-- [Data Pump](#_2-data-pump)
+[[toc]]
 ## 0. Introduction
 When you decide to migrate your web store to Vue Storefront, the first thing you need to do is filling the store (Elasticsearch) with data. This chapter deals with all the hassles related to data migration for Vue Storefront. 
 <br />
@@ -724,7 +722,7 @@ node --harmony cli.js blocks
 node --harmony cli.js pages
 ```
 
-7. Finally, reindex the Elasticsearch making sure up-to-date with data source. 
+7. Finally, reindex the Elasticsearch making sure up-to-date with data source in **Vue Storefront API** root path. 
 ```bash
 npm run db rebuild
 ```

@@ -28,6 +28,8 @@ import { ZendChat } from "./vsf-zend-chat";
 import { Klaviyo } from "./vsf-klaviyo";
 import { VsfYotpo } from "./vsf-yotpo";
 import { PrismicInjector } from "./prismic-injector";
+import { OrderHistory } from './order-history'
+import { googleTagManager } from './google-tag-manager';
 
 import {
   extendMappingFallback,
@@ -182,14 +184,14 @@ export const registerModules: VueStorefrontModule[] = [
   Review,
   Mailer,
   Wishlist,
-  Mailchimp,
+  Newsletter,
   Notification,
   Ui,
   RecentlyViewed,
   Homepage,
   Claims,
   PromotedOffers,
-  Magento2CMS,
+  googleTagManager,
   // GoogleAnalytics,
   // Hotjar,
   PaymentBackendMethods,
@@ -202,6 +204,7 @@ export const registerModules: VueStorefrontModule[] = [
   ZendChat,
   Klaviyo,
   PrismicInjector,
-  VsfYotpo
+  VsfYotpo,
+  OrderHistory
   // Example
 ];
