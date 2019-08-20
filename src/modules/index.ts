@@ -41,7 +41,6 @@ import {
 import SearchQuery from "@vue-storefront/core/lib/search/searchQuery";
 import config from "config";
 import Prismic from 'prismic-javascript'
-import rootStore from '@vue-storefront/core/store'
 
 const forProduct = async ({ dispatch }, { url, params }: Payload) => {
   url = removeStoreCodeFromRoute(url) as string;

@@ -54,7 +54,7 @@
   },
   "elasticsearch": {
     "httpAuth": "",
-    "host": "https://api.jl.eu.newfantastic.com/api/catalog",
+    "host": "https://api.jl.newfantastic.com/api/catalog",
     "index": "vue_storefront_catalog_eu",
     "min_score": 0.02,
     "csrTimeout": 5000,
@@ -117,7 +117,7 @@
       "url": "/us",
       "productsPrefix": "socks-collection",
       "elasticsearch": {
-        "host": "https://api.jl.us.newfantastic.com/api/catalog",
+        "host": "https://api.jl.newfantastic.com/api/catalog",
         "index": "vue_storefront_catalog_us"
       },
       "tax": {
@@ -145,7 +145,7 @@
       "url": "/mx",
       "productsPrefix": "coleccion-calcetines",
       "elasticsearch": {
-        "host": "https://api.jl.mx.newfantastic.com/api/catalog",
+        "host": "https://api.jl.newfantastic.com/api/catalog",
         "index": "vue_storefront_catalog_mx"
       },
       "tax": {
@@ -173,7 +173,7 @@
       "url": "/es",
       "productsPrefix": "coleccion-calcetines",
       "elasticsearch": {
-        "host": "https://api.jl.es.newfantastic.com/api/catalog",
+        "host": "https://api.jl.newfantastic.com/api/catalog",
         "index": "vue_storefront_catalog_es"
       },
       "tax": {
@@ -201,7 +201,7 @@
       "url": "/eu",
       "productsPrefix": "socks-collection",
       "elasticsearch": {
-        "host": "https://api.jl.eu.newfantastic.com/api/catalog",
+        "host": "https://api.jl.newfantastic.com/api/catalog",
         "index": "vue_storefront_catalog_eu"
       },
       "tax": {
@@ -229,7 +229,7 @@
       "url": "/uk",
       "productsPrefix": "socks-collection",
       "elasticsearch": {
-        "host": "https://api.jl.uk.newfantastic.com/api/catalog",
+        "host": "https://api.jl.newfantastic.com/api/catalog",
         "index": "vue_storefront_catalog_uk"
       },
       "tax": {
@@ -257,7 +257,7 @@
       "url": "/it",
       "productsPrefix": "collezione-di-calzini",
       "elasticsearch": {
-        "host": "https://api.jl.it-fr.newfantastic.com/api/catalog",
+        "host": "https://api.jl.newfantastic.com/api/catalog",
         "index": "vue_storefront_catalog_it"
       },
       "tax": {
@@ -285,7 +285,7 @@
       "url": "/de",
       "productsPrefix": "socken-sammlung",
       "elasticsearch": {
-        "host": "https://api.jl.eu.newfantastic.com/api/catalog",
+        "host": "https://api.jl.newfantastic.com/api/catalog",
         "index": "vue_storefront_catalog_de"
       },
       "tax": {
@@ -313,7 +313,7 @@
       "url": "/fr",
       "productsPrefix": "collection-de-chaussettes",
       "elasticsearch": {
-        "host": "https://api.jl.it-fr.newfantastic.com/api/catalog",
+        "host": "https://api.jl.newfantastic.com/api/catalog",
         "index": "vue_storefront_catalog_fr"
       },
       "tax": {
@@ -569,17 +569,17 @@
     "askBeforeRemoveProduct": true,
     "displayItemDiscounts": true,
     "minicartCountType": "quantities",
-    "create_endpoint": "https://api.jl.eu.newfantastic.com/api/cart/create?token={{token}}",
-    "updateitem_endpoint": "https://api.jl.eu.newfantastic.com/api/cart/update?token={{token}}&cartId={{cartId}}",
-    "deleteitem_endpoint": "https://api.jl.eu.newfantastic.com/api/cart/delete?token={{token}}&cartId={{cartId}}",
-    "pull_endpoint": "https://api.jl.eu.newfantastic.com/api/cart/pull?token={{token}}&cartId={{cartId}}",
-    "totals_endpoint": "https://api.jl.eu.newfantastic.com/api/cart/totals?token={{token}}&cartId={{cartId}}",
-    "paymentmethods_endpoint": "https://api.jl.eu.newfantastic.com/api/cart/payment-methods?token={{token}}&cartId={{cartId}}",
-    "shippingmethods_endpoint": "https://api.jl.eu.newfantastic.com/api/cart/shipping-methods?token={{token}}&cartId={{cartId}}",
-    "shippinginfo_endpoint": "https://api.jl.eu.newfantastic.com/api/cart/shipping-information?token={{token}}&cartId={{cartId}}",
-    "collecttotals_endpoint": "https://api.jl.eu.newfantastic.com/api/cart/collect-totals?token={{token}}&cartId={{cartId}}",
-    "deletecoupon_endpoint": "https://api.jl.eu.newfantastic.com/api/cart/delete-coupon?token={{token}}&cartId={{cartId}}",
-    "applycoupon_endpoint": "https://api.jl.eu.newfantastic.com/api/cart/apply-coupon?token={{token}}&cartId={{cartId}}&coupon={{coupon}}"
+    "create_endpoint": "https://api.jl.newfantastic.com/api/cart/create?token={{token}}",
+    "updateitem_endpoint": "https://api.jl.newfantastic.com/api/cart/update?token={{token}}&cartId={{cartId}}",
+    "deleteitem_endpoint": "https://api.jl.newfantastic.com/api/cart/delete?token={{token}}&cartId={{cartId}}",
+    "pull_endpoint": "https://api.jl.newfantastic.com/api/cart/pull?token={{token}}&cartId={{cartId}}",
+    "totals_endpoint": "https://api.jl.newfantastic.com/api/cart/totals?token={{token}}&cartId={{cartId}}",
+    "paymentmethods_endpoint": "https://api.jl.newfantastic.com/api/cart/payment-methods?token={{token}}&cartId={{cartId}}",
+    "shippingmethods_endpoint": "https://api.jl.newfantastic.com/api/cart/shipping-methods?token={{token}}&cartId={{cartId}}",
+    "shippinginfo_endpoint": "https://api.jl.newfantastic.com/api/cart/shipping-information?token={{token}}&cartId={{cartId}}",
+    "collecttotals_endpoint": "https://api.jl.newfantastic.com/api/cart/collect-totals?token={{token}}&cartId={{cartId}}",
+    "deletecoupon_endpoint": "https://api.jl.newfantastic.com/api/cart/delete-coupon?token={{token}}&cartId={{cartId}}",
+    "applycoupon_endpoint": "https://api.jl.newfantastic.com/api/cart/apply-coupon?token={{token}}&cartId={{cartId}}&coupon={{coupon}}"
   },
   "products": {
     "useShortCatalogUrls": false,
@@ -595,7 +595,7 @@
     "clearPricesBeforePlatformSync": false,
     "waitForPlatformSync": true,
     "setupVariantByAttributeCode": true,
-    "endpoint": "https://api.jl.eu.newfantastic.com/api/product",
+    "endpoint": "https://api.jl.newfantastic.com/api/product",
     "defaultFilters": ["color", "size", "price", "erin_recommends"],
     "filterFieldMapping": {
       "category.name": "category.name.keyword"
@@ -623,7 +623,7 @@
   },
   "orders": {
     "directBackendSync": true,
-    "endpoint": "https://api.jl.eu.newfantastic.com/api/order",
+    "endpoint": "https://api.jl.newfantastic.com/api/order",
     "payment_methods_mapping": {},
     "offline_orders": {
       "automatic_transmission_enabled": false,
@@ -654,7 +654,7 @@
     }
   },
   "reviews": {
-    "create_endpoint": "https://api.jl.eu.newfantastic.com/api/review/create"
+    "create_endpoint": "https://api.jl.newfantastic.com/api/review/create"
   },
   "users": {
     "autoRefreshTokens": true,
@@ -670,11 +670,11 @@
   "stock": {
     "synchronize": true,
     "allowOutOfStockInCart": true,
-    "endpoint": "https://api.jl.eu.newfantastic.com/api/stock"
+    "endpoint": "https://api.jl.newfantastic.com/api/stock"
   },
   "images": {
     "useExactUrlsNoProxy": false,
-    "baseUrl": "https://api.jl.eu.newfantastic.com/img/",
+    "baseUrl": "https://api.jl.newfantastic.com/img/",
     "productPlaceholder": "/assets/placeholder.jpg"
   },
   "install": {
@@ -727,12 +727,12 @@
     "bundleAllStoreviewLanguages": true
   },
   "mailchimp": {
-    "endpoint": "https://api.jl.eu.newfantastic.com/api/ext/mailchimp-subscribe/subscribe"
+    "endpoint": "https://api.jl.newfantastic.com/api/ext/mailchimp-subscribe/subscribe"
   },
   "mailer": {
     "endpoint": {
-      "send": "https://api.jl.eu.newfantastic.com/api/ext/mail-service/send-email",
-      "token": "https://api.jl.eu.newfantastic.com/api/ext/mail-service/get-token"
+      "send": "https://api.jl.newfantastic.com/api/ext/mail-service/send-email",
+      "token": "https://api.jl.newfantastic.com/api/ext/mail-service/get-token"
     },
     "contactAddress": "contributors@vuestorefront.io",
     "sendConfirmation": true
@@ -745,8 +745,8 @@
     "id": false
   },
   "cms": {
-    "endpoint": "https://api.jl.eu.newfantastic.com/api/ext/cms-data/cms{{type}}/{{cmsId}}",
-    "endpointIdentifier": "https://api.jl.eu.newfantastic.com/api/ext/cms-data/cms{{type}}Identifier/{{cmsIdentifier}}/storeId/{{storeId}}"
+    "endpoint": "https://api.jl.newfantastic.com/api/ext/cms-data/cms{{type}}/{{cmsId}}",
+    "endpointIdentifier": "https://api.jl.newfantastic.com/api/ext/cms-data/cms{{type}}Identifier/{{cmsIdentifier}}/storeId/{{storeId}}"
   },
   "cms_block": {
     "max_count": 500
@@ -808,7 +808,7 @@
     "public_key": "JFukKK",
     "endpoint": {
       "api": "https://a.klaviyo.com",
-      "subscribe": "https://api.jl.eu.newfantastic.com/api/ext/klaviyo/subscribe",
+      "subscribe": "https://api.jl.newfantastic.com/api/ext/klaviyo/subscribe",
       "backInStock": "https://a.klaviyo.com/onsite/components/back-in-stock/subscribe"
     },
     "listId": "H9TukH",
