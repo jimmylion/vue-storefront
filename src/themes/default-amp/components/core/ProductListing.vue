@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import ProductListing from 'theme/components/core/ProductListing'
+import ProductListing from 'theme/components/ui/ProductListing'
 import ProductTile from './ProductTile'
 let lastHero = 0
 export default {

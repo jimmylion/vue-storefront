@@ -132,11 +132,11 @@
 
 <script>
 import Product from '@vue-storefront/core/pages/Product'
-import Breadcrumbs from 'theme/components/core/Breadcrumbs.vue'
-import ProductAttribute from 'theme/components/core/ProductAttribute.vue'
-import ProductLinks from 'theme/components/core/ProductLinks.vue'
-import ProductCustomOptions from 'theme/components/core/ProductCustomOptions.vue'
-import ProductBundleOptions from 'theme/components/core/ProductBundleOptions.vue'
+import Breadcrumbs from 'theme/components/ui/Breadcrumbs.vue'
+import ProductAttribute from 'theme/components/ui/ProductAttribute.vue'
+import ProductLinks from 'theme/components/ui/ProductLinks.vue'
+import ProductCustomOptions from 'theme/components/ui/ProductCustomOptions.vue'
+import ProductBundleOptions from 'theme/components/ui/ProductBundleOptions.vue'
 import focusClean from 'theme/logic/directives/focusClean'
 
 export default {
