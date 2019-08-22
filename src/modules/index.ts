@@ -7,13 +7,13 @@ import { Compare } from "@vue-storefront/core/modules/compare";
 import { Review } from "@vue-storefront/core/modules/review";
 import { Mailer } from "@vue-storefront/core/modules/mailer";
 import { Wishlist } from "@vue-storefront/core/modules/wishlist";
-import { Mailchimp } from "../modules/mailchimp";
+// import { Mailchimp } from "../modules/mailchimp";
 import { Notification } from "@vue-storefront/core/modules/notification";
 import { RecentlyViewed } from "@vue-storefront/core/modules/recently-viewed";
 import { Url } from "@vue-storefront/core/modules/url";
 import { Homepage } from "./homepage";
 import { Claims } from "./claims";
-import { PromotedOffers } from "./promoted-offers";
+// import { PromotedOffers } from "./promoted-offers";
 import { Ui } from "./ui-store";
 // import { GoogleAnalytics } from './google-analytics';
 // import { Hotjar } from './hotjar';
@@ -21,7 +21,7 @@ import { AmpRenderer } from "./amp-renderer";
 import { PaymentBackendMethods } from "./payment-backend-methods";
 import { PaymentCashOnDelivery } from "./payment-cash-on-delivery";
 import { RawOutputExample } from "./raw-output-example";
-import { Magento2CMS } from "./magento-2-cms";
+// import { Magento2CMS } from "./magento-2-cms";
 import { InstantCheckout } from "./instant-checkout";
 import { FacebookPixel } from "./vsf-facebook-pixel";
 import { ZendChat } from "./vsf-zend-chat";
@@ -35,7 +35,7 @@ import {
   extendMappingFallback,
   Payload
 } from "src/modules/vsf-mapping-fallback";
-import { forStoryblok, tap } from "src/modules/vsf-mapping-fallback/builtin";
+import { tap } from "src/modules/vsf-mapping-fallback/builtin";
 import {
   removeStoreCodeFromRoute,
   currentStoreView
@@ -44,9 +44,15 @@ import SearchQuery from "@vue-storefront/core/lib/search/searchQuery";
 import config from "config";
 import Prismic from 'prismic-javascript'
 
-const forProduct = async ({ dispatch }, { url, params }: Payload) => {
+const getStoreCodeFromURL = (url: string) => {
+  const urlWithStoreCode = url
   url = removeStoreCodeFromRoute(url) as string;
-  const { storeCode } = currentStoreView();
+  return urlWithStoreCode.replace(url, '').replace('/', '')
+}
+
+const forProduct = async ({ dispatch }, { url, params }: Payload) => {
+  const storeCode = getStoreCodeFromURL(url)
+  
   const prefix = config.storeViews[storeCode].productsPrefix;
 
   const productQuery = new SearchQuery();
@@ -107,20 +113,15 @@ const forCategory = async ({ dispatch }, { url }: Payload) => {
 };
 
 const forCmsPage = async ({ dispatch }, { url }: Payload) => {
-  url = removeStoreCodeFromRoute(url) as string;
   const slug = url.split("/").reverse()[0]
 
     try {
       const api = await Prismic.getApi(config.prismic.endpoint);
 
-      const storeView = currentStoreView()
-      let locale = storeView.i18n.defaultLocale.toLowerCase()
-      if (storeView.storeCode === 'eu') {
-        locale = 'en-gb'
-      } else if (storeView.storeCode == 'mx') {
-        locale = 'es-mx'
-      }
-      switch (storeView.storeCode) {
+      const storeCode = getStoreCodeFromURL(url)
+      let locale = config.storeViews[storeCode].i18n.defaultLocale;
+
+      switch (storeCode) {
         case 'eu':
           locale = 'en-gb'
           break;
@@ -184,13 +185,13 @@ export const registerModules: VueStorefrontModule[] = [
   Review,
   Mailer,
   Wishlist,
-  Newsletter,
+  // Newsletter,
   Notification,
   Ui,
   RecentlyViewed,
   Homepage,
   Claims,
-  PromotedOffers,
+  // PromotedOffers,
   googleTagManager,
   // GoogleAnalytics,
   // Hotjar,

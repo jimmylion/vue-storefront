@@ -34,6 +34,9 @@
     ],
     "dynamicConfigInclude": [],
     "elasticCacheQuota": 4096,
+    "ssrDisabledFor": {
+      "extensions": [".png", ".gif", ".jpg", ".jpeg", ".woff", ".eot", ".woff2", ".ttf", ".svg", ".css", ".js", ".json", ".ico", ".tiff", ".tif", ".raw"]
+    },
     "baseUrl": "https://vsf.dev.jimmylion.com"
   },
   "seo": {
@@ -115,6 +118,7 @@
       "storeId": 1,
       "name": "United States Store",
       "url": "/us",
+      "appendStoreCode": true,
       "productsPrefix": "socks-collection",
       "elasticsearch": {
         "host": "https://api.jl.newfantastic.com/api/catalog",
@@ -143,6 +147,7 @@
       "storeId": 2,
       "name": "Mexican Store",
       "url": "/mx",
+      "appendStoreCode": true,
       "productsPrefix": "coleccion-calcetines",
       "elasticsearch": {
         "host": "https://api.jl.newfantastic.com/api/catalog",
@@ -171,6 +176,7 @@
       "storeId": 3,
       "name": "Spanish Store",
       "url": "/es",
+      "appendStoreCode": true,
       "productsPrefix": "coleccion-calcetines",
       "elasticsearch": {
         "host": "https://api.jl.newfantastic.com/api/catalog",
@@ -199,6 +205,7 @@
       "storeId": 4,
       "name": "Europe Store",
       "url": "/eu",
+      "appendStoreCode": true,
       "productsPrefix": "socks-collection",
       "elasticsearch": {
         "host": "https://api.jl.newfantastic.com/api/catalog",
@@ -227,6 +234,7 @@
       "storeId": 5,
       "name": "Great Britain Store",
       "url": "/uk",
+      "appendStoreCode": true,
       "productsPrefix": "socks-collection",
       "elasticsearch": {
         "host": "https://api.jl.newfantastic.com/api/catalog",
@@ -255,6 +263,7 @@
       "storeId": 6,
       "name": "Italian Store",
       "url": "/it",
+      "appendStoreCode": true,
       "productsPrefix": "collezione-di-calzini",
       "elasticsearch": {
         "host": "https://api.jl.newfantastic.com/api/catalog",
@@ -283,6 +292,7 @@
       "storeId": 7,
       "name": "German Store",
       "url": "/de",
+      "appendStoreCode": true,
       "productsPrefix": "socken-sammlung",
       "elasticsearch": {
         "host": "https://api.jl.newfantastic.com/api/catalog",
@@ -311,6 +321,7 @@
       "storeId": 8,
       "name": "French Store",
       "url": "/fr",
+      "appendStoreCode": true,
       "productsPrefix": "collection-de-chaussettes",
       "elasticsearch": {
         "host": "https://api.jl.newfantastic.com/api/catalog",
@@ -558,6 +569,10 @@
     }
   },
   "cart": {
+    "thumbnails": {
+      "width": 150,
+      "height": 150
+    },
     "bypassCartLoaderForAuthorizedUsers": true,
     "serverMergeByDefault": true,
     "serverSyncCanRemoveLocalItems": false,
@@ -582,7 +597,6 @@
     "applycoupon_endpoint": "https://api.jl.newfantastic.com/api/cart/apply-coupon?token={{token}}&cartId={{cartId}}&coupon={{coupon}}"
   },
   "products": {
-    "useShortCatalogUrls": false,
     "useMagentoUrlKeys": true,
     "setFirstVarianAsDefaultInURL": false,
     "configurableChildrenStockPrefetchStatic": false,
@@ -614,6 +628,10 @@
       "imageAttributes": ["image", "thumbnail", "small_image"],
       "width": 600,
       "height": 744
+    },
+    "thumbnails": {
+      "width": 310,
+      "height": 300
     },
     "filterAggregationSize": {
       "default": 10,
@@ -842,5 +860,9 @@
   },
   "prismic": {
     "endpoint": "https://jimmylion.prismic.io/api/v2"
+  },
+  "googleTagManager": {
+    "id": false,
+    "debug": true
   }
 }
