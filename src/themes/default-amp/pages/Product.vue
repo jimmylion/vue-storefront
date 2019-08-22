@@ -137,7 +137,7 @@ import ProductAttribute from 'theme/components/core/ProductAttribute.vue'
 import ProductLinks from 'theme/components/core/ProductLinks.vue'
 import ProductCustomOptions from 'theme/components/core/ProductCustomOptions.vue'
 import ProductBundleOptions from 'theme/components/core/ProductBundleOptions.vue'
-import focusClean from 'theme/components/theme/directives/focusClean'
+import focusClean from 'theme/logic/directives/focusClean'
 
 export default {
   components: {
