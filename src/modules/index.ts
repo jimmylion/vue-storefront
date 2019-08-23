@@ -17,7 +17,7 @@ import { Claims } from "./claims";
 import { Ui } from "./ui-store";
 // import { GoogleAnalytics } from './google-analytics';
 // import { Hotjar } from './hotjar';
-import { AmpRenderer } from "./amp-renderer";
+// import { AmpRenderer } from "./amp-renderer";
 import { PaymentBackendMethods } from "./payment-backend-methods";
 import { PaymentCashOnDelivery } from "./payment-cash-on-delivery";
 import { RawOutputExample } from "./raw-output-example";
@@ -198,7 +198,7 @@ export const registerModules: VueStorefrontModule[] = [
   PaymentBackendMethods,
   PaymentCashOnDelivery,
   RawOutputExample,
-  AmpRenderer,
+  // AmpRenderer,
   InstantCheckout,
   Url,
   FacebookPixel,
