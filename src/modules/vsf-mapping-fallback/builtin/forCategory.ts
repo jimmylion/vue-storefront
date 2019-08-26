@@ -3,10 +3,11 @@ import { Payload } from "../types/Payload";
 
 export const forCategory = async ({ dispatch }, { url }: Payload) => {
   url = removeStoreCodeFromRoute(url) as string;
+
   try {
     const category = await dispatch(
       "category/single",
-      { key: "url_key", value: url },
+      { key: "url_path", value: url },
       { root: true }
     );
     if (category !== null) {
@@ -18,6 +19,7 @@ export const forCategory = async ({ dispatch }, { url }: Payload) => {
       };
     }
   } catch {
+    console.log("Hi");
     return undefined;
   }
 };
