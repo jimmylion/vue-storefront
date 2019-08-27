@@ -1,4 +1,7 @@
-export const divideProduct = product => {
+export const divideProduct = (
+  product,
+  leaveConfigurableChildren: Boolean = false
+) => {
   if (!product) {
     throw new Error('ProductColorTiles not received "product" props');
   }
@@ -38,11 +41,14 @@ export const divideProduct = product => {
       const baseProduct = {
         ...product,
         ...curr,
-        name: `${product.name.trim()} ${colorObj.label}`
+        name: `${product.name.trim()} ${colorObj.label}`,
+        baseName: product.name.trim()
       };
-      baseProduct.configurable_children = [curr];
+      if (!leaveConfigurableChildren) {
+        baseProduct.configurable_children = [curr];
+      }
       products[curr.color] = baseProduct;
-    } else {
+    } else if (!leaveConfigurableChildren) {
       products[curr.color].configurable_children.push(curr);
     }
   }
