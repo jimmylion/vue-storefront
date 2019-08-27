@@ -1,4 +1,4 @@
-// import { extendModule } from '@vue-storefront/core/lib/module'
+import { extendModule } from "@vue-storefront/core/lib/module";
 import { VueStorefrontModule } from "@vue-storefront/core/lib/module";
 import { Catalog } from "@vue-storefront/core/modules/catalog";
 import { Cart } from "@vue-storefront/core/modules/cart";
@@ -17,7 +17,6 @@ import { Claims } from "./claims";
 import { Ui } from "./ui-store";
 // import { GoogleAnalytics } from './google-analytics';
 // import { Hotjar } from './hotjar';
-// import { AmpRenderer } from "./amp-renderer";
 import { PaymentBackendMethods } from "./payment-backend-methods";
 import { PaymentCashOnDelivery } from "./payment-cash-on-delivery";
 import { RawOutputExample } from "./raw-output-example";
@@ -28,127 +27,24 @@ import { ZendChat } from "./vsf-zend-chat";
 import { Klaviyo } from "./vsf-klaviyo";
 import { VsfYotpo } from "./vsf-yotpo";
 import { PrismicInjector } from "./prismic-injector";
-import { OrderHistory } from './order-history'
-import { googleTagManager } from './google-tag-manager';
+import { OrderHistory } from "./order-history";
+import { googleTagManager } from "./google-tag-manager";
 
+import { extendMappingFallback } from "src/modules/vsf-mapping-fallback";
 import {
-  extendMappingFallback,
-  Payload
-} from "src/modules/vsf-mapping-fallback";
-import { tap } from "src/modules/vsf-mapping-fallback/builtin";
-import {
-  removeStoreCodeFromRoute,
-  currentStoreView
-} from "@vue-storefront/core/lib/multistore";
-import SearchQuery from "@vue-storefront/core/lib/search/searchQuery";
-import config from "config";
-import Prismic from 'prismic-javascript'
-
-const getStoreCodeFromURL = (url: string) => {
-  const urlWithStoreCode = url
-  url = removeStoreCodeFromRoute(url) as string;
-  return urlWithStoreCode.replace(url, '').replace('/', '')
-}
-
-const forProduct = async ({ dispatch }, { url, params }: Payload) => {
-  const storeCode = getStoreCodeFromURL(url)
-  
-  const prefix = config.storeViews[storeCode].productsPrefix;
-
-  const productQuery = new SearchQuery();
-  let productSlug = url
-    .split("/")
-    .reverse()[0]
-    .replace(prefix + "/", "")
-    .replace(".html", "")
-    .replace(".htm", "");
-
-  productQuery.applyFilter({ key: "url_key", value: { eq: productSlug } });
-
-  const products = await dispatch(
-    "product/list",
-    { query: productQuery },
-    { root: true }
-  );
-
-  if (products && products.items && products.items.length) {
-    const product = products.items[0];
-
-    return {
-      name: product.type_id + "-product",
-      params: {
-        slug: product.slug,
-        parentSku: product.sku,
-        childSku: params["childSku"] ? params["childSku"] : product.sku
-      }
-    };
-  } else {
-    console.log("FAIL");
-  }
-};
-
-const forCategory = async ({ dispatch }, { url }: Payload) => {
-  url = removeStoreCodeFromRoute(url) as string;
-  // .split("/")
-  // .slice(0, -1)
-  // .join("/");
-  try {
-    const category = await dispatch(
-      "category/single",
-      { key: "url_path", value: url },
-      { root: true }
-    );
-    if (category !== null) {
-      return {
-        name: "category",
-        params: {
-          slug: category.slug
-        }
-      };
-    }
-  } catch {
-    console.log("Hi");
-    return undefined;
-  }
-};
-
-const forCmsPage = async ({ dispatch }, { url }: Payload) => {
-  const slug = url.split("/").reverse()[0]
-
-    try {
-      const api = await Prismic.getApi(config.prismic.endpoint);
-
-      const storeCode = getStoreCodeFromURL(url)
-      let locale = config.storeViews[storeCode].i18n.defaultLocale;
-
-      switch (storeCode) {
-        case 'eu':
-          locale = 'en-gb'
-          break;
-        case 'mx':
-          locale = 'es-mx'
-          break;
-      }
-  
-      const result = await api.getByUID("cms-page", slug, {
-        lang: locale
-      });
-      if(result) {
-        return {
-          name: 'static-page',
-          params: {
-            slug
-          }
-        }
-      }
-
-      
-    } catch (e) {
-      console.log(e);
-    }
-};
+  forProduct,
+  forCategory,
+  forCmsPage,
+  tap
+} from "src/modules/vsf-mapping-fallback/builtin";
 
 extendMappingFallback(forProduct, forCategory, forCmsPage, tap);
+
+import { productExtend } from "./extended-product";
+extendModule(productExtend);
+
+import { categoryExtend } from "./extended-category";
+extendModule(categoryExtend);
 
 // import { Example } from './module-template'
 
@@ -198,7 +94,6 @@ export const registerModules: VueStorefrontModule[] = [
   PaymentBackendMethods,
   PaymentCashOnDelivery,
   RawOutputExample,
-  // AmpRenderer,
   InstantCheckout,
   Url,
   FacebookPixel,

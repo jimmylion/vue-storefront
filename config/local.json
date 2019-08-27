@@ -35,7 +35,24 @@
     "dynamicConfigInclude": [],
     "elasticCacheQuota": 4096,
     "ssrDisabledFor": {
-      "extensions": [".png", ".gif", ".jpg", ".jpeg", ".woff", ".eot", ".woff2", ".ttf", ".svg", ".css", ".js", ".json", ".ico", ".tiff", ".tif", ".raw"]
+      "extensions": [
+        ".png",
+        ".gif",
+        ".jpg",
+        ".jpeg",
+        ".woff",
+        ".eot",
+        ".woff2",
+        ".ttf",
+        ".svg",
+        ".css",
+        ".js",
+        ".json",
+        ".ico",
+        ".tiff",
+        ".tif",
+        ".raw"
+      ]
     },
     "baseUrl": "https://vsf.dev.jimmylion.com"
   },
@@ -95,6 +112,9 @@
         "boost": 1
       }
     }
+  },
+  "api": {
+    "url": "https://api.jl.newfantastic.com/api/"
   },
   "ssr": {
     "templates": {
@@ -696,7 +716,7 @@
     "productPlaceholder": "/assets/placeholder.jpg"
   },
   "install": {
-    "is_local_backend": true,
+    "is_local_backend": false,
     "backend_dir": "../vue-storefront-api"
   },
   "demomode": false,
