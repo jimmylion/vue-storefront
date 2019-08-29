@@ -9,6 +9,7 @@ const store = {
     microcart: false,
     wishlist: false,
     searchpanel: false,
+    mobileMenu: false,
     newsletterPopup: false,
     overlay: false,
     loader: false,
@@ -52,6 +53,9 @@ const store = {
     },
     setOverlay (state, action) {
       state.overlay = action === true
+    },
+    setMobileMenu (state, action) {
+      state.mobileMenu = action === true
     },
     setLoader (state, action) {
       state.loader = action === true
