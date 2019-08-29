@@ -13,9 +13,10 @@ export function beforeRegistration({ Vue, config, store, isServer }) {
     script.id = "ze-snippet";
     script.async = true;
 
-    script.onload = function() {
+    script.onload = function () {
       // Widget language
       const detectedLang = window.location.pathname;
+
 
       let widgetLang;
 
@@ -45,7 +46,7 @@ export function beforeRegistration({ Vue, config, store, isServer }) {
           break;
 
         default:
-          widgetLang = "es";
+          widgetLang = "en";
       }
 
       zE(() => {
