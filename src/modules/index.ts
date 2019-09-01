@@ -29,6 +29,7 @@ import { VsfYotpo } from "./vsf-yotpo";
 import { PrismicInjector } from "./prismic-injector";
 import { OrderHistory } from "./order-history";
 import { googleTagManager } from "./google-tag-manager";
+import { MagentoMenus } from "./magento-menus";
 
 import { extendMappingFallback } from "src/modules/vsf-mapping-fallback";
 import {
@@ -101,6 +102,7 @@ export const registerModules: VueStorefrontModule[] = [
   Klaviyo,
   PrismicInjector,
   VsfYotpo,
-  OrderHistory
+  OrderHistory,
+  MagentoMenus
   // Example
 ];

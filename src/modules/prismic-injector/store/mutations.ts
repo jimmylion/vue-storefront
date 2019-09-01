@@ -1,5 +1,5 @@
-import { MutationTree } from "vuex";
-import * as types from "./mutation-types";
+import { MutationTree } from 'vuex';
+import * as types from './mutation-types';
 
 export const mutations: MutationTree<any> = {
   [types.SAVE_PAGES](state, payload) {

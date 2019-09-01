@@ -1,0 +1,2 @@
+export const SET_MENUS = "MAG_MENUS/SET_MENUS";
+export const SET_MENU_ITEMS = "MAG_MENUS/SET_MENU_ITEMS";
