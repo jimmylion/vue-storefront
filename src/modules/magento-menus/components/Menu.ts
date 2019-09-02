@@ -1,6 +1,9 @@
 import { mapGetters } from 'vuex';
 
 const prepareUrls = function(menuIdentifier: string) {
+  if (!this.$store.state['magento-menus'].menus) {
+    return null;
+  }
   const menu = this.$store.state['magento-menus'].menus.find(
     v => v.identifier === menuIdentifier
   );
