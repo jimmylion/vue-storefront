@@ -4,27 +4,45 @@ const prepareUrls = function(menuIdentifier: string) {
   const menu = this.$store.state['magento-menus'].menus.find(
     v => v.identifier === menuIdentifier
   );
-  return menu
-    ? menu.items.map(v => {
-        let url = '/';
-        if (v.type === 'category') {
-          const category = this.getCategories.find(a => a.id === +v.content);
+  let preparedMenu = menu;
+  if (preparedMenu) {
+    // Links prepared
+    preparedMenu = preparedMenu.items.map(v => {
+      let url = '/';
+      if (v.type === 'category') {
+        const category = this.getCategories.find(a => a.id === +v.content);
 
-          if (category) {
-            url = category.slug;
-          }
-        } else if (v.type === 'cms_page') {
-          url = v.content;
-        } else if (v.type === 'wrapper') {
-          url = null;
+        if (category) {
+          url = category.slug;
         }
+      } else if (v.type === 'cms_page') {
+        url = v.content;
+      } else if (v.type === 'wrapper') {
+        url = null;
+      }
 
-        return {
-          ...v,
-          url
-        };
-      })
-    : null;
+      return {
+        ...v,
+        url
+      };
+    });
+
+    const parents = preparedMenu
+      .filter(v => !v.parent_id)
+      .map(v => ({
+        ...v,
+        childs: []
+      }));
+    const childs = preparedMenu.filter(v => v.parent_id);
+    for (let child of childs) {
+      let parent = parents.findIndex(v => v.node_id === child.parent_id);
+      if (parent !== -1) {
+        parents[parent].childs.push(child);
+      }
+    }
+
+    return parents;
+  }
 };
 
 export default (menuIdentifier: string | Array<string>) => ({
