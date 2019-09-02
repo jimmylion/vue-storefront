@@ -12,11 +12,16 @@ const prepareUrls = function(menuIdentifier: string) {
     // Links prepared
     preparedMenu = preparedMenu.items.map(v => {
       let url = '/';
+      let menuImage = null
+
       if (v.type === 'category') {
         const category = this.getCategories.find(a => a.id === +v.content);
 
         if (category) {
           url = category.slug;
+          if (category.mobile_menu_image) {
+            menuImage = category.mobile_menu_image
+          }
         }
       } else if (v.type === 'cms_page') {
         url = v.content;
@@ -24,10 +29,15 @@ const prepareUrls = function(menuIdentifier: string) {
         url = null;
       }
 
-      return {
+      const obj = {
         ...v,
         url
-      };
+      }
+      if (menuImage) {
+        obj.image = menuImage
+      }
+
+      return obj
     });
 
     const parents = preparedMenu
