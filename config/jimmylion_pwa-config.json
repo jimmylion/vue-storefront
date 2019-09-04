@@ -21,7 +21,7 @@
       "error"
     ],
     "invalidateCacheKey": "aeSu7aip",
-    "dynamicConfigReload": false,
+    "dynamicConfigReload": true,
     "dynamicConfigContinueOnError": false,
     "dynamicConfigExclude": [
       "ssr",
@@ -884,5 +884,35 @@
   "googleTagManager": {
     "id": false,
     "debug": true
+  },
+
+  "colorSwatches": {
+    "6": "#322a2b",
+    "7": "#b7b3af",
+    "8": "#303952",
+    "9": "#2a3554",
+    "10": "#01c8ca",
+    "11": "#2d473b",
+    "12": "#9d242b",
+    "13": "#4a90e2",
+    "14": "#376952",
+    "15": "#d3463a",
+    "16": "#d3463a",
+    "17": "#3aafd6",
+    "18": "#a365c7",
+    "19": "#ffa9f7",
+    "20": "#129793",
+    "22": "#f4c954",
+    "23": "#ff8c69",
+    "24": "#129793",
+    "25": "#4e3929",
+    "26": "#4e3929",
+    "27": "#129793",
+    "60": "#8D021F",
+    "61": "#d3cbd3",
+    "103": "#090909",
+    "105": "#fff",
+    "125": "#000",
+    "126": "#d3463a"
   }
 }
