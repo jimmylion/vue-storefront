@@ -28,7 +28,7 @@ export const divideProduct = (
   for (let curr of product.configurable_children) {
     if (!products.hasOwnProperty(curr.color)) {
       const colorObj = color_options.find(v => v.value_index === curr.color);
-      if (!colorObj) {
+      if (colorObj === -1) {
         throw new Error(
           'Badly configured product "' +
             curr.name +
