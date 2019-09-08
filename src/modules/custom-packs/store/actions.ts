@@ -117,7 +117,7 @@ export const actions: ActionTree<PacksState, any> = {
 
       const { storeCode } = currentStoreView()
 
-      const response = await fetch(`${urlWithSlash(config.api.url)}ext/custom-packs/add/${storeCode}?token=`, {
+      const response = await fetch(`${urlWithSlash(config.api.url)}ext/custom-packs/init/${storeCode}?token=`, {
         body: JSON.stringify(<any>body),
         headers: {
           'Content-Type': 'application/json'
@@ -134,6 +134,12 @@ export const actions: ActionTree<PacksState, any> = {
       console.error(err)
     }
 
+
+  },
+
+  setPack ({ commit }, { packSize, packType, initialState }) {
+
+    commit(types.INIT_PACK, { packSize, packType, initialState, forceReinit: true })
 
   }
 
