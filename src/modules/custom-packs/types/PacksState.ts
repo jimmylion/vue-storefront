@@ -7,9 +7,11 @@ export interface PacksState {
 
   packOptions: {
    [key: number]: any
- },
+  },
 
- // Array of products available on Creator page
- productsAvailable: Array<any> | null
+  // User's current packs
+  // Example key: 4-pack-knee-high
+  // So it is [pack-size]-[pack-type]
+  packs: {}
 
 }

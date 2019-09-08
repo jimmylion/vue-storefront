@@ -1,5 +1,6 @@
 import { MutationTree } from 'vuex'
 import * as types from './mutation-types'
+import { cacheStorage } from '../'
 
 export const mutations: MutationTree<any> = {
 
@@ -11,7 +12,6 @@ export const mutations: MutationTree<any> = {
   },
 
   [types.SET_CATEGORY_ID] (state, { packId, packType }) {
-    let categoryId = null
     if (!state.packOptions[packId] 
       || !state.packOptions[packId].values 
       || !state.packOptions[packId].values['pack-type']
@@ -30,10 +30,6 @@ export const mutations: MutationTree<any> = {
     }
   },
 
-  [types.SET_AVAILABLE_PRODUCTS] (state, payload) {
-    // state.users.push(payload)
-  },
-
   [types.SET_PRECONFIGURED_PRODUCTS] (state, { packId, products }) {
     if (!state.packOptions.hasOwnProperty(packId) || !state.packOptions[packId].preconfigured) {
       console.error(`[CustomPacks] PackId ${packId} could not be found`)
@@ -48,5 +44,16 @@ export const mutations: MutationTree<any> = {
       }
     }
 
+  },
+
+  [types.INIT_PACK] (state, { packSize, packType, forceReinit = false }) {
+    const slug = `${packSize}-${packType}`
+    if (forceReinit || !state.packs[slug]) {
+      state.packs[slug] = {}
+      cacheStorage.setItem(`pack-${slug}`, [])
+    } else {
+      console.log('[CustomPacks] This type of pack has been initiated')
+      return
+    }
   }
 }

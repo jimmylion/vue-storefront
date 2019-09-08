@@ -6,7 +6,6 @@ import fetch from 'isomorphic-fetch'
 import config from 'config'
 import { currentStoreView } from '@vue-storefront/core/lib/multistore';
 import { quickSearchByQuery } from '@vue-storefront/core/lib/search';
-import { buildFilterProductsQuery } from '@vue-storefront/core/helpers';
 import builder from 'bodybuilder'
 
 const urlWithSlash = (url: string) => {
@@ -68,31 +67,6 @@ export const actions: ActionTree<PacksState, any> = {
     }
   },
 
-  // 
-  async loadProducts (context, { categoryId = 2, chosenFilters = {}, size = 4000, start = 0, sort = 'position:asc', includeFields = config.entities.optimize ? config.entities.category.includeFields : null }) {
-    const commit = context.commit
-
-    let searchQuery = buildFilterProductsQuery(categoryId, chosenFilters)
-
-    try {
-      const response = await quickSearchByQuery({ 
-        entityType: 'product', 
-        query: searchQuery, 
-        sort: sort, 
-        size: size, 
-        start: start, 
-        includeFields: includeFields 
-      })
-
-      console.log(response)
-  
-      commit(types.SET_AVAILABLE_PRODUCTS, response.items)
-      
-    } catch (err) {
-      console.error(err)
-    }
-  },
-
   // Load preconfigured packs by IDs
   async loadPreconfiguredPacks (context, { ids, packId, size = 4000, start = 0, sort = 'position:asc', includeFields = config.entities.optimize ? config.entities.category.includeFields : null }) {
     const commit = context.commit
@@ -120,6 +94,12 @@ export const actions: ActionTree<PacksState, any> = {
     } catch (err) {
       console.error(err)
     }
+  },
+
+  async initPack ({ commit }, { packSize, packType }) {
+
+    commit(types.INIT_PACK, { packSize, packType })
+
   }
 
 }
