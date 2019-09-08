@@ -46,6 +46,7 @@ extendModule(productExtend);
 
 import { categoryExtend } from "./extended-category";
 extendModule(categoryExtend);
+import { relatedProducts } from './related-products';
 
 // import { Example } from './module-template'
 
@@ -103,6 +104,7 @@ export const registerModules: VueStorefrontModule[] = [
   PrismicInjector,
   VsfYotpo,
   OrderHistory,
-  MagentoMenus
+  MagentoMenus,
+  relatedProducts
   // Example
 ];
