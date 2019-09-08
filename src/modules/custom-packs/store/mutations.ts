@@ -46,11 +46,11 @@ export const mutations: MutationTree<any> = {
 
   },
 
-  [types.INIT_PACK] (state, { packSize, packType, forceReinit = false }) {
+  [types.INIT_PACK] (state, { packSize, packType, forceReinit = false, initialState }) {
     const slug = `${packSize}-${packType}`
     if (forceReinit || !state.packs[slug]) {
-      state.packs[slug] = {}
-      cacheStorage.setItem(`pack-${slug}`, [])
+      state.packs[slug] = initialState
+      cacheStorage.setItem(`pack-${slug}`, initialState)
     } else {
       console.log('[CustomPacks] This type of pack has been initiated')
       return

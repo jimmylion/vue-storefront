@@ -1,3 +1,4 @@
+import { TaskQueue } from '@vue-storefront/core/lib/sync';
 import { PacksState } from './../types/PacksState';
 import { ActionTree } from 'vuex';
 import * as types from './mutation-types'
@@ -96,9 +97,43 @@ export const actions: ActionTree<PacksState, any> = {
     }
   },
 
-  async initPack ({ commit }, { packSize, packType }) {
+  async initPack ({ rootGetters, commit }, { packSize, packType }) {
 
-    commit(types.INIT_PACK, { packSize, packType })
+    try {
+
+      const token = rootGetters['cart/getCartToken']
+      if (!token) {
+        throw new Error('[CustomPacks] No token!')
+      }
+
+      const body = {
+        "cartItem": {
+          "sku": `${packSize}-${packType}`,
+          "qty": 1,
+          "price": 0,
+          "quote_id": token
+        }
+      }
+
+      const { storeCode } = currentStoreView()
+
+      const response = await fetch(`${urlWithSlash(config.api.url)}ext/custom-packs/add/${storeCode}?token=`, {
+        body: JSON.stringify(<any>body),
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        mode: 'cors',
+        method: 'POST'
+      })
+
+      const r = await response.json()
+
+      commit(types.INIT_PACK, { packSize, packType, initialState: r.result })
+
+    } catch (err) {
+      console.error(err)
+    }
+
 
   }
 
