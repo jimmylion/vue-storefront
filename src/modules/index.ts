@@ -30,6 +30,7 @@ import { PrismicInjector } from "./prismic-injector";
 import { OrderHistory } from "./order-history";
 import { googleTagManager } from "./google-tag-manager";
 import { MagentoMenus } from "./magento-menus";
+import { VsfCustomPacks } from './custom-packs';
 
 import { extendMappingFallback } from "src/modules/vsf-mapping-fallback";
 import {
@@ -103,6 +104,7 @@ export const registerModules: VueStorefrontModule[] = [
   PrismicInjector,
   VsfYotpo,
   OrderHistory,
-  MagentoMenus
+  MagentoMenus,
+  VsfCustomPacks
   // Example
 ];
