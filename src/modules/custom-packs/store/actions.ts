@@ -128,7 +128,7 @@ export const actions: ActionTree<PacksState, any> = {
 
       const r = await response.json()
 
-      commit(types.INIT_PACK, { packSize, packType, initialState: r.result })
+      commit(types.INIT_PACK, { packSize, packType, initialState: r.result.item_id })
 
     } catch (err) {
       console.error(err)
@@ -137,10 +137,51 @@ export const actions: ActionTree<PacksState, any> = {
 
   },
 
-  setPack ({ commit }, { packSize, packType, initialState }) {
+  async addToPack ({ rootGetters, commit }, { sku, price, parentId, slug, discount = 0 }) {
 
-    commit(types.INIT_PACK, { packSize, packType, initialState, forceReinit: true })
+    try {
 
+      const token = rootGetters['cart/getCartToken']
+      if (!token) {
+        throw new Error('[CustomPacks] No token!')
+      }
+
+      const body = {
+        "cartItem": {
+          "sku": sku,
+          "qty": 1,
+          "price": price * (100-discount)/100,
+          "quote_id": token
+        }
+      }
+
+      const { storeCode } = currentStoreView()
+
+      const response = await fetch(`${urlWithSlash(config.api.url)}ext/custom-packs/add/${parentId}/${storeCode}?token=`, {
+        body: JSON.stringify(<any>body),
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        mode: 'cors',
+        method: 'POST'
+      })
+
+      const r = await response.json()
+
+      commit(types.ADD_TO_PACK, { parentId, item: body, slug })
+    } catch (err) {
+      console.error(err)
+    }
+
+  },
+
+  setPack({ commit }, { packSize, packType, initialState }) {
+    commit(types.INIT_PACK, {
+      packSize,
+      packType,
+      initialState,
+      forceReinit: true
+    })
   }
 
 }

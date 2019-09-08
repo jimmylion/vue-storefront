@@ -49,11 +49,40 @@ export const mutations: MutationTree<any> = {
   [types.INIT_PACK] (state, { packSize, packType, forceReinit = false, initialState }) {
     const slug = `${packSize}-${packType}`
     if (forceReinit || !state.packs[slug]) {
-      state.packs[slug] = initialState
-      cacheStorage.setItem(`pack-${slug}`, initialState)
+      if (!forceReinit) {
+        alert('TU')
+        state.packs[slug] = {
+          itemId: initialState,
+          items: []
+        }
+      } else {
+        console.log(initialState)
+        state.packs[slug] = {
+          ...initialState
+        }
+      }
+      
+      cacheStorage.setItem(`pack-${slug}`, state.packs[slug])
     } else {
       console.log('[CustomPacks] This type of pack has been initiated')
       return
     }
+  },
+
+  [types.ADD_TO_PACK] (state, { parentId, item, slug }) {
+
+    if (!slug || state.packs[slug].itemId !== parentId) {
+      console.log('[CustomPacks] Pack with this parent does not exist')
+      return
+    }
+
+    state.packs[slug] = {
+      ...state.packs[slug],
+      items: [
+        ...state.packs[slug].items,
+        item
+      ]
+    }
+    cacheStorage.setItem(`pack-${slug}`, state.packs[slug])
   }
 }
