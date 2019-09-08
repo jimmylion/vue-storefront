@@ -24,7 +24,7 @@ const getCurrentStoreCode = () => {
 export const actions: ActionTree<PacksState, any> = {
 
   // Loads data for configurator with provided packId - it is being saved in the cache
-  async loadConfigurator ({ dispatch, commit }, { packId, useCache = true, fetchPreconfigured = true }) {
+  async loadConfigurator ({ dispatch, commit }, { packId, useCache = true, fetchPreconfigured = true, setCategoryId = false, packType = '' }) {
 
     let ids = []
 
@@ -54,6 +54,10 @@ export const actions: ActionTree<PacksState, any> = {
         configuration
       })
 
+    }
+
+    if (setCategoryId && packType) {
+      commit(types.SET_CATEGORY_ID, { packId, packType })
     }
 
     if (fetchPreconfigured) {

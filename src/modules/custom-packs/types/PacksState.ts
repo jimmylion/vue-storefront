@@ -11,4 +11,5 @@ export interface PacksState {
 
  // Array of products available on Creator page
  productsAvailable: Array<any> | null
+
 }
