@@ -96,7 +96,7 @@ export const actions: ActionTree<PacksState, any> = {
     }
   },
 
-  async initPack ({ rootGetters, commit }, { packSize, packType }) {
+  async initPack ({ rootGetters, commit }, { packId, packSize, packType }) {
 
     try {
 
@@ -126,8 +126,9 @@ export const actions: ActionTree<PacksState, any> = {
       })
 
       const r = await response.json()
+      console.log(r, 'RRR')
 
-      commit(types.INIT_PACK, { packSize, packType, initialState: r.result.item_id })
+      commit(types.INIT_PACK, { packId, packType, initialState: r.result.item_id })
 
     } catch (err) {
       console.error(err)
@@ -214,10 +215,10 @@ export const actions: ActionTree<PacksState, any> = {
 
   },
 
-  setPack({ commit }, { packSize, packType, initialState }) {
+  setPack({ commit }, { packType, packId, initialState }) {
     commit(types.INIT_PACK, {
-      packSize,
       packType,
+      packId,
       initialState,
       forceReinit: true
     })

@@ -3,6 +3,7 @@ import { MutationTree } from 'vuex'
 import * as types from './mutation-types'
 import { cacheStorage } from '../'
 import Vue from 'vue'
+import GenerateSlug from '../util/GenerateSlug'
 
 export const mutations: MutationTree<any> = {
 
@@ -48,8 +49,8 @@ export const mutations: MutationTree<any> = {
 
   },
 
-  [types.INIT_PACK] (state, { packSize, packType, forceReinit = false, initialState }) {
-    const slug = `${packSize}-${packType}`
+  [types.INIT_PACK] (state, { packId, packType, forceReinit = false, initialState }) {
+    const slug = GenerateSlug(packId, packType)
     if (forceReinit || !state.packs[slug]) {
       if (!forceReinit) {
         Vue.set(state.packs, slug, {
@@ -59,8 +60,8 @@ export const mutations: MutationTree<any> = {
       } else {
         Vue.set(state.packs, slug, initialState)
       }
-      
-      cacheStorage.setItem(`pack-${slug}`, state.packs[slug])
+      console.log(state.packs)
+      cacheStorage.setItem(slug, state.packs[slug])
     } else {
       console.log('[CustomPacks] This type of pack has been initiated')
       return
@@ -82,7 +83,7 @@ export const mutations: MutationTree<any> = {
       ]
     })
 
-    cacheStorage.setItem(`pack-${slug}`, state.packs[slug])
+    cacheStorage.setItem(slug, state.packs[slug])
 
     EventBus.$emit('pack-after-add-product', {
       ...item
@@ -100,7 +101,7 @@ export const mutations: MutationTree<any> = {
       items: state.packs[slug].items.filter(v => v.itemId !== itemId)
     })
 
-    cacheStorage.setItem(`pack-${slug}`, state.packs[slug])
+    cacheStorage.setItem(slug, state.packs[slug])
 
     EventBus.$emit('pack-after-remove-product', {
       ...itemId
