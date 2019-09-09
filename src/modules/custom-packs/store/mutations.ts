@@ -1,6 +1,7 @@
 import { MutationTree } from 'vuex'
 import * as types from './mutation-types'
 import { cacheStorage } from '../'
+import Vue from 'vue'
 
 export const mutations: MutationTree<any> = {
 
@@ -50,16 +51,12 @@ export const mutations: MutationTree<any> = {
     const slug = `${packSize}-${packType}`
     if (forceReinit || !state.packs[slug]) {
       if (!forceReinit) {
-        alert('TU')
-        state.packs[slug] = {
+        Vue.set(state.packs, slug, {
           itemId: initialState,
           items: []
-        }
+        })
       } else {
-        console.log(initialState)
-        state.packs[slug] = {
-          ...initialState
-        }
+        Vue.set(state.packs, slug, initialState)
       }
       
       cacheStorage.setItem(`pack-${slug}`, state.packs[slug])
@@ -76,13 +73,15 @@ export const mutations: MutationTree<any> = {
       return
     }
 
-    state.packs[slug] = {
+    Vue.set(state.packs, slug, {
       ...state.packs[slug],
       items: [
         ...state.packs[slug].items,
         item
       ]
-    }
+    })
+
+    console.log('Adding to pack...', state.packs[slug])
     cacheStorage.setItem(`pack-${slug}`, state.packs[slug])
   }
 }

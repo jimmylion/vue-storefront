@@ -137,7 +137,7 @@ export const actions: ActionTree<PacksState, any> = {
 
   },
 
-  async addToPack ({ rootGetters, commit }, { sku, price, parentId, slug, discount = 0 }) {
+  async addToPack ({ rootGetters, commit }, { sku, price, parentId, slug, image, discount = 0 }) {
 
     try {
 
@@ -166,9 +166,17 @@ export const actions: ActionTree<PacksState, any> = {
         method: 'POST'
       })
 
-      const r = await response.json()
+      const { result } = await response.json()
 
-      commit(types.ADD_TO_PACK, { parentId, item: body, slug })
+      commit(types.ADD_TO_PACK, { 
+        parentId, 
+        item: {
+          ...result,
+          oldPrice: price,
+          image
+        }, 
+        slug 
+      })
     } catch (err) {
       console.error(err)
     }
