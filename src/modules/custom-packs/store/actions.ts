@@ -1,4 +1,4 @@
-import { EventBus } from '@vue-storefront/core/compatibility/plugins/event-bus/index';
+import EventBus from '@vue-storefront/core/compatibility/plugins/event-bus/index'
 import { PacksState } from './../types/PacksState';
 import { ActionTree } from 'vuex';
 import * as types from './mutation-types'
