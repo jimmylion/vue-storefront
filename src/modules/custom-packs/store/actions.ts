@@ -1,4 +1,4 @@
-import { TaskQueue } from '@vue-storefront/core/lib/sync';
+import { EventBus } from '@vue-storefront/core/compatibility/plugins/event-bus/index';
 import { PacksState } from './../types/PacksState';
 import { ActionTree } from 'vuex';
 import * as types from './mutation-types'
@@ -25,7 +25,6 @@ export const actions: ActionTree<PacksState, any> = {
 
   // Loads data for configurator with provided packId - it is being saved in the cache
   async loadConfigurator ({ dispatch, commit }, { packId, useCache = true, fetchPreconfigured = true, setCategoryId = false, packType = '' }) {
-
     let ids = []
 
     try {
@@ -156,6 +155,13 @@ export const actions: ActionTree<PacksState, any> = {
       }
 
       const { storeCode } = currentStoreView()
+
+      EventBus.$emit('pack-before-add-product', {
+        ...body.cartItem,
+        slug,
+        image,
+        discount
+      })
 
       const response = await fetch(`${urlWithSlash(config.api.url)}ext/custom-packs/add/${parentId}/${storeCode}?token=`, {
         body: JSON.stringify(<any>body),

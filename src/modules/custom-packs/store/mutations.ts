@@ -1,3 +1,4 @@
+import { EventBus } from '@vue-storefront/core/compatibility/plugins/event-bus/index';
 import { MutationTree } from 'vuex'
 import * as types from './mutation-types'
 import { cacheStorage } from '../'
@@ -81,7 +82,10 @@ export const mutations: MutationTree<any> = {
       ]
     })
 
-    console.log('Adding to pack...', state.packs[slug])
     cacheStorage.setItem(`pack-${slug}`, state.packs[slug])
+
+    EventBus.$emit('pack-after-add-product', {
+      ...item
+    })
   }
 }
