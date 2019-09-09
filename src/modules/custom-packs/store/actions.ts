@@ -189,6 +189,31 @@ export const actions: ActionTree<PacksState, any> = {
 
   },
 
+  async removeFromPack ({ rootGetters, commit }, { itemId, slug }) {
+
+    try {
+
+      const { storeCode } = currentStoreView()
+
+      EventBus.$emit('pack-before-remove-product', {
+        itemId
+      })
+
+      await fetch(`${urlWithSlash(config.api.url)}ext/custom-packs/remove/${itemId}/${storeCode}?token=`, {
+        mode: 'cors',
+        method: 'DELETE'
+      })
+
+      commit(types.REMOVE_FROM_PACK, { 
+        itemId,
+        slug
+      })
+    } catch (err) {
+      console.error(err)
+    }
+
+  },
+
   setPack({ commit }, { packSize, packType, initialState }) {
     commit(types.INIT_PACK, {
       packSize,

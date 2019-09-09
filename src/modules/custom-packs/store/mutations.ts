@@ -87,5 +87,23 @@ export const mutations: MutationTree<any> = {
     EventBus.$emit('pack-after-add-product', {
       ...item
     })
+  },
+
+  [types.REMOVE_FROM_PACK] (state, { itemId, slug }) {
+    if (!slug) {
+      console.log('[CustomPacks] Bad slug')
+      return
+    }
+
+    Vue.set(state.packs, slug, {
+      ...state.packs[slug],
+      items: state.packs[slug].items.filter(v => v.itemId !== itemId)
+    })
+
+    cacheStorage.setItem(`pack-${slug}`, state.packs[slug])
+
+    EventBus.$emit('pack-after-remove-product', {
+      ...itemId
+    })
   }
 }
