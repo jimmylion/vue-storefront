@@ -5,15 +5,6 @@ import { cacheStorage } from '../'
 import Vue from 'vue'
 import GenerateSlug from '../util/GenerateSlug'
 
-function* uniqueIdGenerator () {
-  let x = 0
-  while (true) {
-    yield ++x
-  }
-}
-
-const GetUniqueId = uniqueIdGenerator()
-
 export const mutations: MutationTree<any> = {
 
   [types.SET_CONFIGURATION] (state, { packId, configuration }) {
@@ -62,7 +53,10 @@ export const mutations: MutationTree<any> = {
     const slug = GenerateSlug(packId, packType)
     if (forceReinit || !state.packs[slug]) {
       if (!forceReinit) {
-        Vue.set(state.packs, slug, [])
+        Vue.set(state.packs, slug, {
+          packagingId: null,
+          items: []
+        })
       } else {
         Vue.set(state.packs, slug, initialState)
       }
@@ -80,13 +74,7 @@ export const mutations: MutationTree<any> = {
       return
     }
 
-    Vue.set(state.packs, slug, [
-      ...state.packs[slug],
-      {
-        ...item,
-        inpackId: GetUniqueId.next().value
-      }
-    ])
+    state.packs[slug].items.push(item)
 
     cacheStorage.setItem(slug, state.packs[slug])
 
@@ -95,7 +83,7 @@ export const mutations: MutationTree<any> = {
     })
   },
 
-  [types.REMOVE_FROM_PACK] (state, { product, slug }) {
+  [types.REMOVE_FROM_PACK] (state, { product, slug, index }) {
     if (!slug) {
       console.log('[CustomPacks] Bad slug')
       return
@@ -106,7 +94,7 @@ export const mutations: MutationTree<any> = {
       return
     }
 
-    Vue.set(state.packs, slug, state.packs[slug].filter(v => v.inpackId !== product.inpackId))
+    state.packs[slug].items.splice(index, 1)
 
     cacheStorage.setItem(slug, state.packs[slug])
 

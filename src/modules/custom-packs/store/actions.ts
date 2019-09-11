@@ -185,7 +185,7 @@ export const actions: ActionTree<PacksState, any> = {
 
   },
 
-  async removeFromPack ({ rootGetters, commit }, { product, slug }) {
+  async removeFromPack ({ rootGetters, commit }, { product, slug, index }) {
 
     try {
 
@@ -202,6 +202,7 @@ export const actions: ActionTree<PacksState, any> = {
 
       commit(types.REMOVE_FROM_PACK, { 
         product,
+        index,
         slug
       })
     } catch (err) {
@@ -210,7 +211,12 @@ export const actions: ActionTree<PacksState, any> = {
 
   },
 
-  async addToCart ({ state, commit }, { slug, packType, packSize }) {
+  async addToCart ({ state, rootGetters }, { slug, packType, packSize }) {
+
+    const token = rootGetters['cart/getCartToken']
+    if (!token) {
+      throw new Error('[CustomPacks] No token!')
+    }
 
     const { storeCode } = currentStoreView()
 
@@ -219,7 +225,13 @@ export const actions: ActionTree<PacksState, any> = {
       const body = {
         packType,
         packSize,
-        childs: state.packs[slug]
+        quote_id: token,
+        childs: state.packs[slug].map(v => ({
+          sku: v.sku,
+          qty: 1,
+          price: v.discountPrice,
+          quote_id: token
+        }))
       }
 
       const baseUrl = 'http://localhost:8080/api/'//urlWithSlash(config.api.url)
