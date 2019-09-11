@@ -137,7 +137,7 @@ export const actions: ActionTree<PacksState, any> = {
 
   },
 
-  async addToPack ({ rootGetters, commit }, { sku, price, parentId, slug, image, discount = 0 }) {
+  async addToPack ({ rootGetters, commit }, { product, parentId, slug }) {
 
     try {
 
@@ -146,42 +146,35 @@ export const actions: ActionTree<PacksState, any> = {
         throw new Error('[CustomPacks] No token!')
       }
 
-      const body = {
-        "cartItem": {
-          "sku": sku,
-          "qty": 1,
-          "price": price * (100-discount)/100,
-          "quote_id": token
-        }
-      }
+      // const body = {
+      //   "cartItem": {
+      //     "sku": sku,
+      //     "qty": 1,
+      //     "price": price * (100-discount)/100,
+      //     "quote_id": token
+      //   }
+      // }
 
       const { storeCode } = currentStoreView()
 
       EventBus.$emit('pack-before-add-product', {
-        ...body.cartItem,
-        slug,
-        image,
-        discount
+        product
       })
 
-      const response = await fetch(`${urlWithSlash(config.api.url)}ext/custom-packs/add/${parentId}/${storeCode}?token=`, {
-        body: JSON.stringify(<any>body),
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        mode: 'cors',
-        method: 'POST'
-      })
+      // const response = await fetch(`${urlWithSlash(config.api.url)}ext/custom-packs/add/${parentId}/${storeCode}?token=`, {
+      //   body: JSON.stringify(<any>body),
+      //   headers: {
+      //     'Content-Type': 'application/json'
+      //   },
+      //   mode: 'cors',
+      //   method: 'POST'
+      // })
 
-      const { result } = await response.json()
+      // const { result } = await response.json()
 
       commit(types.ADD_TO_PACK, { 
         parentId, 
-        item: {
-          ...result,
-          oldPrice: price,
-          image
-        }, 
+        item: product, 
         slug 
       })
     } catch (err) {
