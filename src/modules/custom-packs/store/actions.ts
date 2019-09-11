@@ -100,19 +100,19 @@ export const actions: ActionTree<PacksState, any> = {
 
     try {
 
-      const token = rootGetters['cart/getCartToken']
-      if (!token) {
-        throw new Error('[CustomPacks] No token!')
-      }
+      // const token = rootGetters['cart/getCartToken']
+      // if (!token) {
+      //   throw new Error('[CustomPacks] No token!')
+      // }
 
-      const body = {
-        "cartItem": {
-          "sku": `${packSize}-${packType}`,
-          "qty": 1,
-          "price": 0,
-          "quote_id": token
-        }
-      }
+      // const body = {
+      //   "cartItem": {
+      //     "sku": `${packSize}-${packType}`,
+      //     "qty": 1,
+      //     "price": 0,
+      //     "quote_id": token
+      //   }
+      // }
 
       const { storeCode } = currentStoreView()
 

@@ -51,13 +51,16 @@ export const mutations: MutationTree<any> = {
 
   [types.INIT_PACK] (state, { packId, packType, packSize, forceReinit = false, initialState }) {
     const slug = GenerateSlug(packId, packType)
+
     if (forceReinit || !state.packs[slug]) {
       if (!forceReinit) {
+
         Vue.set(state.packs, slug, {
           packagingId: state.packOptions[packId].values['pack-size'][packSize].packagingId,
           items: []
         })
       } else {
+
         Vue.set(state.packs, slug, initialState)
       }
       cacheStorage.setItem(slug, state.packs[slug])
@@ -109,5 +112,6 @@ export const mutations: MutationTree<any> = {
 
   [types.REMOVE_PACK] (state, { slug }) {
     Vue.set(state.packs[slug], 'items', [])
+    cacheStorage.setItem(slug, state.packs[slug])
   }
 }
