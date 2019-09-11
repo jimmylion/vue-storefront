@@ -210,6 +210,38 @@ export const actions: ActionTree<PacksState, any> = {
 
   },
 
+  async addToCart ({ state, commit }, { slug, packType, packSize }) {
+
+    const { storeCode } = currentStoreView()
+
+    try {
+
+      const body = {
+        packType,
+        packSize,
+        childs: state.packs[slug]
+      }
+
+      const baseUrl = 'http://localhost:8080/api/'//urlWithSlash(config.api.url)
+
+      let response = await fetch(`${baseUrl}ext/custom-packs/add/${storeCode}?token=`, {
+        body: JSON.stringify(<any>body),
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        mode: 'cors',
+        method: 'POST'
+      })
+
+      let r = await response.json()
+      console.group(r)
+
+    } catch (err) {
+      console.error('[CustomPacks] Could not add pack to the cart', err)
+    }
+
+  },
+
   setPack({ commit }, { packType, packId, initialState }) {
     commit(types.INIT_PACK, {
       packType,

@@ -62,10 +62,7 @@ export const mutations: MutationTree<any> = {
     const slug = GenerateSlug(packId, packType)
     if (forceReinit || !state.packs[slug]) {
       if (!forceReinit) {
-        Vue.set(state.packs, slug, {
-          itemId: null,
-          items: []
-        })
+        Vue.set(state.packs, slug, [])
       } else {
         Vue.set(state.packs, slug, initialState)
       }
@@ -83,16 +80,13 @@ export const mutations: MutationTree<any> = {
       return
     }
 
-    Vue.set(state.packs, slug, {
+    Vue.set(state.packs, slug, [
       ...state.packs[slug],
-      items: [
-        ...state.packs[slug].items,
-        {
-          ...item,
-          inpackId: GetUniqueId.next().value
-        }
-      ]
-    })
+      {
+        ...item,
+        inpackId: GetUniqueId.next().value
+      }
+    ])
 
     cacheStorage.setItem(slug, state.packs[slug])
 
@@ -112,10 +106,7 @@ export const mutations: MutationTree<any> = {
       return
     }
 
-    Vue.set(state.packs, slug, {
-      ...state.packs[slug],
-      items: state.packs[slug].items.filter(v => v.inpackId !== product.inpackId)
-    })
+    Vue.set(state.packs, slug, state.packs[slug].filter(v => v.inpackId !== product.inpackId))
 
     cacheStorage.setItem(slug, state.packs[slug])
 
