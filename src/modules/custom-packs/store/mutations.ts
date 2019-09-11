@@ -5,6 +5,15 @@ import { cacheStorage } from '../'
 import Vue from 'vue'
 import GenerateSlug from '../util/GenerateSlug'
 
+function* uniqueIdGenerator () {
+  let x = 0
+  while (true) {
+    yield ++x
+  }
+}
+
+const GetUniqueId = uniqueIdGenerator()
+
 export const mutations: MutationTree<any> = {
 
   [types.SET_CONFIGURATION] (state, { packId, configuration }) {
@@ -54,13 +63,12 @@ export const mutations: MutationTree<any> = {
     if (forceReinit || !state.packs[slug]) {
       if (!forceReinit) {
         Vue.set(state.packs, slug, {
-          itemId: initialState,
+          itemId: null,
           items: []
         })
       } else {
         Vue.set(state.packs, slug, initialState)
       }
-      console.log(state.packs)
       cacheStorage.setItem(slug, state.packs[slug])
     } else {
       console.log('[CustomPacks] This type of pack has been initiated')
@@ -68,10 +76,10 @@ export const mutations: MutationTree<any> = {
     }
   },
 
-  [types.ADD_TO_PACK] (state, { parentId, item, slug }) {
+  [types.ADD_TO_PACK] (state, { item, slug }) {
 
-    if (!slug || state.packs[slug].itemId !== parentId) {
-      console.log('[CustomPacks] Pack with this parent does not exist')
+    if (!slug || !item) {
+      console.log('[CustomPacks] Unknown slug or item')
       return
     }
 
@@ -79,7 +87,10 @@ export const mutations: MutationTree<any> = {
       ...state.packs[slug],
       items: [
         ...state.packs[slug].items,
-        item
+        {
+          ...item,
+          inpackId: GetUniqueId.next().value
+        }
       ]
     })
 
@@ -90,21 +101,26 @@ export const mutations: MutationTree<any> = {
     })
   },
 
-  [types.REMOVE_FROM_PACK] (state, { itemId, slug }) {
+  [types.REMOVE_FROM_PACK] (state, { product, slug }) {
     if (!slug) {
       console.log('[CustomPacks] Bad slug')
       return
     }
 
+    if (!product || !product.inpackId === undefined) {
+      console.log('[CustomPacks] Product or inpackId undefined - no idea what to remove!')
+      return
+    }
+
     Vue.set(state.packs, slug, {
       ...state.packs[slug],
-      items: state.packs[slug].items.filter(v => v.itemId !== itemId)
+      items: state.packs[slug].items.filter(v => v.inpackId !== product.inpackId)
     })
 
     cacheStorage.setItem(slug, state.packs[slug])
 
     EventBus.$emit('pack-after-remove-product', {
-      ...itemId
+      ...product
     })
   }
 }

@@ -116,19 +116,18 @@ export const actions: ActionTree<PacksState, any> = {
 
       const { storeCode } = currentStoreView()
 
-      const response = await fetch(`${urlWithSlash(config.api.url)}ext/custom-packs/init/${storeCode}?token=`, {
-        body: JSON.stringify(<any>body),
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        mode: 'cors',
-        method: 'POST'
-      })
+      // const response = await fetch(`${urlWithSlash(config.api.url)}ext/custom-packs/init/${storeCode}?token=`, {
+      //   body: JSON.stringify(<any>body),
+      //   headers: {
+      //     'Content-Type': 'application/json'
+      //   },
+      //   mode: 'cors',
+      //   method: 'POST'
+      // })
 
-      const r = await response.json()
-      console.log(r, 'RRR')
+      // const r = await response.json()
 
-      commit(types.INIT_PACK, { packId, packType, initialState: r.result.item_id })
+      commit(types.INIT_PACK, { packId, packType, initialState: [] })
 
     } catch (err) {
       console.error(err)
@@ -137,14 +136,14 @@ export const actions: ActionTree<PacksState, any> = {
 
   },
 
-  async addToPack ({ rootGetters, commit }, { product, parentId, slug }) {
+  async addToPack ({ rootGetters, commit }, { product, slug, discount }) {
 
     try {
 
-      const token = rootGetters['cart/getCartToken']
-      if (!token) {
-        throw new Error('[CustomPacks] No token!')
-      }
+      // const token = rootGetters['cart/getCartToken']
+      // if (!token) {
+      //   throw new Error('[CustomPacks] No token!')
+      // }
 
       // const body = {
       //   "cartItem": {
@@ -155,8 +154,9 @@ export const actions: ActionTree<PacksState, any> = {
       //   }
       // }
 
-      const { storeCode } = currentStoreView()
+      // const { storeCode } = currentStoreView()
 
+      const discountPrice = product.priceInclTax * (100-discount)/100
       EventBus.$emit('pack-before-add-product', {
         product
       })
@@ -173,8 +173,10 @@ export const actions: ActionTree<PacksState, any> = {
       // const { result } = await response.json()
 
       commit(types.ADD_TO_PACK, { 
-        parentId, 
-        item: product, 
+        item: {
+          ...product,
+          discountPrice
+        }, 
         slug 
       })
     } catch (err) {
@@ -183,23 +185,23 @@ export const actions: ActionTree<PacksState, any> = {
 
   },
 
-  async removeFromPack ({ rootGetters, commit }, { itemId, slug }) {
+  async removeFromPack ({ rootGetters, commit }, { product, slug }) {
 
     try {
 
-      const { storeCode } = currentStoreView()
+      // const { storeCode } = currentStoreView()
 
       EventBus.$emit('pack-before-remove-product', {
-        itemId
+        product
       })
 
-      await fetch(`${urlWithSlash(config.api.url)}ext/custom-packs/remove/${itemId}/${storeCode}?token=`, {
-        mode: 'cors',
-        method: 'DELETE'
-      })
+      // await fetch(`${urlWithSlash(config.api.url)}ext/custom-packs/remove/${itemId}/${storeCode}?token=`, {
+      //   mode: 'cors',
+      //   method: 'DELETE'
+      // })
 
       commit(types.REMOVE_FROM_PACK, { 
-        itemId,
+        product,
         slug
       })
     } catch (err) {
