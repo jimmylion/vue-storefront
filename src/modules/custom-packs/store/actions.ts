@@ -127,7 +127,7 @@ export const actions: ActionTree<PacksState, any> = {
 
       // const r = await response.json()
 
-      commit(types.INIT_PACK, { packId, packType, initialState: [] })
+      commit(types.INIT_PACK, { packId, packType, packSize, initialState: [] })
 
     } catch (err) {
       console.error(err)
@@ -211,7 +211,7 @@ export const actions: ActionTree<PacksState, any> = {
 
   },
 
-  async addToCart ({ state, rootGetters }, { slug, packType, packSize }) {
+  async addToCart ({ state, commit, rootGetters }, { slug, packType, packSize }) {
 
     const token = rootGetters['cart/getCartToken']
     if (!token) {
@@ -220,21 +220,28 @@ export const actions: ActionTree<PacksState, any> = {
 
     const { storeCode } = currentStoreView()
 
+    const body = {
+      packType,
+      packSize,
+      quote_id: token,
+      packagingId: state.packs[slug].packagingId,
+      childs: state.packs[slug].items.map(v => ({
+        sku: v.sku,
+        qty: 1,
+        price: v.discountPrice,
+        quote_id: token
+      }))
+    }
+
     try {
 
-      const body = {
-        packType,
-        packSize,
-        quote_id: token,
-        childs: state.packs[slug].map(v => ({
-          sku: v.sku,
-          qty: 1,
-          price: v.discountPrice,
-          quote_id: token
-        }))
-      }
+      EventBus.$emit('pack-before-add-to-cart', {
+        body
+      })
 
-      const baseUrl = 'http://localhost:8080/api/'//urlWithSlash(config.api.url)
+      commit(types.ADDING_TO_CART_STATUS, true)
+
+      const baseUrl = /*'http://localhost:8080/api/'*/urlWithSlash(config.api.url)
 
       let response = await fetch(`${baseUrl}ext/custom-packs/add/${storeCode}?token=`, {
         body: JSON.stringify(<any>body),
@@ -245,19 +252,30 @@ export const actions: ActionTree<PacksState, any> = {
         method: 'POST'
       })
 
-      let r = await response.json()
-      console.group(r)
+      await response.json()
+
+      commit(types.ADDING_TO_CART_STATUS, false)
+      EventBus.$emit('pack-after-add-to-cart', {
+        body
+      })
+
+      // Now let's remove cart
+      commit(types.REMOVE_PACK, { slug })
 
     } catch (err) {
       console.error('[CustomPacks] Could not add pack to the cart', err)
+      EventBus.$emit('pack-after-add-to-cart', {
+        body
+      })
     }
 
   },
 
-  setPack({ commit }, { packType, packId, initialState }) {
+  setPack({ commit }, { packType, packId, packSize, initialState }) {
     commit(types.INIT_PACK, {
       packType,
       packId,
+      packSize,
       initialState,
       forceReinit: true
     })

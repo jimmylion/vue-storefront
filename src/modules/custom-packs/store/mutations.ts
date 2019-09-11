@@ -49,12 +49,12 @@ export const mutations: MutationTree<any> = {
 
   },
 
-  [types.INIT_PACK] (state, { packId, packType, forceReinit = false, initialState }) {
+  [types.INIT_PACK] (state, { packId, packType, packSize, forceReinit = false, initialState }) {
     const slug = GenerateSlug(packId, packType)
     if (forceReinit || !state.packs[slug]) {
       if (!forceReinit) {
         Vue.set(state.packs, slug, {
-          packagingId: null,
+          packagingId: state.packOptions[packId].values['pack-size'][packSize].packagingId,
           items: []
         })
       } else {
@@ -101,5 +101,13 @@ export const mutations: MutationTree<any> = {
     EventBus.$emit('pack-after-remove-product', {
       ...product
     })
+  },
+
+  [types.ADDING_TO_CART_STATUS] (state, stance) {
+    state.addingToCartNow = stance
+  },
+
+  [types.REMOVE_PACK] (state, { slug }) {
+    Vue.set(state.packs[slug], 'items', [])
   }
 }
