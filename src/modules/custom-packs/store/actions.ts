@@ -159,37 +159,10 @@ export const actions: ActionTree<PacksState, any> = {
 
     try {
 
-      // const token = rootGetters['cart/getCartToken']
-      // if (!token) {
-      //   throw new Error('[CustomPacks] No token!')
-      // }
-
-      // const body = {
-      //   "cartItem": {
-      //     "sku": sku,
-      //     "qty": 1,
-      //     "price": price * (100-discount)/100,
-      //     "quote_id": token
-      //   }
-      // }
-
-      // const { storeCode } = currentStoreView()
-
       const discountPrice = product.priceInclTax * (100-discount)/100
       EventBus.$emit('pack-before-add-product', {
         product
       })
-
-      // const response = await fetch(`${urlWithSlash(config.api.url)}ext/custom-packs/add/${parentId}/${storeCode}?token=`, {
-      //   body: JSON.stringify(<any>body),
-      //   headers: {
-      //     'Content-Type': 'application/json'
-      //   },
-      //   mode: 'cors',
-      //   method: 'POST'
-      // })
-
-      // const { result } = await response.json()
 
       commit(types.ADD_TO_PACK, { 
         item: {
@@ -208,16 +181,9 @@ export const actions: ActionTree<PacksState, any> = {
 
     try {
 
-      // const { storeCode } = currentStoreView()
-
       EventBus.$emit('pack-before-remove-product', {
         product
       })
-
-      // await fetch(`${urlWithSlash(config.api.url)}ext/custom-packs/remove/${itemId}/${storeCode}?token=`, {
-      //   mode: 'cors',
-      //   method: 'DELETE'
-      // })
 
       commit(types.REMOVE_FROM_PACK, { 
         product,
@@ -260,7 +226,7 @@ export const actions: ActionTree<PacksState, any> = {
 
       commit(types.ADDING_TO_CART_STATUS, true)
 
-      const baseUrl = 'http://localhost:8080/api/'//urlWithSlash(config.api.url)
+      const baseUrl = urlWithSlash(config.api.url)//'http://localhost:8080/api/'
 
       let response = await fetch(`${baseUrl}ext/custom-packs/add/${storeCode}?token=`, {
         body: JSON.stringify(<any>body),
