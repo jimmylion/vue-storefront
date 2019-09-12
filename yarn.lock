@@ -13259,10 +13259,10 @@ sw-toolbox@^3.4.0:
     path-to-regexp "^1.0.1"
     serviceworker-cache-polyfill "^4.0.0"
 
-sxcss@^1.1.15:
-  version "1.1.15"
-  resolved "https://registry.yarnpkg.com/sxcss/-/sxcss-1.1.15.tgz#9b3ba78865043fd9cfc612b28c6656bd6121a893"
-  integrity sha512-Ju0BBs75oHzUxT69Cu4mRB0zQaduoM0daoBJ4zRtnLUPHsei9K4/jenpEEHlDCJwuyqOoZc/uQGafcifFgDubg==
+sxcss@^1.2.11:
+  version "1.2.18"
+  resolved "https://registry.yarnpkg.com/sxcss/-/sxcss-1.2.18.tgz#e389fba58ce86a3e20d96d3298093f8e02fec572"
+  integrity sha512-AfvsoRv6kSmh8zIyM4irpIyXcf/cAYVgY8b+V1cYfC4Dlzfz7Yl+RkBMZ0JsEXllO0OUXJiJi3ZA63AistHR6Q==
   dependencies:
     gulp "^4.0.2"
     gulp-concat "^2.6.1"
@@ -14218,6 +14218,11 @@ vue-ssr-webpack-plugin@^3.0.0:
   dependencies:
     chalk "^1.1.3"
     hash-sum "^1.0.2"
+
+vue-star-rating@^1.6.1:
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/vue-star-rating/-/vue-star-rating-1.6.1.tgz#160cf66e6af4597180fd2552df5d03d590ec40d4"
+  integrity sha512-JSmVx16rcxyw4Ma6YQ5DnIExyjF4IFf/ypxh3zfmtFZzE/hjswDT0fLn1vF4ERxDbAp0nHA3u51BYFbA8gyYyQ==
 
 vue-style-loader@^4.1.0:
   version "4.1.2"
