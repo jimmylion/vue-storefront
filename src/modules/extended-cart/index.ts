@@ -7,6 +7,7 @@ import SearchQuery from '@vue-storefront/core/lib/search/searchQuery'
 import config from 'config'
 import Task from '@vue-storefront/core/lib/sync/types/Task'
 
+
 function _getDifflogPrototype () {
   return { items: [], serverResponses: [], clientNotifications: [] }
 }
@@ -283,8 +284,87 @@ const actions = {
   }
 }
 
+const mutations = {
+  [types.CART_LOAD_CART] (state, storedItems) {
+    const cartItems = storedItems ? storedItems.reduce((total, curr) => {
+
+      if (!curr.pack_type) {
+        total.push(curr)
+      } else {
+
+        if (curr.pack_type === 'parent') {
+          total.push({
+            ...curr,
+            packaging: null,
+            childs: []
+          })
+        }
+
+        if (curr.pack_type === 'packaging' || curr.pack_type === 'child') {
+          const parentIndex = total.findIndex(parent => parent.server_item_id === curr.pack_id)
+          if (parentIndex === -1) {
+            console.error('[CustomPacks] Could not find parent for', curr)
+          } else {
+            
+            switch (curr.pack_type) {
+
+              case 'packaging':
+                total[parentIndex].packaging = curr
+                break;
+              case 'child':
+                total[parentIndex].childs.push(curr)
+                break;
+              default:
+                console.error('[CustomPacks] Unsupported pack type -', curr.pack_type)
+                break;
+
+            }
+
+          }
+        }
+
+      }
+
+      return total
+
+    }, []) : []
+
+    console.log('LOOO', cartItems)
+
+    state.cartItems = cartItems
+    state.cartIsLoaded = true
+
+    // Vue.prototype.$bus.$emit('order/PROCESS_QUEUE', { config: config }) // process checkout queue
+    Vue.prototype.$bus.$emit('sync/PROCESS_QUEUE', { config }) // process checkout queue
+    Vue.prototype.$bus.$emit('application-after-loaded')
+    Vue.prototype.$bus.$emit('cart-after-loaded')
+  },
+
+  [types.CART_ADD_ITEM] (state, { product }) {
+    const record = state.cartItems.find(p => p.sku === product.sku)
+    if (!record) {
+      if (product.pack_id) {
+        return
+      }
+      let item = {
+        ...product,
+        qty: parseInt(product.qty ? product.qty : 1)
+      }
+      Vue.prototype.$bus.$emit('cart-before-add', { product: item })
+      state.cartItems.push(item)
+    } else {
+      if (record.pack_id) {
+        return
+      }
+      Vue.prototype.$bus.$emit('cart-before-update', { product: record })
+      record.qty += parseInt((product.qty ? product.qty : 1))
+    }
+  }
+}
+
 const extendCartVuex = {
-  actions
+  actions,
+  mutations
 }
 
 export const cartExtend = {

@@ -8,6 +8,7 @@ import config from 'config'
 import { currentStoreView } from '@vue-storefront/core/lib/multistore';
 import { quickSearchByQuery } from '@vue-storefront/core/lib/search';
 import builder from 'bodybuilder'
+import rootStore from '@vue-storefront/core/store'
 
 const urlWithSlash = (url: string) => {
   return url.endsWith('/') ? url : url+'/'
@@ -238,6 +239,8 @@ export const actions: ActionTree<PacksState, any> = {
       })
 
       await response.json()
+
+      await rootStore.dispatch('cart/sync', {})
 
       commit(types.ADDING_TO_CART_STATUS, false)
       EventBus.$emit('pack-after-add-to-cart', {
