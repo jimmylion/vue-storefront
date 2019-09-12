@@ -48,6 +48,9 @@ extendModule(productExtend);
 import { categoryExtend } from "./extended-category";
 extendModule(categoryExtend);
 
+import { cartExtend } from "./extended-cart";
+extendModule(cartExtend);
+
 // import { Example } from './module-template'
 
 // This is how you can extend any of VS modues

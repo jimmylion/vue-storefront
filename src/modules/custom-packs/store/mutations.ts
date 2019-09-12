@@ -39,13 +39,28 @@ export const mutations: MutationTree<any> = {
       return
     }
 
-    state.packOptions = {
-      ...state.packOptions,
-      [packId]: {
-        ...state.packOptions[packId],
-        preconfigured: state.packOptions[packId].preconfigured.map(v => products.find(product => product.id === v))
+    for (let product of products) {
+      const index = state.packOptions[packId].preconfigured.findIndex(category => product.category_ids.includes(category.id))
+      if (index === -1) {
+        continue;
       }
+      state.packOptions[packId].preconfigured[index].products.push(product)
     }
+
+  },
+
+  [types.SET_PRECONFIGURED_CATEGORIES] (state, { packId, categories }) {
+    if (!state.packOptions.hasOwnProperty(packId) || !state.packOptions[packId].preconfigured) {
+      console.error(`[CustomPacks] PackId ${packId} could not be found`)
+      return
+    }
+
+    Vue.set(state.packOptions[packId], 'preconfigured',
+      categories.map(v => ({
+        ...v,
+        products: []
+      }))
+    )
 
   },
 

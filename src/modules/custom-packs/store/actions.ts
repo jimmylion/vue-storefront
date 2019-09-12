@@ -71,24 +71,43 @@ export const actions: ActionTree<PacksState, any> = {
   async loadPreconfiguredPacks (context, { ids, packId, size = 4000, start = 0, sort = 'position:asc', includeFields = config.entities.optimize ? config.entities.category.includeFields : null }) {
     const commit = context.commit
 
-    let searchQuery = builder().query('terms', 'id', ids)
+    let productsSearchQuery = builder().query('terms', 'category_ids', ids)
+      .filter('term', 'type_id', 'configurable')
       .filter('terms', 'status', [0, 1])
       .filter('terms', 'visibility', [2, 3, 4])
       .build()
 
+    let categoriesSearchQuery = builder().query('terms', 'id', ids)
+      .build()
+
     try {
-      const response = await quickSearchByQuery({ 
-        entityType: 'product', 
-        query: searchQuery, 
-        sort: sort, 
-        size: size, 
-        start: start, 
-        includeFields: includeFields 
+      const response = await Promise.all([
+        quickSearchByQuery({ 
+          entityType: 'product', 
+          query: productsSearchQuery, 
+          sort: sort, 
+          size: size, 
+          start: start, 
+          includeFields: includeFields 
+        }),
+        quickSearchByQuery({ 
+          entityType: 'category', 
+          query: categoriesSearchQuery, 
+          sort: sort, 
+          size: size, 
+          start: start, 
+          includeFields: includeFields 
+        })
+      ])
+
+      commit(types.SET_PRECONFIGURED_CATEGORIES, {
+        packId,
+        categories: response[1].items
       })
   
       commit(types.SET_PRECONFIGURED_PRODUCTS, {
         packId,
-        products: response.items
+        products: response[0].items
       })
       
     } catch (err) {
@@ -241,7 +260,7 @@ export const actions: ActionTree<PacksState, any> = {
 
       commit(types.ADDING_TO_CART_STATUS, true)
 
-      const baseUrl = /*'http://localhost:8080/api/'*/urlWithSlash(config.api.url)
+      const baseUrl = 'http://localhost:8080/api/'//urlWithSlash(config.api.url)
 
       let response = await fetch(`${baseUrl}ext/custom-packs/add/${storeCode}?token=`, {
         body: JSON.stringify(<any>body),
