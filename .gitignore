@@ -8,6 +8,7 @@ npm-debug.log
 config/local.json
 var
 build/config.json
+config/local.json
 core/build/config.json
 core/build/cache-version.json
 theme.js
