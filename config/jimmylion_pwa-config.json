@@ -630,7 +630,7 @@
     "waitForPlatformSync": true,
     "setupVariantByAttributeCode": true,
     "endpoint": "https://api.jl.newfantastic.com/api/product",
-    "defaultFilters": ["color", "size", "price", "erin_recommends"],
+    "defaultFilters": ["color", "size", "price", "erin_recommends", "print", "color_group"],
     "filterFieldMapping": {
       "category.name": "category.name.keyword"
     },
