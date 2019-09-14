@@ -5,6 +5,7 @@ export default {
     openMicrocart () {
       // Method renamed to 'toggleMicrocart' and is using cart store now
       this.$store.dispatch('ui/toggleMicrocart')
+      this.$store.commit('ui/setOverlay', false);
     }
   },
   computed: {
