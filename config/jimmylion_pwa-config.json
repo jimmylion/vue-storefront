@@ -442,7 +442,8 @@
         "configurable_children.originalPrice",
         "configurable_children.originalPriceInclTax",
         "hreflang",
-        "meta_robots"
+        "meta_robots",
+        "options"
       ],
       "excludeFields": [
         "description",
@@ -490,7 +491,8 @@
         "status",
         "tier_prices",
         "hreflang",
-        "meta_robots"
+        "meta_robots",
+        "options"
       ],
       "excludeFields": [
         "description",
