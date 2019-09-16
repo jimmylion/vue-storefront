@@ -1,0 +1,1 @@
+export default (packId: number | string, sockType: string) => `pack-${packId}-${sockType}`

@@ -30,6 +30,7 @@ import { PrismicInjector } from "./prismic-injector";
 import { OrderHistory } from "./order-history";
 import { googleTagManager } from "./google-tag-manager";
 import { MagentoMenus } from "./magento-menus";
+import { VsfCustomPacks } from './custom-packs';
 
 import { extendMappingFallback } from "src/modules/vsf-mapping-fallback";
 import {
@@ -47,6 +48,9 @@ extendModule(productExtend);
 import { categoryExtend } from "./extended-category";
 extendModule(categoryExtend);
 import { relatedProducts } from './related-products';
+
+import { cartExtend } from "./extended-cart";
+extendModule(cartExtend);
 
 // import { Example } from './module-template'
 
@@ -105,6 +109,7 @@ export const registerModules: VueStorefrontModule[] = [
   VsfYotpo,
   OrderHistory,
   MagentoMenus,
+  VsfCustomPacks,
   relatedProducts
   // Example
 ];
