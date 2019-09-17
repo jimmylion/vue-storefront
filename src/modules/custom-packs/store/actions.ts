@@ -77,6 +77,7 @@ export const actions: ActionTree<PacksState, any> = {
       .filter('terms', 'status', [0, 1])
       .filter('terms', 'visibility', [2, 3, 4])
       .filter('term', 'stock.is_in_stock', true)
+      .filter('range', 'configurable_children.stock.qty', { gt: 0 })
       .build()
 
     let categoriesSearchQuery = builder().query('terms', 'id', ids)
