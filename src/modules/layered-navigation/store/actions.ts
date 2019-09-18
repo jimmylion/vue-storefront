@@ -1,4 +1,3 @@
-import EventBus from '@vue-storefront/core/compatibility/plugins/event-bus/index'
 import { AttrState } from './../types/AttrState';
 import { ActionTree } from 'vuex';
 import * as types from './mutation-types'
@@ -6,6 +5,7 @@ import { cacheStorage } from '../'
 import config from 'config'
 import { quickSearchByQuery } from '@vue-storefront/core/lib/search';
 import builder from 'bodybuilder'
+import FiltersByProduct from 'src/modules/layered-navigation/util/FiltersByProduct.ts'
 
 export const actions: ActionTree<AttrState, any> = {
 
@@ -22,11 +22,11 @@ export const actions: ActionTree<AttrState, any> = {
       .build()
 
     try {
-      const { items } = await quickSearchByQuery({ 
-        entityType: 'product', 
-        query: productsSearchQuery, 
-        sort: sort, 
-        size: size, 
+      const { items } = await quickSearchByQuery({
+        entityType: 'product',
+        query: productsSearchQuery,
+        sort: sort,
+        size: size,
         start: start, 
         includeFields: [
           'print',
@@ -37,12 +37,11 @@ export const actions: ActionTree<AttrState, any> = {
           'configurable_children.print',
           'configurable_children.talla', // Size
           'configurable_children.print'
-        ] 
+        ]
       })
-
       commit(types.SET_ATTRS, {
         categoryId: index,
-        attrs: items
+        attrs: items.reduce(FiltersByProduct(), {})
       })
       
     } catch (err) {
