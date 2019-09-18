@@ -31,6 +31,7 @@ import { OrderHistory } from "./order-history";
 import { googleTagManager } from "./google-tag-manager";
 import { MagentoMenus } from "./magento-menus";
 import { VsfCustomPacks } from './custom-packs';
+import { vsfLayeredNav } from './layered-navigation';
 
 import { extendMappingFallback } from "src/modules/vsf-mapping-fallback";
 import {
@@ -110,6 +111,7 @@ export const registerModules: VueStorefrontModule[] = [
   OrderHistory,
   MagentoMenus,
   VsfCustomPacks,
-  relatedProducts
+  relatedProducts,
+  vsfLayeredNav
   // Example
 ];

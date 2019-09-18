@@ -1,0 +1,1 @@
+export const SET_ATTRS = 'LAYERED_NAV/SET_ATTRS'
