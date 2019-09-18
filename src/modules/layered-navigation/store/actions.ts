@@ -39,13 +39,29 @@ export const actions: ActionTree<AttrState, any> = {
           'configurable_children.print'
         ]
       })
+
+      const filters = items.reduce(FiltersByProduct(), {})
+
       commit(types.SET_ATTRS, {
         categoryId: index,
-        attrs: items.reduce(FiltersByProduct(), {})
+        attrs: filters
       })
+
+      await cacheStorage.setItem(`category-${index}-filters`, filters)
       
     } catch (err) {
-      console.error(err)
+
+      const filters = await cacheStorage.getItem(`category-${index}-filters`)
+      if (filters) {
+        commit(types.SET_ATTRS, {
+          categoryId: index,
+          attrs: filters
+        })
+      } else {
+        console.error(err)
+        console.error('Filters no in cache also')
+      }
+
     }
   }
 
