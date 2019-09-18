@@ -1,7 +1,5 @@
-import EventBus from '@vue-storefront/core/compatibility/plugins/event-bus/index'
 import { MutationTree } from 'vuex'
 import * as types from './mutation-types'
-import { cacheStorage } from '../'
 import Vue from 'vue'
 
 export const mutations: MutationTree<any> = {
@@ -11,6 +9,10 @@ export const mutations: MutationTree<any> = {
       ...state.attributes,
       [categoryId]: attrs
     }
+  },
+
+  [types.SET_CURRENT_ATTRS] (state, { attrs }) {
+    Vue.set(state, 'filteredAttributes', attrs)
   }
 
 }

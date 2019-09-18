@@ -63,6 +63,42 @@ export const actions: ActionTree<AttrState, any> = {
       }
 
     }
+  },
+
+  async loadCurrentProductsAttrs (context, { query, size = 4000, start = 0, sort = 'position:asc', includeFields = config.entities.optimize ? config.entities.category.includeFields : null }) {
+    const commit = context.commit
+
+    try {
+      const { items } = await quickSearchByQuery({
+        entityType: 'product',
+        query,
+        sort: sort,
+        size: size,
+        start: start, 
+        includeFields: [
+          'print',
+          'length', // Length
+          'style',
+          'configurable_children.color_group',
+          'configurable_children.featured',
+          'configurable_children.print',
+          'configurable_children.talla', // Size
+          'configurable_children.print'
+        ]
+      })
+
+      const filters = items.reduce(FiltersByProduct(), {})
+      console.log('ABC', filters)
+
+      commit(types.SET_CURRENT_ATTRS, {
+        attrs: filters
+      })
+      
+    } catch (err) {
+
+      console.error(err)
+
+    }
   }
 
 }

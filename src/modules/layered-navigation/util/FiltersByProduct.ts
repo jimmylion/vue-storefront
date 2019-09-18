@@ -7,7 +7,7 @@ const keysToCheck = [
   'talla_options',
 ]
 
-export default (omit = []) => (total, curr) => {
+export default function (omit = []) { return (total, curr) => {
 
   for (let key of keysToCheck) {
     if (omit.includes(key)) {
@@ -80,4 +80,5 @@ export default (omit = []) => (total, curr) => {
 
   return total
 
-  }
+}
+}
