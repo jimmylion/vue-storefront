@@ -10,7 +10,7 @@ import FiltersByProduct from 'src/modules/layered-navigation/util/FiltersByProdu
 export const actions: ActionTree<AttrState, any> = {
 
   // Load preconfigured packs by IDs
-  async loadProductAttrs (context, { index, size = 4000, start = 0, sort = 'position:asc', includeFields = config.entities.optimize ? config.entities.category.includeFields : null }) {
+  async loadProductAttrs (context, { index, cache = true, searchQuery = '', size = 4000, start = 0, sort = 'position:asc', includeFields = config.entities.optimize ? config.entities.category.includeFields : null }) {
     const commit = context.commit
 
     let productsSearchQuery = builder().query('terms', 'category_ids', [index])
@@ -19,12 +19,21 @@ export const actions: ActionTree<AttrState, any> = {
       .filter('terms', 'visibility', [2, 3, 4])
       .filter('term', 'stock.is_in_stock', true)
       .filter('range', 'configurable_children.stock.qty', { gt: 0 })
-      .build()
+
+
+    if (searchQuery.length >= 3) {
+      productsSearchQuery = productsSearchQuery.query('multi_match', {
+        query: searchQuery,
+        fuzziness: 5,
+        prefix_length: 0,
+        fields: ['name^4', 'sku^2', 'category.name^1']
+      })
+    }
 
     try {
       const { items } = await quickSearchByQuery({
         entityType: 'product',
-        query: productsSearchQuery,
+        query: productsSearchQuery.build(),
         sort: sort,
         size: size,
         start: start, 
@@ -47,7 +56,8 @@ export const actions: ActionTree<AttrState, any> = {
         attrs: filters
       })
 
-      await cacheStorage.setItem(`category-${index}-filters`, filters)
+      if (cache)
+        await cacheStorage.setItem(`category-${index}-filters`, filters)
       
     } catch (err) {
 

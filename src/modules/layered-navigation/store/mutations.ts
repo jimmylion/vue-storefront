@@ -5,10 +5,7 @@ import Vue from 'vue'
 export const mutations: MutationTree<any> = {
 
   [types.SET_ATTRS] (state, { categoryId, attrs }) {
-    state.attributes = {
-      ...state.attributes,
-      [categoryId]: attrs
-    }
+    Vue.set(state.attributes, categoryId, attrs)
   },
 
   [types.SET_CURRENT_ATTRS] (state, { attrs }) {
