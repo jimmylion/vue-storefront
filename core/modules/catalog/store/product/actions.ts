@@ -648,7 +648,7 @@ const actions: ActionTree<ProductState, RootState> = {
 
       }
       return subloaders
-    }).catch(err => console.log('lol', err))
+    })
   },
   /**
    * Add custom option validator for product custom options
