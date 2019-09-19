@@ -12,7 +12,6 @@ export const actions: ActionTree<AttrState, any> = {
   // Load preconfigured packs by IDs
   async loadProductAttrs (context, { index, cache = true, searchQuery = '', size = 4000, start = 0, sort = 'position:asc', includeFields = config.entities.optimize ? config.entities.category.includeFields : null }) {
     const commit = context.commit
-
     let productsSearchQuery;
     if (index === 'search') {
       productsSearchQuery = builder().query('term', 'type_id', 'configurable')
