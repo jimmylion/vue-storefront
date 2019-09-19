@@ -1,6 +1,7 @@
 export interface AttrState {
 
   attributes: Array<any>,
-  filteredAttributes: any
+  filteredAttributes: any,
+  filteredAttributesSearch: any
 
 }

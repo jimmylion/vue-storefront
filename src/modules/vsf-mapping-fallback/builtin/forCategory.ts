@@ -19,7 +19,6 @@ export const forCategory = async ({ dispatch }, { url }: Payload) => {
       };
     }
   } catch {
-    console.log("Hi");
     return undefined;
   }
 };

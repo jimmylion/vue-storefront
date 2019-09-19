@@ -13,13 +13,21 @@ export const actions: ActionTree<AttrState, any> = {
   async loadProductAttrs (context, { index, cache = true, searchQuery = '', size = 4000, start = 0, sort = 'position:asc', includeFields = config.entities.optimize ? config.entities.category.includeFields : null }) {
     const commit = context.commit
 
-    let productsSearchQuery = builder().query('terms', 'category_ids', [index])
-      .filter('term', 'type_id', 'configurable')
-      .filter('terms', 'status', [0, 1])
-      .filter('terms', 'visibility', [2, 3, 4])
-      .filter('term', 'stock.is_in_stock', true)
-      .filter('range', 'configurable_children.stock.qty', { gt: 0 })
-
+    let productsSearchQuery;
+    if (index === 'search') {
+      productsSearchQuery = builder().query('term', 'type_id', 'configurable')
+        .filter('terms', 'status', [0, 1])
+        .filter('terms', 'visibility', [2, 3, 4])
+        .filter('term', 'stock.is_in_stock', true)
+        .filter('range', 'configurable_children.stock.qty', { gt: 0 })
+    } else {
+      productsSearchQuery = builder().query('terms', 'category_ids', [index])
+        .filter('term', 'type_id', 'configurable')
+        .filter('terms', 'status', [0, 1])
+        .filter('terms', 'visibility', [2, 3, 4])
+        .filter('term', 'stock.is_in_stock', true)
+        .filter('range', 'configurable_children.stock.qty', { gt: 0 })
+    }
 
     if (searchQuery.length >= 3) {
       productsSearchQuery = productsSearchQuery.query('multi_match', {
@@ -56,7 +64,7 @@ export const actions: ActionTree<AttrState, any> = {
         attrs: filters
       })
 
-      if (cache)
+      if (cache && index !== 'search')
         await cacheStorage.setItem(`category-${index}-filters`, filters)
       
     } catch (err) {
@@ -75,7 +83,7 @@ export const actions: ActionTree<AttrState, any> = {
     }
   },
 
-  async loadCurrentProductsAttrs (context, { query, size = 4000, start = 0, sort = 'position:asc', includeFields = config.entities.optimize ? config.entities.category.includeFields : null }) {
+  async loadCurrentProductsAttrs (context, { query, search = false, size = 4000, start = 0, sort = 'position:asc', includeFields = config.entities.optimize ? config.entities.category.includeFields : null }) {
     const commit = context.commit
 
     try {
@@ -98,9 +106,8 @@ export const actions: ActionTree<AttrState, any> = {
       })
 
       const filters = items.reduce(FiltersByProduct(), {})
-      console.log('ABC', filters)
 
-      commit(types.SET_CURRENT_ATTRS, {
+      commit(search ? types.SET_CURRENT_ATTRS_SEARCH : types.SET_CURRENT_ATTRS, {
         attrs: filters
       })
       

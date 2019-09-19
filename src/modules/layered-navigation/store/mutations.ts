@@ -10,6 +10,10 @@ export const mutations: MutationTree<any> = {
 
   [types.SET_CURRENT_ATTRS] (state, { attrs }) {
     Vue.set(state, 'filteredAttributes', attrs)
+  },
+
+  [types.SET_CURRENT_ATTRS_SEARCH] (state, { attrs }) {
+    Vue.set(state, 'filteredAttributesSearch', attrs)
   }
 
 }
