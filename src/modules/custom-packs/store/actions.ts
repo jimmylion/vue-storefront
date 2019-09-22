@@ -211,13 +211,13 @@ export const actions: ActionTree<PacksState, any> = {
     const body = {
       packType,
       packSize,
-      quote_id: token,
+      cartId: token,
       packagingId: state.packs[slug].packagingId,
       childs: state.packs[slug].items.map(v => ({
         sku: v.sku,
         qty: 1,
         price: v.discountPrice,
-        quote_id: token
+        pack_type: 'child'
       }))
     }
 
