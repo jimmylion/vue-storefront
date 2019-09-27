@@ -24,6 +24,8 @@ export default (fbq, currency) => {
                   })
                   num_items += Number(item.qty)
                 })
+
+                const totals = rootStore.getters['cart/getTotals']
   
                 track({
                         content_category: 'product',
@@ -32,7 +34,7 @@ export default (fbq, currency) => {
                         contents,
                         currency,
                         num_items,
-                        value: rootStore.getters['cart/totals'][rootStore.getters['cart/totals'].length - 1].value
+                        value: totals[totals.length - 1].value
                 })
   
                 // const cmsUrl = config.externalCheckout.cmsUrl

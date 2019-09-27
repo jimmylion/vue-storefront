@@ -146,7 +146,7 @@
       },
       "tax": {
         "sourcePriceIncludesTax": true,
-        "defaultCountry": "USA",
+        "defaultCountry": "US",
         "defaultRegion": "",
         "calculateServerSide": true
       },
@@ -154,7 +154,7 @@
         "fullCountryName": "United States of America",
         "fullLanguageName": "English",
         "defaultLanguage": "EN",
-        "defaultCountry": "USA",
+        "defaultCountry": "US",
         "defaultLocale": "en-US",
         "currencyCode": "USD",
         "currencySign": "$ ",
@@ -233,7 +233,7 @@
       },
       "tax": {
         "sourcePriceIncludesTax": true,
-        "defaultCountry": "EU",
+        "defaultCountry": "GB",
         "defaultRegion": "",
         "calculateServerSide": true
       },
@@ -241,7 +241,7 @@
         "fullCountryName": "Europe",
         "fullLanguageName": "English",
         "defaultLanguage": "EN",
-        "defaultCountry": "EU",
+        "defaultCountry": "GB",
         "defaultLocale": "en-US",
         "currencyCode": "EUR",
         "currencySign": "€ ",
