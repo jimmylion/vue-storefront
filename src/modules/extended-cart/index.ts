@@ -199,7 +199,7 @@ const actions = {
       } else {
         Logger.info('Server and client item with SKU ' + clientItem.sku + ' synced. Updating cart.', 'cart', 'cart')()
         if (!dryRun) {
-          const base: any =  { sku: clientItem.sku, server_cart_id: serverItem.quote_id, server_item_id: serverItem.item_id, product_option: serverItem.product_option }
+          const base: any =  { ...clientItem, sku: clientItem.sku, server_cart_id: serverItem.quote_id, server_item_id: serverItem.item_id, product_option: serverItem.product_option }
           if (serverItem.pack_id) {
             base.pack_id = serverItem.pack_id
           }
@@ -285,60 +285,58 @@ const actions = {
 }
 
 const mutations = {
-  [types.CART_LOAD_CART] (state, storedItems) {
-    const cartItems = storedItems ? storedItems.reduce((total, curr) => {
+  // [types.CART_LOAD_CART] (state, storedItems) {
+  //   const cartItems = storedItems ? storedItems.reduce((total, curr) => {
 
-      if (!curr.pack_type) {
-        total.push(curr)
-      } else {
+  //     if (!curr.pack_type) {
+  //       total.push(curr)
+  //     } else {
 
-        if (curr.pack_type === 'parent') {
-          total.push({
-            ...curr,
-            packaging: null,
-            childs: []
-          })
-        }
+  //       if (curr.pack_type === 'parent') {
+  //         total.push({
+  //           ...curr,
+  //           packaging: null,
+  //           childs: []
+  //         })
+  //       }
 
-        if (curr.pack_type === 'packaging' || curr.pack_type === 'child') {
-          const parentIndex = total.findIndex(parent => parent.server_item_id === curr.pack_id)
-          if (parentIndex === -1) {
-            console.error('[CustomPacks] Could not find parent for', curr)
-          } else {
+  //       if (curr.pack_type === 'packaging' || curr.pack_type === 'child') {
+  //         const parentIndex = total.findIndex(parent => parent.server_item_id === curr.pack_id)
+  //         if (parentIndex === -1) {
+  //           console.error('[CustomPacks] Could not find parent for', curr)
+  //         } else {
             
-            switch (curr.pack_type) {
+  //           switch (curr.pack_type) {
 
-              case 'packaging':
-                total[parentIndex].packaging = curr
-                break;
-              case 'child':
-                total[parentIndex].childs.push(curr)
-                break;
-              default:
-                console.error('[CustomPacks] Unsupported pack type -', curr.pack_type)
-                break;
+  //             case 'packaging':
+  //               total[parentIndex].packaging = curr
+  //               break;
+  //             case 'child':
+  //               total[parentIndex].childs.push(curr)
+  //               break;
+  //             default:
+  //               console.error('[CustomPacks] Unsupported pack type -', curr.pack_type)
+  //               break;
 
-            }
+  //           }
 
-          }
-        }
+  //         }
+  //       }
 
-      }
+  //     }
 
-      return total
+  //     return total
 
-    }, []) : []
+  //   }, []) : []
 
-    console.log('LOOO', cartItems)
+  //   state.cartItems = cartItems
+  //   state.cartIsLoaded = true
 
-    state.cartItems = cartItems
-    state.cartIsLoaded = true
-
-    // Vue.prototype.$bus.$emit('order/PROCESS_QUEUE', { config: config }) // process checkout queue
-    Vue.prototype.$bus.$emit('sync/PROCESS_QUEUE', { config }) // process checkout queue
-    Vue.prototype.$bus.$emit('application-after-loaded')
-    Vue.prototype.$bus.$emit('cart-after-loaded')
-  },
+  //   // Vue.prototype.$bus.$emit('order/PROCESS_QUEUE', { config: config }) // process checkout queue
+  //   Vue.prototype.$bus.$emit('sync/PROCESS_QUEUE', { config }) // process checkout queue
+  //   Vue.prototype.$bus.$emit('application-after-loaded')
+  //   Vue.prototype.$bus.$emit('cart-after-loaded')
+  // },
 
   [types.CART_ADD_ITEM] (state, { product }) {
     const record = state.cartItems.find(p => p.sku === product.sku)

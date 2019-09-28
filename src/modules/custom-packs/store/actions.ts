@@ -9,6 +9,7 @@ import { currentStoreView } from '@vue-storefront/core/lib/multistore';
 import { quickSearchByQuery } from '@vue-storefront/core/lib/search';
 import builder from 'bodybuilder'
 import rootStore from '@vue-storefront/core/store'
+import * as cartTypes from '@vue-storefront/core/modules/cart/store/mutation-types'
 
 const urlWithSlash = (url: string) => {
   return url.endsWith('/') ? url : url+'/'
@@ -240,9 +241,25 @@ export const actions: ActionTree<PacksState, any> = {
         method: 'POST'
       })
 
-      await response.json()
+      let { result } = await response.json()
 
-      await rootStore.dispatch('cart/sync', {})
+      const childs = JSON.parse(JSON.stringify(state.packs[slug].items))
+
+      commit(`cart/${cartTypes.CART_ADD_ITEM}`, {
+        product: {
+          ...result.items[0],
+          length: state.packs[slug].items[0].length,
+          childs
+        }
+      }, { root: true })
+
+      // for (let item of result.items.slice(1)) {
+      //   commit(`cart/${cartTypes.CART_ADD_ITEM}`, {
+      //     product: item
+      //   }, { root: true })
+      // }
+      
+      await rootStore.dispatch('cart/sync', { forceClientState: true })
 
       commit(types.ADDING_TO_CART_STATUS, false)
       EventBus.$emit('pack-after-add-to-cart', {
