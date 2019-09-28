@@ -247,9 +247,28 @@ export const actions: ActionTree<PacksState, any> = {
 
       commit(`cart/${cartTypes.CART_ADD_ITEM}`, {
         product: {
+
           ...result.items[0],
+
           length: state.packs[slug].items[0].length,
-          childs
+
+          childs,
+
+          isPack: true,
+
+          priceInclTax: state.packs[slug].items.reduce((total, curr) => {
+            return total + curr.priceInclTax
+          }, 0),
+
+          special_price: state.packs[slug].items.reduce((total, curr) => {
+            return total + curr.discountPrice
+          }, 0),
+
+          sizes: state.packs[slug].items.reduce((total, curr) => {
+            total.push(curr.talla)
+            return total
+          }, []).filter((value, index, self) => self.indexOf(value) === index)
+
         }
       }, { root: true })
 
