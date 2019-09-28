@@ -144,14 +144,24 @@ const actions = {
         await _updateClientItem({ dispatch }, event, clientItem)
       }
     }
+    const used = []
+
     for (const clientItem of clientItems) {
       cartHasItems = true
       const serverItem = serverItems.find((itm) => {
+        if (clientItem.isPack) {
+          // Same skus
+          return itm.sku === clientItem.sku && !used.includes(itm.item_id)
+        }
         return itm.sku === clientItem.sku || itm.sku.indexOf(clientItem.sku + '-') === 0 /* bundle products */
       })
+      if (serverItem) {
+        used.push(serverItem.item_id)
+      }
 
       // If it has pack_id, do not remove from server
-      if (!serverItem && !clientItem.pack_id) {
+      if (!serverItem && !clientItem.isPack) {
+
         Logger.warn('No server item with sku ' + clientItem.sku + ' on stock.', 'cart')()
         diffLog.items.push({ 'party': 'server', 'sku': clientItem.sku, 'status': 'no-item' })
         if (!dryRun) {
@@ -200,7 +210,13 @@ const actions = {
       } else {
         Logger.info('Server and client item with SKU ' + clientItem.sku + ' synced. Updating cart.', 'cart', 'cart')()
         if (!dryRun) {
-          const base: any =  { ...clientItem, sku: clientItem.sku, server_cart_id: serverItem.quote_id, server_item_id: serverItem.item_id, product_option: serverItem.product_option }
+          const base: any =  {
+            ...clientItem, sku: clientItem.sku,
+            server_cart_id: serverItem.quote_id,
+            item_id: serverItem.item_id,
+            server_item_id: serverItem.item_id,
+            product_option: serverItem.product_option
+          }
           if (serverItem.pack_id) {
             base.pack_id = serverItem.pack_id
           }
@@ -233,8 +249,6 @@ const actions = {
           Logger.info('No client item for' + serverItem.sku, 'cart')()
           diffLog.items.push({ 'party': 'client', 'sku': serverItem.sku, 'status': 'no-item' })
 
-          debugger;
-
           if (!dryRun) {
             if (forceClientState) {
               Logger.info('Removing product from cart', 'cart', serverItem)()
@@ -265,6 +279,7 @@ const actions = {
         }
       }
     }
+
     if (clientCartAddItems.length) {
       totalsShouldBeRefreshed = true
       clientCartUpdateRequired = true
@@ -298,58 +313,6 @@ const actions = {
 }
 
 const mutations = {
-  // [types.CART_LOAD_CART] (state, storedItems) {
-  //   const cartItems = storedItems ? storedItems.reduce((total, curr) => {
-
-  //     if (!curr.pack_type) {
-  //       total.push(curr)
-  //     } else {
-
-  //       if (curr.pack_type === 'parent') {
-  //         total.push({
-  //           ...curr,
-  //           packaging: null,
-  //           childs: []
-  //         })
-  //       }
-
-  //       if (curr.pack_type === 'packaging' || curr.pack_type === 'child') {
-  //         const parentIndex = total.findIndex(parent => parent.server_item_id === curr.pack_id)
-  //         if (parentIndex === -1) {
-  //           console.error('[CustomPacks] Could not find parent for', curr)
-  //         } else {
-            
-  //           switch (curr.pack_type) {
-
-  //             case 'packaging':
-  //               total[parentIndex].packaging = curr
-  //               break;
-  //             case 'child':
-  //               total[parentIndex].childs.push(curr)
-  //               break;
-  //             default:
-  //               console.error('[CustomPacks] Unsupported pack type -', curr.pack_type)
-  //               break;
-
-  //           }
-
-  //         }
-  //       }
-
-  //     }
-
-  //     return total
-
-  //   }, []) : []
-
-  //   state.cartItems = cartItems
-  //   state.cartIsLoaded = true
-
-  //   // Vue.prototype.$bus.$emit('order/PROCESS_QUEUE', { config: config }) // process checkout queue
-  //   Vue.prototype.$bus.$emit('sync/PROCESS_QUEUE', { config }) // process checkout queue
-  //   Vue.prototype.$bus.$emit('application-after-loaded')
-  //   Vue.prototype.$bus.$emit('cart-after-loaded')
-  // },
 
   [types.CART_ADD_ITEM] (state, { product }) {
 
@@ -366,7 +329,24 @@ const mutations = {
         record.qty += parseInt((product.qty ? product.qty : 1))
       }
 
+  },
+
+  [types.CART_UPD_ITEM_PROPS] (state, { product }) {
+    let record
+    if (product.pack_id) {
+      record = state.cartItems.find(p => (p.pack_id && p.pack_id === product.pack_id))
+    } else if (product.pack_type) {
+      record = state.cartItems.find(p => (p.pack_type && p.pack_type === product.pack_type))
+    } else {
+      record = state.cartItems.find(p => (p.sku === product.sku || (p.server_item_id && p.server_item_id === product.server_item_id)))
+    }
+    if (record) {
+      Vue.prototype.$bus.$emit('cart-before-itemchanged', { item: record })
+      record = Object.assign(record, product)
+      Vue.prototype.$bus.$emit('cart-after-itemchanged', { item: record })
+    }
   }
+
 }
 
 const extendCartVuex = {
