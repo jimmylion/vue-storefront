@@ -303,6 +303,42 @@ export const actions: ActionTree<PacksState, any> = {
 
   },
 
+  async removeFromCart ({ rootGetters, commit }, { item_id }) {
+
+    const cartId = rootGetters['cart/getCartToken']
+    if (!cartId) {
+      throw new Error('[CustomPacks] No cartId!')
+    }
+
+    const { storeCode } = currentStoreView()
+
+    try {
+
+      EventBus.$emit('pack-before-remove-from-cart', { item_id })
+
+      const baseUrl = urlWithSlash(config.api.url)
+
+      let response = await fetch(`${baseUrl}ext/custom-packs/${item_id}/${storeCode}?cartId=${cartId}&token=`, {
+        mode: 'cors',
+        method: 'DELETE'
+      })
+
+      let r = await response.json()
+
+      commit(`cart/${cartTypes.CART_DEL_ITEM}`, { product: {
+        item_id
+      }}, { root: true })
+
+      EventBus.$emit('pack-after-remove-from-cart', {
+        item_id
+      })
+
+    } catch (err) {
+      console.error(err)
+    }
+
+  },
+
   setPack({ commit }, { packType, packId, packSize, initialState }) {
     commit(types.INIT_PACK, {
       packType,

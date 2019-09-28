@@ -345,6 +345,16 @@ const mutations = {
       record = Object.assign(record, product)
       Vue.prototype.$bus.$emit('cart-after-itemchanged', { item: record })
     }
+  },
+
+  [types.CART_DEL_ITEM] (state, { product, removeByParentSku = true }) {
+    Vue.prototype.$bus.$emit('cart-before-delete', { items: state.cartItems })
+    if (product.pack_id) {
+      state.cartItems = state.cartItems.filter(p => !p.item_id || p.item_id !== product.item_id)
+    } else {
+      state.cartItems = state.cartItems.filter(p => p.sku !== product.sku && (p.parentSku !== product.sku || removeByParentSku === false))
+    }
+    Vue.prototype.$bus.$emit('cart-after-delete', { items: state.cartItems })
   }
 
 }
