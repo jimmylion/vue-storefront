@@ -150,7 +150,8 @@ const actions = {
         return itm.sku === clientItem.sku || itm.sku.indexOf(clientItem.sku + '-') === 0 /* bundle products */
       })
 
-      if (!serverItem) {
+      // If it has pack_id, do not remove from server
+      if (!serverItem && !clientItem.pack_id) {
         Logger.warn('No server item with sku ' + clientItem.sku + ' on stock.', 'cart')()
         diffLog.items.push({ 'party': 'server', 'sku': clientItem.sku, 'status': 'no-item' })
         if (!dryRun) {
@@ -172,7 +173,7 @@ const actions = {
             })
           }
         }
-      } else if (serverItem.qty !== clientItem.qty) {
+      } else if (serverItem && serverItem.qty !== clientItem.qty) {
         Logger.log('Wrong qty for ' + clientItem.sku, clientItem.qty, serverItem.qty)()
         diffLog.items.push({ 'party': 'server', 'sku': clientItem.sku, 'status': 'wrong-qty', 'client-qty': clientItem.qty, 'server-qty': serverItem.qty })
         if (!dryRun) {
@@ -220,8 +221,19 @@ const actions = {
           return itm.sku === serverItem.sku || serverItem.sku.indexOf(itm.sku + '-') === 0 /* bundle products */
         })
         if (!clientItem) {
+          if (serverItem.pack_id) {
+            const packParent = serverItems.find((itm) => {
+              return itm.item_id === serverItem.pack_id
+            })
+            if (packParent) {
+              // Do not do anything if pack exists
+              continue
+            }
+          }
           Logger.info('No client item for' + serverItem.sku, 'cart')()
           diffLog.items.push({ 'party': 'client', 'sku': serverItem.sku, 'status': 'no-item' })
+
+          debugger;
 
           if (!dryRun) {
             if (forceClientState) {
@@ -258,6 +270,7 @@ const actions = {
       clientCartUpdateRequired = true
       cartHasItems = true
     }
+
     diffLog.items.push({ 'party': 'client', 'status': clientCartUpdateRequired ? 'update-required' : 'no-changes' })
     diffLog.items.push({ 'party': 'server', 'status': serverCartUpdateRequired ? 'update-required' : 'no-changes' })
     Promise.all(clientCartAddItems).then((items) => {
@@ -339,24 +352,20 @@ const mutations = {
   // },
 
   [types.CART_ADD_ITEM] (state, { product }) {
-    const record = state.cartItems.find(p => p.sku === product.sku)
-    if (!record) {
-      if (product.pack_id) {
-        return
+
+      const record = state.cartItems.find(p => p.sku === product.sku)
+      if (!record || product.isPack) {
+        let item = {
+          ...product,
+          qty: parseInt(product.qty ? product.qty : 1)
+        }
+        Vue.prototype.$bus.$emit('cart-before-add', { product: item })
+        state.cartItems.push(item)
+      } else {
+        Vue.prototype.$bus.$emit('cart-before-update', { product: record })
+        record.qty += parseInt((product.qty ? product.qty : 1))
       }
-      let item = {
-        ...product,
-        qty: parseInt(product.qty ? product.qty : 1)
-      }
-      Vue.prototype.$bus.$emit('cart-before-add', { product: item })
-      state.cartItems.push(item)
-    } else {
-      if (record.pack_id) {
-        return
-      }
-      Vue.prototype.$bus.$emit('cart-before-update', { product: record })
-      record.qty += parseInt((product.qty ? product.qty : 1))
-    }
+
   }
 }
 

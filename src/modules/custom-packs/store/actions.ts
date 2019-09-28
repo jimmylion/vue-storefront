@@ -243,7 +243,19 @@ export const actions: ActionTree<PacksState, any> = {
 
       let { result } = await response.json()
 
-      const childs = JSON.parse(JSON.stringify(state.packs[slug].items))
+      const childs = JSON.parse(JSON.stringify(state.packs[slug].items)).reduce((total, curr) => {
+        const index = total.findIndex(v => v.sku === curr.sku)
+        if (index !== -1) {
+          total[index].qty++
+        } else {
+          total.push({
+            ...curr,
+            qty: 1
+          })
+        }
+        return total
+      }, [])
+
 
       commit(`cart/${cartTypes.CART_ADD_ITEM}`, {
         product: {
@@ -271,12 +283,6 @@ export const actions: ActionTree<PacksState, any> = {
 
         }
       }, { root: true })
-
-      // for (let item of result.items.slice(1)) {
-      //   commit(`cart/${cartTypes.CART_ADD_ITEM}`, {
-      //     product: item
-      //   }, { root: true })
-      // }
       
       await rootStore.dispatch('cart/sync', { forceClientState: true })
 
