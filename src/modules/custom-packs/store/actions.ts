@@ -288,6 +288,7 @@ export const actions: ActionTree<PacksState, any> = {
       // Cuz of that I extended cart module
       // More in src/modules/extended-cart
       await rootStore.dispatch('cart/sync', { forceClientState: true })
+      await rootStore.dispatch('cart/syncTotals', { forceServerSync: true })
 
       commit(types.ADDING_TO_CART_STATUS, false)
       EventBus.$emit('pack-after-add-to-cart', {
@@ -323,13 +324,15 @@ export const actions: ActionTree<PacksState, any> = {
 
       const baseUrl = urlWithSlash(config.api.url)
 
-      let response = await fetch(`${baseUrl}ext/custom-packs/${item_id}/${storeCode}?cartId=${cartId}&token=`, {
+      await fetch(`${baseUrl}ext/custom-packs/${item_id}/${storeCode}?cartId=${cartId}&token=`, {
         mode: 'cors',
         method: 'DELETE'
       })
 
-      // let r = await response.json()
-
+      // Syncing price
+      // await rootStore.dispatch('cart/sync', { forceClientState: true })
+      await rootStore.dispatch('cart/syncTotals', { forceServerSync: true })
+      
       commit(`cart/${cartTypes.CART_DEL_ITEM}`, { product: {
         item_id
       }}, { root: true })
