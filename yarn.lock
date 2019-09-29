@@ -13264,10 +13264,10 @@ sw-toolbox@^3.4.0:
     path-to-regexp "^1.0.1"
     serviceworker-cache-polyfill "^4.0.0"
 
-sxcss@^1.2.11:
-  version "1.2.18"
-  resolved "https://registry.yarnpkg.com/sxcss/-/sxcss-1.2.18.tgz#e389fba58ce86a3e20d96d3298093f8e02fec572"
-  integrity sha512-AfvsoRv6kSmh8zIyM4irpIyXcf/cAYVgY8b+V1cYfC4Dlzfz7Yl+RkBMZ0JsEXllO0OUXJiJi3ZA63AistHR6Q==
+sxcss@^1.2.21:
+  version "1.2.21"
+  resolved "https://registry.yarnpkg.com/sxcss/-/sxcss-1.2.21.tgz#e7c1c987f8b9994c7e8fa069bcf6086705ecb4c9"
+  integrity sha512-Cy7GMRneKB1tuweHQs+V7IaXt3T8IrXNMvZu9zU5+oatElohYlufoGGfoMf+QvckeEiab/0zslA0RfZnEVSxIQ==
   dependencies:
     gulp "^4.0.2"
     gulp-concat "^2.6.1"
