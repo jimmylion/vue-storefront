@@ -119,36 +119,12 @@ export const actions: ActionTree<PacksState, any> = {
     }
   },
 
+  // It creates reactive object in store for building pack and saves it in the cacheStorage
   async initPack ({ rootGetters, commit }, { packId, packSize, packType }) {
 
     try {
 
-      // const token = rootGetters['cart/getCartToken']
-      // if (!token) {
-      //   throw new Error('[CustomPacks] No token!')
-      // }
-
-      // const body = {
-      //   "cartItem": {
-      //     "sku": `${packSize}-${packType}`,
-      //     "qty": 1,
-      //     "price": 0,
-      //     "quote_id": token
-      //   }
-      // }
-
       const { storeCode } = currentStoreView()
-
-      // const response = await fetch(`${urlWithSlash(config.api.url)}ext/custom-packs/init/${storeCode}?token=`, {
-      //   body: JSON.stringify(<any>body),
-      //   headers: {
-      //     'Content-Type': 'application/json'
-      //   },
-      //   mode: 'cors',
-      //   method: 'POST'
-      // })
-
-      // const r = await response.json()
 
       commit(types.INIT_PACK, { packId, packType, packSize, initialState: [] })
 
@@ -159,6 +135,7 @@ export const actions: ActionTree<PacksState, any> = {
 
   },
 
+  // It adds product with the discount price to Vuex object of pack and updates cacheStorage object
   async addToPack ({ rootGetters, commit }, { product, slug, discount }) {
 
     try {
@@ -181,6 +158,7 @@ export const actions: ActionTree<PacksState, any> = {
 
   },
 
+  // It removes socket from the Vuex and Cache of pack
   async removeFromPack ({ rootGetters, commit }, { product, slug, index }) {
 
     try {
@@ -200,6 +178,7 @@ export const actions: ActionTree<PacksState, any> = {
 
   },
 
+  // It adds built pack to the Cart
   async addToCart ({ state, commit, rootGetters }, { slug, packType, packSize }) {
 
     const token = rootGetters['cart/getCartToken']
@@ -209,6 +188,7 @@ export const actions: ActionTree<PacksState, any> = {
 
     const { storeCode } = currentStoreView()
 
+    // Building body for request
     const body = {
       packType,
       packSize,
@@ -233,8 +213,10 @@ export const actions: ActionTree<PacksState, any> = {
 
       commit(types.ADDING_TO_CART_STATUS, true)
 
+      // Commented URL for Docker Api tests
       const baseUrl = urlWithSlash(config.api.url)//'http://localhost:8080/api/'
 
+      // It should be changed to TaskExecute
       let response = await fetch(`${baseUrl}ext/custom-packs/add/${storeCode}?token=`, {
         body: JSON.stringify(<any>body),
         headers: {
@@ -246,6 +228,9 @@ export const actions: ActionTree<PacksState, any> = {
 
       let { result } = await response.json()
 
+      // Bulding object with childs
+      // Client's side cart is only partialy related with server cart
+      // Changes in cart's object allowed me to have differences and control them
       const childs = JSON.parse(JSON.stringify(state.packs[slug].items)).reduce((total, curr) => {
         const index = total.findIndex(v => v.sku === curr.sku)
         if (index !== -1) {
@@ -263,8 +248,14 @@ export const actions: ActionTree<PacksState, any> = {
       // I need to find last added
       // I can do it by exclude ones with the current cart
       const cartItems = rootGetters['cart/getCartItems']
-      const parent = result.items.find(item => item.sku === parentSku && !cartItems.some(cartItem => cartItem.item_id === item.item_id))
+      const parent = result.items.find(item => 
+        item.sku === parentSku 
+        && !cartItems.some(
+          cartItem => cartItem.item_id === item.item_id
+        )
+      )
 
+      // Adding Pack to the client's side cart
       commit(`cart/${cartTypes.CART_ADD_ITEM}`, {
         product: {
 
@@ -292,6 +283,10 @@ export const actions: ActionTree<PacksState, any> = {
         }
       }, { root: true })
       
+      // Syncing
+      // it is necessary
+      // Cuz of that I extended cart module
+      // More in src/modules/extended-cart
       await rootStore.dispatch('cart/sync', { forceClientState: true })
 
       commit(types.ADDING_TO_CART_STATUS, false)
@@ -311,6 +306,8 @@ export const actions: ActionTree<PacksState, any> = {
 
   },
 
+  // It removes Pack from the Card
+  // It recognizes pack by item_id
   async removeFromCart ({ rootGetters, commit }, { item_id }) {
 
     const cartId = rootGetters['cart/getCartToken']
@@ -331,7 +328,7 @@ export const actions: ActionTree<PacksState, any> = {
         method: 'DELETE'
       })
 
-      let r = await response.json()
+      // let r = await response.json()
 
       commit(`cart/${cartTypes.CART_DEL_ITEM}`, { product: {
         item_id
@@ -347,6 +344,7 @@ export const actions: ActionTree<PacksState, any> = {
 
   },
 
+  // It sets initial state for the pack, e.g. loaded from cacheStorage
   setPack({ commit }, { packType, packId, packSize, initialState }) {
     commit(types.INIT_PACK, {
       packType,
