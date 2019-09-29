@@ -222,6 +222,9 @@ export const actions: ActionTree<PacksState, any> = {
       }))
     }
 
+    // I should find safer method
+    const parentSku = `${packSize}-${packType}`
+
     try {
 
       EventBus.$emit('pack-before-add-to-cart', {
@@ -256,11 +259,16 @@ export const actions: ActionTree<PacksState, any> = {
         return total
       }, [])
 
+      // In response I have whole Cart
+      // I need to find last added
+      // I can do it by exclude ones with the current cart
+      const cartItems = rootGetters['cart/getCartItems']
+      const parent = result.items.find(item => item.sku === parentSku && !cartItems.some(cartItem => cartItem.item_id === item.item_id))
 
       commit(`cart/${cartTypes.CART_ADD_ITEM}`, {
         product: {
 
-          ...result.items[0],
+          ...parent,
 
           length: state.packs[slug].items[0].length,
 

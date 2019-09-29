@@ -333,10 +333,9 @@ const mutations = {
 
   [types.CART_UPD_ITEM_PROPS] (state, { product }) {
     let record
+    // p.item_id is from the previous pack
     if (product.pack_id) {
-      record = state.cartItems.find(p => (p.pack_id && p.pack_id === product.pack_id))
-    } else if (product.pack_type) {
-      record = state.cartItems.find(p => (p.pack_type && p.pack_type === product.pack_type))
+      record = state.cartItems.find(p => (p.item_id && p.item_id === product.pack_id))
     } else {
       record = state.cartItems.find(p => (p.sku === product.sku || (p.server_item_id && p.server_item_id === product.server_item_id)))
     }
@@ -349,7 +348,7 @@ const mutations = {
 
   [types.CART_DEL_ITEM] (state, { product, removeByParentSku = true }) {
     Vue.prototype.$bus.$emit('cart-before-delete', { items: state.cartItems })
-    if (product.pack_id) {
+    if (product.item_id) {
       state.cartItems = state.cartItems.filter(p => !p.item_id || p.item_id !== product.item_id)
     } else {
       state.cartItems = state.cartItems.filter(p => p.sku !== product.sku && (p.parentSku !== product.sku || removeByParentSku === false))
