@@ -41,7 +41,7 @@ export const mapProduct = (product) => {
     }
   }
 
-  const productId = product.id ? product.id+'' : (product.childs ? products.childs[0].id : 'NotFound')
+  const productId = product.id ? product.id+'' : (product.childs ? product.childs[0].id : 'NotFound')
 
   return {
     'ProductID': productId,
