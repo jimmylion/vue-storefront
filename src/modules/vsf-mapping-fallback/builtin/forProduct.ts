@@ -1,10 +1,11 @@
 import SearchQuery from "@vue-storefront/core/lib/search/searchQuery";
-import { storeCodeFromRoute } from "@vue-storefront/core/lib/multistore";
+import { storeCodeFromRoute, prepareStoreView } from "@vue-storefront/core/lib/multistore";
 import { Payload } from "../types/Payload";
 import config from "config";
 
 export const forProduct = async ({ dispatch }, { url, params }: Payload) => {
   const storeCode = storeCodeFromRoute(url);
+  prepareStoreView(storeCode)
 
   const prefix = config.storeViews[storeCode].productsPrefix;
 

@@ -1,7 +1,8 @@
-import { removeStoreCodeFromRoute } from "@vue-storefront/core/lib/multistore";
+import { removeStoreCodeFromRoute, prepareStoreView, storeCodeFromRoute } from "@vue-storefront/core/lib/multistore";
 import { Payload } from "../types/Payload";
 
 export const forCategory = async ({ dispatch }, { url }: Payload) => {
+  prepareStoreView(storeCodeFromRoute(url))
   url = removeStoreCodeFromRoute(url) as string;
 
   try {
@@ -18,7 +19,7 @@ export const forCategory = async ({ dispatch }, { url }: Payload) => {
         }
       };
     }
-  } catch {
+  } catch(err) {
     return undefined;
   }
 };
