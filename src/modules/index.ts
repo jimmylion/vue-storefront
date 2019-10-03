@@ -32,6 +32,7 @@ import { googleTagManager } from "./google-tag-manager";
 import { MagentoMenus } from "./magento-menus";
 import { VsfCustomPacks } from './custom-packs';
 import { vsfLayeredNav } from './layered-navigation';
+import { PaymentAdyen } from './payment-adyen'
 
 import { extendMappingFallback } from "src/modules/vsf-mapping-fallback";
 import {
@@ -112,6 +113,7 @@ export const registerModules: VueStorefrontModule[] = [
   MagentoMenus,
   VsfCustomPacks,
   relatedProducts,
-  vsfLayeredNav
+  vsfLayeredNav,
+  PaymentAdyen
   // Example
 ];
