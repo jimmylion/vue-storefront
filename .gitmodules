@@ -1,3 +1,6 @@
 [submodule "src/modules/vsf-yotpo"]
 	path = src/modules/vsf-yotpo
 	url = git@github.com:new-fantastic/vsf-yotpo.git
+[submodule "src/modules/payment-adyen"]
+	path = src/modules/payment-adyen
+	url = git@github.com:jimmylion/vsf-payment-adyen.git
