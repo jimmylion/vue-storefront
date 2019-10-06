@@ -1,17 +1,32 @@
 import { mapGetters } from 'vuex';
+import { currentStoreView } from '@vue-storefront/core/lib/multistore';
 
 const prepareUrls = function(menuIdentifier: string) {
+
   if (!this.$store.state['magento-menus'].menus) {
     return null;
   }
-  const menu = this.$store.state['magento-menus'].menus.find(
-    v => v.identifier === menuIdentifier
-  );
-  let preparedMenu = menu;
-  if (preparedMenu) {
+
+  // Find menu with requested identifier
+  const { storeCode } = currentStoreView()
+  let menu
+  if (storeCode) {
+    menu = this.$store.state['magento-menus'].menus.find(
+      v => v.identifier === `${menuIdentifier}-${storeCode}`
+    );
+  }
+  if (!menu) {
+    menu = this.$store.state['magento-menus'].menus.find(
+      v => v.identifier === menuIdentifier
+    );
+  }
+
+  if (menu) {
     // Links prepared
-    preparedMenu = preparedMenu.items.map(v => {
+    // Set links and images
+    menu = menu.items.map(v => {
       let url = '/';
+      let title;
       let menuImage = null
 
       if (v.type === 'category') {
@@ -19,6 +34,7 @@ const prepareUrls = function(menuIdentifier: string) {
 
         if (category) {
           url = category.slug;
+          title = category.name
           if (category.mobile_menu_image) {
             menuImage = category.mobile_menu_image
           }
@@ -29,10 +45,20 @@ const prepareUrls = function(menuIdentifier: string) {
         url = null;
       }
 
-      const obj = {
-        ...v,
-        url
+      let obj: any = {}
+      if (title) {
+        obj = {
+          ...v,
+          url,
+          title
+        }
+      } else {
+        obj = {
+          ...v,
+          url
+        }
       }
+      
       if (menuImage) {
         obj.image = menuImage
       }
@@ -40,13 +66,14 @@ const prepareUrls = function(menuIdentifier: string) {
       return obj
     });
 
-    const parents = preparedMenu
+    // Move childs to parents (one level deep only)
+    const parents = menu
       .filter(v => !v.parent_id)
       .map(v => ({
         ...v,
         childs: []
       }));
-    const childs = preparedMenu.filter(v => v.parent_id);
+    const childs = menu.filter(v => v.parent_id);
     for (let child of childs) {
       let parent = parents.findIndex(v => v.node_id === child.parent_id);
       if (parent !== -1) {
@@ -59,7 +86,9 @@ const prepareUrls = function(menuIdentifier: string) {
 };
 
 export default (menuIdentifier: string | Array<string>) => ({
+
   computed: {
+
     ...mapGetters('category', ['getCategories']),
     menu() {
       if (Array.isArray(menuIdentifier)) {
@@ -68,14 +97,28 @@ export default (menuIdentifier: string | Array<string>) => ({
         return prepareUrls.call(this, menuIdentifier);
       }
     }
+
   },
+
   methods: {
     async fetchMenu() {
+      const { storeCode } = currentStoreView()
+
       if (this.$store.state['magento-menus'].menus) {
         if (Array.isArray(menuIdentifier)) {
           const identifiersToFetch = [];
 
           for (let identifier of menuIdentifier) {
+            // Try to find menu in the current language
+            const menuInCurrentStoreCode = this.$store.state['magento-menus'].menus.find(
+              v => v.identifier === `${identifier}-${storeCode}`
+            );
+            if (menuInCurrentStoreCode && !menuInCurrentStoreCode.items.length) {
+              identifiersToFetch.push(menuInCurrentStoreCode.identifier)
+              continue;
+            }
+
+            // Fallback to the menu without store code
             const menu = this.$store.state['magento-menus'].menus.find(
               v => v.identifier === identifier
             );
@@ -89,6 +132,20 @@ export default (menuIdentifier: string | Array<string>) => ({
             identifiersToFetch
           );
         } else {
+
+          // Try to find menu in the current language
+          const menuInCurrentStoreCode = this.$store.state['magento-menus'].menus.find(
+            v => v.identifier === `${menuIdentifier}-${storeCode}`
+          );
+          if (menuInCurrentStoreCode && !menuInCurrentStoreCode.items.length) {
+            await this.$store.dispatch(
+              'magento-menus/loadNodes',
+              menuInCurrentStoreCode.identifier
+            );
+            return
+          }
+
+          // Fallback to the menu without store code
           const menu = this.$store.state['magento-menus'].menus.find(
             v => v.identifier === menuIdentifier
           );
@@ -101,6 +158,7 @@ export default (menuIdentifier: string | Array<string>) => ({
         }
       }
     }
+
   },
 
   async serverPrefetch() {
