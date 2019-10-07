@@ -376,6 +376,8 @@
         "id",
         "*.children_data.id",
         "*.id",
+        "*.show_in_list",
+        "show_in_list",
         "children_count",
         "sku",
         "name",
