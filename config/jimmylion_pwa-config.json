@@ -1,4 +1,5 @@
 {
+  "developerMode": true,
   "server": {
     "host": "localhost",
     "port": 3000,
@@ -114,7 +115,8 @@
     }
   },
   "api": {
-    "url": "https://api.jl.newfantastic.com/api/"
+    "url": "https://api.jl.newfantastic.com/api/",
+    "magento": "https://new.jimmylion.com/"
   },
   "ssr": {
     "templates": {
@@ -241,7 +243,7 @@
         "fullCountryName": "Europe",
         "fullLanguageName": "English",
         "defaultLanguage": "EN",
-        "defaultCountry": "GB",
+        "defaultCountry": "EU",
         "defaultLocale": "en-US",
         "currencyCode": "EUR",
         "currencySign": "€ ",
@@ -619,6 +621,8 @@
     "applycoupon_endpoint": "https://api.jl.newfantastic.com/api/cart/apply-coupon?token={{token}}&cartId={{cartId}}&coupon={{coupon}}"
   },
   "products": {
+    "listingDividerDesktop": 4,
+    "listingDividerMobile": 2,
     "useMagentoUrlKeys": true,
     "setFirstVarianAsDefaultInURL": false,
     "configurableChildrenStockPrefetchStatic": false,
@@ -690,7 +694,8 @@
       "claims": "LOCALSTORAGE",
       "syncTasks": "LOCALSTORAGE",
       "ordersHistory": "LOCALSTORAGE",
-      "checkoutFieldValues": "LOCALSTORAGE"
+      "checkoutFieldValues": "LOCALSTORAGE",
+      "adyen": "LOCALSTORAGE"
     }
   },
   "reviews": {
@@ -916,5 +921,15 @@
     "105": "#fff",
     "125": "#000",
     "126": "#d3463a"
+  },
+
+  "adyen": {
+    "originKey": "AQEkhmfuXNWTK0Qc+iSam2k1vsiSR4WDbID3BRETT7EQuWcW3SjnEMFdWw2+5HzctViMSCJMYAc=-amJPLtXieemLCwmQU2dSpMnVGw7NHBnts1711QWoC0g=-6RjV5X8FrN69WKXQ",
+    "paypalResultHandler": "https://your-backend/adyen-end-points/paypal"
+  },
+
+  "breakpoints": {
+    "mobile": 980
   }
+
 }
