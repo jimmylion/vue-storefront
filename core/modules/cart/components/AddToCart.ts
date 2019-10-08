@@ -15,9 +15,26 @@ export const AddToCart = {
     disabled: {
       type: Boolean,
       default: false
-    }
+    },
+    isProductPicked: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
   methods: {
+    checkProduct() {
+      if (this.isProductPicked) {
+        this.addToCart(this.product);
+      } else {
+        this.$store.dispatch("notification/spawnNotification", {
+          action1: { label: this.$t("OK") },
+          message:
+            "Please select size of product",
+          type: "error"
+        });
+      }
+    },
     async addToCart (product: Product) {
       this.isAddingToCart = true
       try {

@@ -30,6 +30,9 @@ export const forProduct = async ({ dispatch }, { url, params }: Payload) => {
 
     return {
       name: product.type_id + "-product",
+      meta: {
+        componentName: 'product',
+      },
       params: {
         slug: product.slug,
         parentSku: product.sku,
