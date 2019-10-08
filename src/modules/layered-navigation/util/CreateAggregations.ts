@@ -6,16 +6,29 @@ interface Filter {
   name: string,
   path: string,
   aggName: string,
-  value: Array<string> | Array<Number>
+  value: Array<string> | Array<Number>,
+  keyword?: Boolean
 }
 
-// interface Aggregation {
-//   [key: string]: {
-//     filter: {
-
-//     }
-//   }
-// }
+/**
+ * Example of use
+ * const instance = new CreateAggregations([
+      {
+        name: 'color',
+        path: 'configurable_children.color_group',
+        aggName: 'colors',
+        value: [2, 15]
+      },
+      {
+        name: 'style',
+        path: 'configurable_children.style',
+        aggName: 'styles',
+        value: [3]
+      }
+    ])
+  
+  instance.aggs === your aggregations query
+ */
 
 export default class AgregationsCreator {
 
@@ -24,7 +37,8 @@ export default class AgregationsCreator {
 
   constructor(private filters: Array<Filter>) {
     this.aggregations = {
-      aggs: {}
+      aggs: {},
+      size: 0
     }
 
     this.applied = filters.reduce((total, { value }) => {
@@ -95,12 +109,25 @@ export default class AgregationsCreator {
 
     agg[`${filter.aggName}_wrapper`].aggs[filter.aggName] = {
       terms: {
-        field: [filter.path]
+        field: filter.path + (filter.keyword ? '.keyword' : '')
       }
     }
 
     return agg
 
+  }
+
+  get aggs () {
+    const aggs = {...this.aggregations}
+
+    for (let filter of this.filters) {
+      aggs.aggs = {
+        ...aggs.aggs,
+        ...this.appendFilterToAggregation(filter.name)
+      }
+    }
+
+    return aggs
   }
 
 }
