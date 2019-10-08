@@ -930,6 +930,10 @@
 
   "breakpoints": {
     "mobile": 980
+  },
+
+  "infiniteScroll": {
+    "size": 32
   }
 
 }

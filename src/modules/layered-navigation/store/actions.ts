@@ -10,17 +10,19 @@ import FiltersByProduct from 'src/modules/layered-navigation/util/FiltersByProdu
 export const actions: ActionTree<AttrState, any> = {
 
   // Load preconfigured packs by IDs
-  async loadProductAttrs (context, { index, cache = true, searchQuery = '', size = 4000, start = 0, sort = 'position:asc', includeFields = config.entities.optimize ? config.entities.category.includeFields : null }) {
-    const commit = context.commit
+  async loadProductAttrs ({ commit }, { index, cache = true, searchQuery = '', size = 4000, start = 0, sort = 'position:asc', includeFields = config.entities.optimize ? config.entities.category.includeFields : null }) {
+    
     let productsSearchQuery;
+
+    // Creating base query
     if (index === 'search') {
-      productsSearchQuery = builder().query('term', 'type_id', 'configurable')
+      productsSearchQuery = builder().size(0).query('term', 'type_id', 'configurable')
         .filter('terms', 'status', [0, 1])
         .filter('terms', 'visibility', [2, 3, 4])
         .filter('term', 'stock.is_in_stock', true)
         .filter('range', 'configurable_children.stock.qty', { gt: 0 })
     } else {
-      productsSearchQuery = builder().query('terms', 'category_ids', [index])
+      productsSearchQuery = builder().size(0).query('terms', 'category_ids', [index])
         .filter('term', 'type_id', 'configurable')
         .filter('terms', 'status', [0, 1])
         .filter('terms', 'visibility', [2, 3, 4])
@@ -36,6 +38,8 @@ export const actions: ActionTree<AttrState, any> = {
         fields: ['name^4', 'sku^2', 'category.name^1']
       })
     }
+
+    // Create aggregations
 
     try {
       const { items } = await quickSearchByQuery({
@@ -106,9 +110,9 @@ export const actions: ActionTree<AttrState, any> = {
 
       const filters = items.reduce(FiltersByProduct(), {})
 
-      commit(search ? types.SET_CURRENT_ATTRS_SEARCH : types.SET_CURRENT_ATTRS, {
-        attrs: filters
-      })
+      // commit(search ? types.SET_CURRENT_ATTRS_SEARCH : types.SET_CURRENT_ATTRS, {
+      //   attrs: filters
+      // })
       
     } catch (err) {
 
