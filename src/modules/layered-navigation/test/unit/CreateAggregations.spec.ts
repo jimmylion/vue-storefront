@@ -43,6 +43,62 @@ describe('CreateAggregations', () => {
         }
       }
     )
+
+  })
+
+  it('it creates aggregation with a few foreign filters', () => {
+    const instance = new CreateAggregations([
+      {
+        name: 'color',
+        path: 'configurable_children.color_group',
+        aggName: 'colors',
+        value: [2, 15]
+      },
+      {
+        name: 'style',
+        path: 'configurable_children.style',
+        aggName: 'styles',
+        value: [3]
+      },
+      {
+        name: 'length',
+        path: 'configurable_children.length',
+        aggName: 'lengths',
+        value: ["Mid", "Knee"]
+      }
+    ])
+    
+    const colorAgg = instance.appendFilterToAggregation('color')
+    expect(colorAgg).toEqual({
+        colors_wrapper: {
+          filter: {
+            bool: {
+              must: [
+                {
+                  terms: {
+                    "configurable_children.style": [3]
+                  }
+                },
+                {
+                  terms: {
+                    "configurable_children.length": ["Mid", "Knee"]
+                  }
+                }
+              ]
+            }
+          },
+          aggs: {
+            colors: {
+              terms: {
+                field: [
+                  "configurable_children.color_group"
+                ]
+              }
+            }
+          }
+        }
+      }
+    )
     
   })
 

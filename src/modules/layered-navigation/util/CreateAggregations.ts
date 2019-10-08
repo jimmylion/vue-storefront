@@ -73,8 +73,6 @@ export default class AgregationsCreator {
       if (JSON.stringify(globalFilter) === JSON.stringify(filter)) {
         continue
       }
-
-      console.log(globalFilter)
       
       if (globalFilter.value && globalFilter.value.length) {
 
