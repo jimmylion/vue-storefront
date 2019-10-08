@@ -30,7 +30,7 @@ export const AddToCart = {
         this.$store.dispatch("notification/spawnNotification", {
           action1: { label: this.$t("OK") },
           message:
-            "Something went wrong. Please try again subscribe our newsletter",
+            "Please select size of product",
           type: "error"
         });
       }
