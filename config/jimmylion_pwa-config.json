@@ -626,7 +626,7 @@
     "useMagentoUrlKeys": true,
     "setFirstVarianAsDefaultInURL": false,
     "configurableChildrenStockPrefetchStatic": false,
-    "configurableChildrenStockPrefetchDynamic": true,
+    "configurableChildrenStockPrefetchDynamic": false,
     "configurableChildrenStockPrefetchStaticPrefetchCount": 8,
     "filterUnavailableVariants": true,
     "listOutOfStockProducts": false,

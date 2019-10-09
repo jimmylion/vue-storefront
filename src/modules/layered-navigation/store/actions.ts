@@ -1,3 +1,4 @@
+import rootStore from '@vue-storefront/core/store';
 import { AttrState } from './../types/AttrState';
 import { ActionTree } from 'vuex';
 import * as types from './mutation-types'
@@ -9,8 +10,9 @@ import FiltersByProduct from 'src/modules/layered-navigation/util/FiltersByProdu
 import CreateAggregations from '../util/CreateAggregations'
 import fetch from 'isomorphic-fetch'
 import { currentStoreView } from '@vue-storefront/core/lib/multistore';
+import { optionLabel } from '@vue-storefront/core/modules/catalog/helpers/optionLabel';
 
-const emptyFilters = [
+const emptyFilters: Array<any> = [
   {
     name: 'color',
     path: 'configurable_children.color_group',
@@ -53,13 +55,28 @@ const emptyFilters = [
   }
 ]
 
+const attributeMap = {
+  'colors': 'color_group',
+  'sizes': 'talla',
+  'styles': 'style',
+  'prints': 'print',
+  'lengths': 'length',
+  'featureds': 'featured',
+}
+
+const reversedAttributeMap = {}
+for (const [key, value] of Object.entries(attributeMap)) {
+  reversedAttributeMap[value] = key
+}
+
 export const actions: ActionTree<AttrState, any> = {
 
   // Load preconfigured packs by IDs
   async loadProductAttrs ({ commit }, {
     index,
     cache = true,
-    searchQuery = ''
+    searchQuery = '',
+    values = {}
   }) {
     
     let productsSearchQuery;
@@ -90,7 +107,18 @@ export const actions: ActionTree<AttrState, any> = {
     }
 
     // Create aggregations
-    const instance = new CreateAggregations(emptyFilters)
+    let filtersToAggs = emptyFilters
+    let anyFilters: Boolean = false
+    if (JSON.stringify(values) !== JSON.stringify({})) {
+      anyFilters = true
+      for (const [key, value] of Object.entries(values)) {
+        const filter = filtersToAggs.find(filter => filter.aggName === reversedAttributeMap[key])
+        if (!filter)
+          continue
+        filter.value = Array.isArray(value) ? value : [value]
+      }
+    }
+    const instance = new CreateAggregations(filtersToAggs)
 
     try {
       const { storeCode } = currentStoreView()
@@ -101,16 +129,42 @@ export const actions: ActionTree<AttrState, any> = {
         },
         body: JSON.stringify({
           ...productsSearchQuery.build(),
-          ...instance.filterlessAggs
+          ...(anyFilters ? instance.aggs : instance.filterlessAggs)
         })
       })
       
       const { aggregations } = await response.json()
-      const attrs = Object.keys(aggregations).reduce((total, curr) => {
+      let attrs;
+      if (!anyFilters) {
+        attrs = Object.keys(aggregations).reduce((total, curr) => {
+          total[curr] = aggregations[curr].buckets.map(bucket => {
+  
+            return {
+              ...bucket,
+              label: optionLabel(rootStore.state.attribute, {
+                attributeKey: attributeMap[curr],
+                optionId: bucket.key
+              })
+            }
+          })
+          return total
+        }, {})
+      } else {
+        attrs = Object.keys(aggregations).reduce((total, curr) => {
 
-        total[curr] = aggregations[curr].buckets
-        return total
-      }, {})
+          total[curr.replace('_wrapper', '')] = aggregations[curr][curr.replace('_wrapper', '')].buckets.map(bucket => {
+  
+            return {
+              ...bucket,
+              label: optionLabel(rootStore.state.attribute, {
+                attributeKey: attributeMap[curr.replace('_wrapper', '')],
+                optionId: bucket.key
+              })
+            }
+          })
+          return total
+        }, {})
+      }
 
       commit(types.SET_ATTRS, {
         categoryId: index,
