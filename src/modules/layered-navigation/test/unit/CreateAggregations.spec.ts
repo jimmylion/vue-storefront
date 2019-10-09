@@ -144,4 +144,64 @@ describe('CreateAggregations', () => {
 
   })
 
+  it('it returns filterless agg with size', () => {
+    const instance = new CreateAggregations([
+      {
+        name: 'color',
+        path: 'configurable_children.color_group',
+        aggName: 'colors',
+        value: [2, 15]
+      }
+    ])
+    
+    expect(instance.filterlessAggs).toEqual({
+        aggs: {
+          colors: {
+            terms: {
+              field: "configurable_children.color_group"
+            }
+          }
+        },
+        size: 0
+      }
+    )
+
+  })
+
+  it('it returns 2 filterless aggs with size', () => {
+    const instance = new CreateAggregations([
+      {
+        name: 'color',
+        path: 'configurable_children.color_group',
+        aggName: 'colors',
+        value: [2, 15],
+        keyword: true
+      },
+      {
+        name: 'style',
+        path: 'configurable_children.style',
+        aggName: 'styles',
+        value: [17]
+      }
+    ])
+    
+    expect(instance.filterlessAggs).toEqual({
+        aggs: {
+          colors: {
+            terms: {
+              field: "configurable_children.color_group.keyword"
+            }
+          },
+          styles: {
+            terms: {
+              field: "configurable_children.style"
+            }
+          }
+        },
+        size: 0
+      }
+    )
+
+  })
+
 })

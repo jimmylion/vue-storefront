@@ -49,6 +49,22 @@ export default class AgregationsCreator {
     }, 0)
   }
 
+  private createAggregation (filterName: string) {
+
+    const filter = this.filters.find(filter => filter.name === filterName)
+    if (!filter) {
+      throw new Error('Requested filter does not exist')
+    }
+
+    const agg = {
+      terms: {
+        field: filter.path + (filter.keyword ? '.keyword' : '')
+      }
+    }
+
+    return agg
+  }
+
   public appendFilterToAggregation (filterName: string): any {
 
     const filter = this.filters.find(filter => filter.name === filterName)
@@ -63,11 +79,6 @@ export default class AgregationsCreator {
       [`${filter.aggName}_wrapper`]: {
         filter: {
 
-        },
-        aggs: {
-          [filter.aggName]: {
-
-          }
         }
       }
     }
@@ -107,9 +118,10 @@ export default class AgregationsCreator {
 
     }
 
-    agg[`${filter.aggName}_wrapper`].aggs[filter.aggName] = {
-      terms: {
-        field: filter.path + (filter.keyword ? '.keyword' : '')
+    agg[`${filter.aggName}_wrapper`] = {
+      ...agg[`${filter.aggName}_wrapper`],
+      aggs: {
+        [filter.aggName]: this.createAggregation(filterName)
       }
     }
 
@@ -125,6 +137,16 @@ export default class AgregationsCreator {
         ...aggs.aggs,
         ...this.appendFilterToAggregation(filter.name)
       }
+    }
+
+    return aggs
+  }
+
+  get filterlessAggs () {
+    const aggs = {...this.aggregations}
+
+    for (let filter of this.filters) {
+      aggs.aggs[filter.aggName] = this.createAggregation(filter.name)
     }
 
     return aggs
