@@ -12,48 +12,51 @@ import fetch from 'isomorphic-fetch'
 import { currentStoreView } from '@vue-storefront/core/lib/multistore';
 import { optionLabel } from '@vue-storefront/core/modules/catalog/helpers/optionLabel';
 
-const emptyFilters: Array<any> = [
-  {
-    name: 'color',
-    path: 'configurable_children.color_group',
-    aggName: 'colors',
-    value: [],
-    keyword: true,
-    size: 30
-  },
-  {
-    name: 'talla',
-    path: 'talla_options',
-    aggName: 'sizes',
-    value: []
-  },
-  {
-    name: 'style',
-    path: 'configurable_children.style',
-    aggName: 'styles',
-    value: []
-  },
-  {
-    name: 'print',
-    path: 'configurable_children.print',
-    aggName: 'prints',
-    value: []
-  },
-  {
-    name: 'length',
-    path: 'length',
-    aggName: 'lengths',
-    value: [],
-    keyword: true
-  },
-  {
-    name: 'featured',
-    path: 'configurable_children.featured',
-    aggName: 'featureds',
-    value: [],
-    keyword: true
-  }
-]
+const getEmptyFilters = () => {
+  return [
+    {
+      name: 'color',
+      path: 'configurable_children.color_group',
+      aggName: 'colors',
+      value: [],
+      keyword: true,
+      size: 30
+    },
+    {
+      name: 'talla',
+      path: 'configurable_children.talla',
+      aggName: 'sizes',
+      value: [],
+      keyword: true
+    },
+    {
+      name: 'style',
+      path: 'configurable_children.style',
+      aggName: 'styles',
+      value: []
+    },
+    {
+      name: 'print',
+      path: 'configurable_children.print',
+      aggName: 'prints',
+      value: []
+    },
+    {
+      name: 'length',
+      path: 'length',
+      aggName: 'lengths',
+      value: [],
+      keyword: true
+    },
+    {
+      name: 'featured',
+      path: 'configurable_children.featured',
+      aggName: 'featureds',
+      value: [],
+      keyword: true
+    }
+  ]
+}
 
 const attributeMap = {
   'colors': 'color_group',
@@ -107,7 +110,7 @@ export const actions: ActionTree<AttrState, any> = {
     }
 
     // Create aggregations
-    let filtersToAggs = emptyFilters
+    let filtersToAggs = getEmptyFilters()
     let anyFilters: Boolean = false
     if (JSON.stringify(values) !== JSON.stringify({})) {
       anyFilters = true
@@ -115,7 +118,9 @@ export const actions: ActionTree<AttrState, any> = {
         const filter = filtersToAggs.find(filter => filter.aggName === reversedAttributeMap[key])
         if (!filter)
           continue
-        filter.value = Array.isArray(value) ? value : [value]
+        filter.value = Array.isArray(value)
+          ? (filter.keyword ? value.map(v=>v+'') : value.map(v=>+v))
+          : [(filter.keyword ? value + '' : +value)]
       }
     }
     const instance = new CreateAggregations(filtersToAggs)
