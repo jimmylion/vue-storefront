@@ -7,7 +7,8 @@ interface Filter {
   path: string,
   aggName: string,
   value: Array<string> | Array<Number>,
-  keyword?: Boolean
+  keyword?: Boolean,
+  size?: Number
 }
 
 /**
@@ -58,7 +59,8 @@ export default class AgregationsCreator {
 
     const agg = {
       terms: {
-        field: filter.path + (filter.keyword ? '.keyword' : '')
+        field: filter.path + (filter.keyword ? '.keyword' : ''),
+        ...(filter.size ? { size: filter.size } : {})
       }
     }
 

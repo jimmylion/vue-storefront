@@ -10,6 +10,49 @@ import CreateAggregations from '../util/CreateAggregations'
 import fetch from 'isomorphic-fetch'
 import { currentStoreView } from '@vue-storefront/core/lib/multistore';
 
+const emptyFilters = [
+  {
+    name: 'color',
+    path: 'configurable_children.color_group',
+    aggName: 'colors',
+    value: [],
+    keyword: true,
+    size: 30
+  },
+  {
+    name: 'talla',
+    path: 'talla_options',
+    aggName: 'sizes',
+    value: []
+  },
+  {
+    name: 'style',
+    path: 'configurable_children.style',
+    aggName: 'styles',
+    value: []
+  },
+  {
+    name: 'print',
+    path: 'configurable_children.print',
+    aggName: 'prints',
+    value: []
+  },
+  {
+    name: 'length',
+    path: 'length',
+    aggName: 'lengths',
+    value: [],
+    keyword: true
+  },
+  {
+    name: 'featured',
+    path: 'configurable_children.featured',
+    aggName: 'featureds',
+    value: [],
+    keyword: true
+  }
+]
+
 export const actions: ActionTree<AttrState, any> = {
 
   // Load preconfigured packs by IDs
@@ -47,15 +90,7 @@ export const actions: ActionTree<AttrState, any> = {
     }
 
     // Create aggregations
-    const instance = new CreateAggregations([
-      {
-        name: 'color',
-        path: 'configurable_children.color_group',
-        aggName: 'colors',
-        value: [],
-        keyword: true
-      }
-    ])
+    const instance = new CreateAggregations(emptyFilters)
 
     try {
       const { storeCode } = currentStoreView()
@@ -71,14 +106,19 @@ export const actions: ActionTree<AttrState, any> = {
       })
       
       const { aggregations } = await response.json()
+      const attrs = Object.keys(aggregations).reduce((total, curr) => {
+
+        total[curr] = aggregations[curr].buckets
+        return total
+      }, {})
 
       commit(types.SET_ATTRS, {
         categoryId: index,
-        attrs: aggregations
+        attrs
       })
 
       if (cache && index !== 'search')
-        await cacheStorage.setItem(`category-${index}-filters`, aggregations)
+        await cacheStorage.setItem(`category-${index}-filters`, attrs)
       
     } catch (err) {
 
