@@ -205,6 +205,7 @@ export const actions: ActionTree<PacksState, any> = {
     // Building body for request
     const body = {
       id: packValues.packMagentoId,
+      packId,
       packType,
       packSize,
       cartId: token,
