@@ -79,6 +79,7 @@ export const actions: ActionTree<KlaviyoState, any> = {
       customer_properties: state.customer,
       properties: data
     };
+    debugger;
 
     let url = config.klaviyo.endpoint.api;
     url += "/track";

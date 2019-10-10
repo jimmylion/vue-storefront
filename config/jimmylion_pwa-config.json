@@ -854,7 +854,7 @@
   "klaviyo": {
     "public_key": "JFukKK",
     "endpoint": {
-      "api": "https://a.klaviyo.com",
+      "api": "https://a.klaviyo.com/api",
       "subscribe": "https://api.jl.newfantastic.com/api/ext/klaviyo/subscribe",
       "backInStock": "https://a.klaviyo.com/onsite/components/back-in-stock/subscribe"
     },

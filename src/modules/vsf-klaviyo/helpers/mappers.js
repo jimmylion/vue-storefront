@@ -41,17 +41,16 @@ export const mapProduct = (product) => {
     }
   }
 
-  const productId = product.id ? product.id+'' : (product.childs ? product.childs[0].id : 'NotFound')
-
   return {
-    'ProductID': productId,
+    'ProductID': product.id,
     'SKU': product.sku,
     'ProductName': product.name,
     'ItemPrice': product.price.toString(),
     'Categories': categories,
     'ProductURL': window.location.origin + link.href,
     'ImageURL': window.location.origin + product.image,
-    'CompareAtPrice': product.special_price
+    'CompareAtPrice': product.special_price,
+    ...(product.childs ? {'Childs': product.childs} : {})
   }
 }
 
