@@ -41,6 +41,21 @@ export const mapProduct = (product) => {
     }
   }
 
+  if (product.isPack) {
+    return {
+      'ProductID': product.id,
+      'SKU': product.sku,
+      'ProductName': product.name,
+      'BasePrice': product.priceInclTax+'',
+      'Categories': 'Custom Pack',
+      'SpecialPrice': product.special_price+'', // Set only for Custom Pack
+      'Childs': product.childs.map(child => `${child.qty}x ${child.name}${child.talla_label ? ' '+child.talla_label : ''}`).join(', '),
+      'PackId': product.packId,
+      'PackSize': product.packSize,
+      'PackType': product.packType,
+    }
+  }
+
   return {
     'ProductID': product.id,
     'SKU': product.sku,
@@ -49,12 +64,14 @@ export const mapProduct = (product) => {
     'Categories': categories,
     'ProductURL': window.location.origin + link.href,
     'ImageURL': window.location.origin + product.image,
-    'CompareAtPrice': product.special_price,
-    ...(product.childs ? {'Childs': product.childs} : {})
+    'CompareAtPrice': product.special_price
   }
 }
 
 export const mapLineItem = (product) => {
+  if (product.isPack) {
+    return mapProduct(product)
+  }
   return {
     ...mapProduct(product),
     'Quantity': product.qty.toString(),
