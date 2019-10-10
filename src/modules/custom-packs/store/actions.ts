@@ -179,7 +179,7 @@ export const actions: ActionTree<PacksState, any> = {
   },
 
   // It adds built pack to the Cart
-  async addToCart ({ state, commit, rootGetters }, { slug, packType, packSize }) {
+  async addToCart ({ state, commit, rootGetters, getters }, { slug, packType, packSize, packId }) {
 
     const token = rootGetters['cart/getCartToken']
     if (!token) {
@@ -188,8 +188,24 @@ export const actions: ActionTree<PacksState, any> = {
 
     const { storeCode } = currentStoreView()
 
+    const packValues = state.packOptions[packId].values['pack-size_pack-type'][`${packSize}_${packType}`]
+    if (!packValues || !packValues.packMagentoId) {
+      throw new Error('[CustomPacks] Bad data!')
+    }
+
+    const packCapacity = state.packOptions[packId]
+        .values['pack-size']
+        [packSize]
+
+    if (!packCapacity || !packCapacity.pack_size || +packCapacity.pack_size !== state.packs[slug].items.length) {
+      console.error('[CustomPacks] Bad pack size!')
+      return 0
+    }
+
     // Building body for request
     const body = {
+      id: packValues.packMagentoId,
+      packId,
       packType,
       packSize,
       cartId: token,
