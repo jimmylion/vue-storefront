@@ -171,8 +171,6 @@ export const actions: ActionTree<AttrState, any> = {
         }, {})
       }
 
-      debugger;
-
       commit(types.SET_ATTRS, {
         categoryId: index,
         attrs
