@@ -281,6 +281,10 @@ export const actions: ActionTree<PacksState, any> = {
 
           childs,
 
+          packId,
+          packType,
+          packSize,
+
           isPack: true,
 
           priceInclTax: state.packs[slug].items.reduce((total, curr) => {
