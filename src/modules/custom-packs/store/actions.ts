@@ -193,6 +193,15 @@ export const actions: ActionTree<PacksState, any> = {
       throw new Error('[CustomPacks] Bad data!')
     }
 
+    const packCapacity = state.packOptions[packId]
+        .values['pack-size']
+        [packSize]
+
+    if (!packCapacity || !packCapacity.pack_size || +packCapacity.pack_size !== state.packs[slug].items.length) {
+      console.error('[CustomPacks] Bad pack size!')
+      return 0
+    }
+
     // Building body for request
     const body = {
       id: packValues.packMagentoId,
