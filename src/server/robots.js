@@ -1,6 +1,7 @@
 
 module.exports = (expressApp) => {
   expressApp.get('/robots.txt', (req, res) => {
-    res.end('User-agent: *\nDisallow: ')
+    res.type('text/plain');
+    res.send('User-agent: *\nDisallow: \/');
   })
 }
